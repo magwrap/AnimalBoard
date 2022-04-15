@@ -89,7 +89,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={authStyles.container}>
       <View style={authStyles.top}>
-        <Headline style={[authStyles.title, titleColor]}>Animal Board</Headline>
+        <View style={authStyles.titleContainer}>
+          <Headline style={[authStyles.title, titleColor]}>
+            Animal Board
+          </Headline>
+        </View>
         <Subheading style={[authStyles.subheading]}>Sign In</Subheading>
         <Button
           onPress={_goToRegister}

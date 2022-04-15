@@ -1,10 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Appearance } from "react-native";
+
+const colorScheme = Appearance.getColorScheme();
 
 let initialState: InitialDarkThemeState = {
-  isDarkTheme: false,
+  isDarkTheme: colorScheme === "dark",
 };
-
+console.log(initialState);
 const STORAGE_KEY = "@theme";
 
 const storeTheme = async (isDarkTheme: boolean) => {
