@@ -1,3 +1,4 @@
+import Center from "@/components/Center";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import { AuthScreenNames } from "@/navigation/ScreenNames";
 import { authStyles } from "@/styles/Auth/authStyles";
@@ -30,7 +31,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   });
   const [loading, setLoading] = useState(false);
   const _setEmail = (value: string) => {
-    console.log("email: ", value);
     setLoginCredentials({ ...loginCredentials, email: value });
   };
   const _setPassword = (value: string) => {
@@ -56,11 +56,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         loginCredentials.email,
         loginCredentials.password
       )
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log("logged in: ", user);
-
+        .then(() => {
           setLoading(false);
         })
         .catch((error) => {
@@ -84,7 +80,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const { colors, roundness } = useTheme();
   const titleColor = { color: colors.primary };
   if (loading) {
-    return <ActivityIndicator />;
+    return (
+      <Center>
+        <ActivityIndicator />
+      </Center>
+    );
   }
   return (
     <SafeAreaView style={authStyles.container}>
@@ -106,12 +106,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               value={loginCredentials.email}
               onChangeText={_setEmail}
               error={loginCredentials.error}
+              left={<TextInput.Icon name={"email"} />}
             />
             <MyTextInput
               label="Password"
               value={loginCredentials.password}
               onChangeText={_setPassword}
               secureTextEntry={!loginCredentials.showPassword}
+              left={<TextInput.Icon name={"lock"} />}
               right={
                 <TextInput.Icon
                   name={loginCredentials.showPassword ? "eye-off" : "eye"}
@@ -121,7 +123,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               error={loginCredentials.error}
             />
           </View>
-          <Button mode="contained" onPress={login}>
+          <Button
+            mode="contained"
+            onPress={login}
+            style={authStyles.signingButton}>
             Sign In
           </Button>
         </View>

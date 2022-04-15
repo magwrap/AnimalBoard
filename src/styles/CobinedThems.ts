@@ -3,6 +3,7 @@ import {
   DefaultTheme as NavigationDefaultTheme,
 } from "@react-navigation/native";
 import {
+  Colors,
   DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperDefaultTheme,
 } from "react-native-paper";
@@ -28,6 +29,7 @@ export const CombinedDarkTheme = {
   colors: {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
+    background: Colors.grey900,
     primary: MyColors.PRIMARY,
     accent: MyColors.ACCENT,
   },

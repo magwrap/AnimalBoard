@@ -2,7 +2,11 @@ import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import { AuthScreenNames } from "@/navigation/ScreenNames";
 import { MyColors } from "@/styles/ColorPallete";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  sendEmailVerification,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import {
@@ -15,11 +19,11 @@ import {
   Headline,
   Paragraph,
 } from "react-native-paper";
-import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { doc, setDoc, Timestamp, getFirestore } from "firebase/firestore";
 import { FirestoreCollectionNames } from "@/hooks/useFirebase";
-import { db } from "App";
 import DatePicker from "@/components/Auth/DatePicker";
 import { authStyles } from "@/styles/Auth/authStyles";
+import Center from "@/components/Center";
 
 interface RegisterScreenProps {
   navigation: any;
@@ -35,8 +39,16 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     showPassword: false,
     showConfirmPassword: false,
   });
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const nowDate = new Date();
+  const thirteenYearsFromNow = nowDate.setFullYear(nowDate.getFullYear() - 13);
+  const thirteenYearsFromNowPlsDay = thirteenYearsFromNow + 86400000;
+
+  const [date, setDate] = useState<Date | undefined>(
+    new Date(thirteenYearsFromNowPlsDay)
+  );
   const [loading, setLoading] = useState(false);
+  const db = getFirestore();
+
   const _setEmail = (value: string) => {
     setRegisterCredentials({ ...registerCredentials, email: value });
   };
@@ -68,7 +80,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     if (
       registerCredentials.email &&
       registerCredentials.password &&
-      date !== new Date()
+      date?.toLocaleDateString() !==
+        new Date(thirteenYearsFromNowPlsDay).toLocaleDateString()
     ) {
       if (
         registerCredentials.password === registerCredentials.confirmPassword
@@ -82,16 +95,17 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
         )
           .then(async (userCredential) => {
             const user = userCredential.user;
-            // Add a new document in collection "cities"
             await setDoc(doc(db, FirestoreCollectionNames.USERS, user.uid), {
               email: user.email,
               displayName: user.displayName,
               description: "",
               avatar: user.photoURL,
               emailVerified: user.emailVerified,
-              birthDate: Timestamp.fromDate(new Date()),
+              birthDate: date
+                ? Timestamp.fromDate(date)
+                : Timestamp.fromDate(new Date()),
             });
-
+            await sendEmailVerification(user);
             setLoading(false);
           })
           .catch((error) => {
@@ -121,12 +135,18 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 
   const { colors, roundness } = useTheme();
   const titleColor = { color: colors.primary };
-  const warningColor = {
-    color: registerCredentials.error ? MyColors.WARNING : "",
-  };
+  const warningColor = registerCredentials.error
+    ? {
+        color: MyColors.WARNING,
+      }
+    : {};
 
   if (loading) {
-    return <MyActivityIndicator />;
+    return (
+      <Center>
+        <MyActivityIndicator />
+      </Center>
+    );
   }
   return (
     <SafeAreaView style={authStyles.container}>
@@ -148,12 +168,14 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               value={registerCredentials.email}
               onChangeText={_setEmail}
               error={registerCredentials.error}
+              left={<TextInput.Icon name={"email"} />}
             />
             <MyTextInput
               label="Password"
               value={registerCredentials.password}
               onChangeText={_setPassword}
               secureTextEntry={!registerCredentials.showPassword}
+              left={<TextInput.Icon name={"lock"} />}
               right={
                 <TextInput.Icon
                   name={registerCredentials.showPassword ? "eye-off" : "eye"}
@@ -168,6 +190,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               value={registerCredentials.confirmPassword}
               onChangeText={_setConfirmPassword}
               secureTextEntry={!registerCredentials.showConfirmPassword}
+              left={<TextInput.Icon name={"lock"} />}
               right={
                 <TextInput.Icon
                   name={
@@ -183,6 +206,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
             date={date}
             setDate={setDate}
             error={registerCredentials.error}
+            thirteenYearsFromNow={thirteenYearsFromNow}
           />
           <View style={styles.dateField}>
             <View style={styles.date}>
@@ -192,7 +216,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
             <Caption>You must be over 13 years old in order to sign up</Caption>
           </View>
 
-          <Button mode="contained" onPress={register}>
+          <Button
+            mode="contained"
+            onPress={register}
+            style={authStyles.signingButton}>
             Sign Up
           </Button>
         </View>

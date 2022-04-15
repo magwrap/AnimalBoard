@@ -1,12 +1,16 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Routes from "@/navigation/Routes";
 import "react-native-gesture-handler";
 import { Provider } from "react-redux";
 import { Provider as PaperProvider } from "react-native-paper";
-import { store } from "@/state";
+import { getTheme, store } from "@/state";
 
-import { useAppSelector } from "@/hooks/reduxHooks";
+import {
+  toggleTheme,
+  useAppDispatch,
+  useAppSelector,
+} from "@/hooks/reduxHooks";
 import { initializeApp } from "firebase/app";
 import { CombinedDarkTheme, CombinedDefaultTheme } from "@/styles/CobinedThems";
 import { NavigationContainer } from "@react-navigation/native";
@@ -35,9 +39,20 @@ registerTranslation("en", en);
 
 export default function App() {
   const Themes = ({ children }: { children: React.ReactNode }) => {
+    useEffect(() => {
+      (async () => {
+        const wasThemeDark = await getTheme();
+        if (wasThemeDark !== isThemeDark) {
+          dispatch(toggleTheme());
+        }
+      })();
+    }, []);
+
+    const dispatch = useAppDispatch();
     const isThemeDark = useAppSelector(
       (state) => state.DarkThemeReducer.isDarkTheme
     );
+
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
     return (
       <PaperProvider theme={theme}>

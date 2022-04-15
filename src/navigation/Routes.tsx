@@ -8,23 +8,25 @@ interface RoutesProps {}
 
 const Routes: React.FC<RoutesProps> = ({}) => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
-    console.log("Routes: ", user?.email);
     if (user) {
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
     }
+    setLoading(false);
   });
+  if (loading) {
+    return <LoadingScreen />;
+  }
   if (loggedIn) {
-    console.log("app");
     return <AppStackNavigator />;
   } else {
-    console.log("auth");
     return <AuthStackNavigator />;
   }
-  return <LoadingScreen />;
 };
 
 export default Routes;

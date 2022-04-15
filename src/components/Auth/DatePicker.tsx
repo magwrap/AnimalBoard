@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import * as React from "react";
-import { Button, Paragraph } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { DatePickerModal } from "react-native-paper-dates";
 import { MyColors } from "@/styles/ColorPallete";
 
@@ -8,9 +8,15 @@ interface DatePickerProps {
   date: Date | undefined;
   setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
   error: boolean;
+  thirteenYearsFromNow: number;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ date, setDate, error }) => {
+const DatePicker: React.FC<DatePickerProps> = ({
+  date,
+  setDate,
+  error,
+  thirteenYearsFromNow,
+}) => {
   const [open, setOpen] = React.useState(false);
 
   const onDismissSingle = React.useCallback(() => {
@@ -25,8 +31,6 @@ const DatePicker: React.FC<DatePickerProps> = ({ date, setDate, error }) => {
     [setOpen, setDate]
   );
 
-  const nowDate = new Date();
-  const thirteenYearsFromNow = nowDate.setFullYear(nowDate.getFullYear() - 13);
   const buttonColor = error ? MyColors.WARNING : undefined;
 
   return (

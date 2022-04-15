@@ -9,6 +9,7 @@ interface MyTextInputProps {
   secureTextEntry?: boolean;
   error?: boolean;
   right?: React.ReactNode;
+  left?: React.ReactNode;
   errorMessage?: string;
 }
 

@@ -6,6 +6,7 @@ export const authStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    marginTop: 20,
   },
   title: {
     textAlign: "center",
@@ -22,5 +23,8 @@ export const authStyles = StyleSheet.create({
     textAlign: "center",
     color: MyColors.WARNING,
     marginVertical: 10,
+  },
+  signingButton: {
+    marginVertical: 5,
   },
 });
