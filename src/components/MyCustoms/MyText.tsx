@@ -2,12 +2,12 @@ import React from "react";
 import Text from "react-native-paper";
 
 interface MyTextProps {
-  children: React.ReactNode;
+  text: string;
   style: object;
 }
 
-const MyText: React.FC<MyTextProps> = (props) => {
-  return <Text {...props}>{props.children}</Text>;
+const MyText: React.FC<MyTextProps> = ({ text, style }) => {
+  return <Text style={style}>{text}</Text>;
 };
 
 export default MyText;

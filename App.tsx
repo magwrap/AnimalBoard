@@ -11,6 +11,10 @@ import { initializeApp } from "firebase/app";
 import { CombinedDarkTheme, CombinedDefaultTheme } from "@/styles/CobinedThems";
 import { NavigationContainer } from "@react-navigation/native";
 import { LogBox } from "react-native";
+import { getFirestore } from "firebase/firestore";
+import { en, registerTranslation } from "react-native-paper-dates";
+import "intl";
+import "intl/locale-data/jsonp/en"; // or any other locale you need
 
 LogBox.ignoreAllLogs();
 
@@ -25,6 +29,9 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+
+registerTranslation("en", en);
 
 export default function App() {
   const Themes = ({ children }: { children: React.ReactNode }) => {

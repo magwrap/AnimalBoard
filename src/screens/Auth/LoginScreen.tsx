@@ -1,19 +1,18 @@
-import MyText from "@/components/MyCustoms/MyText";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import { AuthScreenNames } from "@/navigation/ScreenNames";
-import { MyColors } from "@/styles/ColorPallete";
-import { FontSizes } from "@/styles/Fonts";
+import { authStyles } from "@/styles/Auth/authStyles";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
   Caption,
   Divider,
+  Headline,
   Subheading,
   TextInput,
-  Title,
+  Text,
   useTheme,
 } from "react-native-paper";
 
@@ -65,7 +64,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           setLoading(false);
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
           setLoginCredentials({
             ...loginCredentials,
@@ -89,22 +87,25 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     return <ActivityIndicator />;
   }
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.top}>
-        <Title style={[styles.title, titleColor]}>Animal Board</Title>
-        <Subheading style={[styles.subheading]}>Sign In</Subheading>
+    <SafeAreaView style={authStyles.container}>
+      <View style={authStyles.top}>
+        <Headline style={[authStyles.title, titleColor]}>Animal Board</Headline>
+        <Subheading style={[authStyles.subheading]}>Sign In</Subheading>
         <Button
           onPress={_goToRegister}
-          labelStyle={styles.goToRegisterButton}
-          compact>
+          labelStyle={authStyles.goToButton}
+          compact
+          uppercase={false}
+          color={colors.accent}>
           Don't have a account yet? Sign up
         </Button>
         <View>
-          <View style={[styles.inputs, { borderRadius: roundness }]}>
+          <View style={[authStyles.inputs, { borderRadius: roundness }]}>
             <MyTextInput
               label="Email"
               value={loginCredentials.email}
               onChangeText={_setEmail}
+              error={loginCredentials.error}
             />
             <MyTextInput
               label="Password"
@@ -117,6 +118,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                   onPress={_toggleShowPassword}
                 />
               }
+              error={loginCredentials.error}
             />
           </View>
           <Button mode="contained" onPress={login}>
@@ -124,11 +126,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           </Button>
         </View>
       </View>
-      {/* {loginCredentials.errorMessage ? (
-        <MyText style={styles.errorMessage}>
+      {loginCredentials.errorMessage ? (
+        <Text style={authStyles.errorMessage}>
           {loginCredentials.errorMessage}
-        </MyText>
-      ) : null} */}
+        </Text>
+      ) : null}
       <Divider />
       <Caption style={{ textAlign: "center" }}>OR</Caption>
       <Divider />
@@ -139,21 +141,5 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
-  title: { textAlign: "center", fontSize: FontSizes.HUGE },
-  subheading: {
-    textAlign: "center",
-    fontSize: FontSizes.LARGE,
-    fontWeight: "bold",
-  },
-  goToRegisterButton: { fontSize: FontSizes.SMALL },
-  inputs: { borderWidth: 1, margin: 5 },
-  top: { justifyContent: "space-evenly" },
-  errorMessage: { textAlign: "center", color: MyColors.WARNING },
-});
 
 export default LoginScreen;

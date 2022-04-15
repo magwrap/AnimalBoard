@@ -1,9 +1,7 @@
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
-import MyText from "@/components/MyCustoms/MyText";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import { AuthScreenNames } from "@/navigation/ScreenNames";
 import { MyColors } from "@/styles/ColorPallete";
-import { FontSizes } from "@/styles/Fonts";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
@@ -11,12 +9,17 @@ import {
   Button,
   Subheading,
   TextInput,
-  Title,
   useTheme,
   Text,
+  Caption,
+  Headline,
+  Paragraph,
 } from "react-native-paper";
-import { doc, GeoPoint, setDoc, Timestamp } from "firebase/firestore";
-import { db, FirestoreCollectionNames } from "@/hooks/useFirebase";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { FirestoreCollectionNames } from "@/hooks/useFirebase";
+import { db } from "App";
+import DatePicker from "@/components/Auth/DatePicker";
+import { authStyles } from "@/styles/Auth/authStyles";
 
 interface RegisterScreenProps {
   navigation: any;
@@ -32,6 +35,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     showPassword: false,
     showConfirmPassword: false,
   });
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const [loading, setLoading] = useState(false);
   const _setEmail = (value: string) => {
     setRegisterCredentials({ ...registerCredentials, email: value });
@@ -64,39 +68,48 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     if (
       registerCredentials.email &&
       registerCredentials.password &&
-      registerCredentials.password === registerCredentials.confirmPassword
+      date !== new Date()
     ) {
-      setLoading(true);
-      const auth = getAuth();
-      createUserWithEmailAndPassword(
-        auth,
-        registerCredentials.email,
-        registerCredentials.password
-      )
-        .then(async (userCredential) => {
-          const user = userCredential.user;
-          // Add a new document in collection "cities"
-          await setDoc(doc(db, FirestoreCollectionNames.USERS, user.uid), {
-            email: user.email,
-            displayName: user.displayName,
-            description: "",
-            avatar: user.photoURL,
-            emailVerified: user.emailVerified,
-            birthDate: Timestamp.fromDate(new Date()),
-            location: new GeoPoint(0, 0),
-          });
+      if (
+        registerCredentials.password === registerCredentials.confirmPassword
+      ) {
+        setLoading(true);
+        const auth = getAuth();
+        createUserWithEmailAndPassword(
+          auth,
+          registerCredentials.email,
+          registerCredentials.password
+        )
+          .then(async (userCredential) => {
+            const user = userCredential.user;
+            // Add a new document in collection "cities"
+            await setDoc(doc(db, FirestoreCollectionNames.USERS, user.uid), {
+              email: user.email,
+              displayName: user.displayName,
+              description: "",
+              avatar: user.photoURL,
+              emailVerified: user.emailVerified,
+              birthDate: Timestamp.fromDate(new Date()),
+            });
 
-          setLoading(false);
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          setRegisterCredentials({
-            ...registerCredentials,
-            error: true,
-            errorMessage,
+            setLoading(false);
+          })
+          .catch((error) => {
+            const errorMessage = error.message;
+            setRegisterCredentials({
+              ...registerCredentials,
+              error: true,
+              errorMessage,
+            });
+            setLoading(false);
           });
-          setLoading(false);
+      } else {
+        setRegisterCredentials({
+          ...registerCredentials,
+          error: true,
+          errorMessage: "Passwords doesn't match",
         });
+      }
     } else {
       setRegisterCredentials({
         ...registerCredentials,
@@ -108,20 +121,28 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 
   const { colors, roundness } = useTheme();
   const titleColor = { color: colors.primary };
+  const warningColor = {
+    color: registerCredentials.error ? MyColors.WARNING : "",
+  };
 
   if (loading) {
     return <MyActivityIndicator />;
   }
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.top}>
-        <Title style={[styles.title, titleColor]}>Animal Board</Title>
-        <Subheading style={[styles.subheading]}>Sign Up</Subheading>
-        <Button onPress={_goToLogin} labelStyle={styles.goToRegisterButton}>
+    <SafeAreaView style={authStyles.container}>
+      <View style={authStyles.top}>
+        <Headline style={[authStyles.title, titleColor]}>Animal Board</Headline>
+        <Subheading style={[authStyles.subheading]}>Sign Up</Subheading>
+        <Button
+          onPress={_goToLogin}
+          labelStyle={authStyles.goToButton}
+          compact
+          uppercase={false}
+          color={colors.accent}>
           You DO have an account? Sign In
         </Button>
         <View>
-          <View style={[styles.inputs, { borderRadius: roundness }]}>
+          <View style={[authStyles.inputs, { borderRadius: roundness }]}>
             <MyTextInput
               label="Email"
               value={registerCredentials.email}
@@ -158,30 +179,41 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               error={registerCredentials.error}
             />
           </View>
+          <DatePicker
+            date={date}
+            setDate={setDate}
+            error={registerCredentials.error}
+          />
+          <View style={styles.dateField}>
+            <View style={styles.date}>
+              <Paragraph style={warningColor}>Date of birth: </Paragraph>
+              <Paragraph>{date ? date?.toLocaleDateString() : "..."}</Paragraph>
+            </View>
+            <Caption>You must be over 13 years old in order to sign up</Caption>
+          </View>
+
           <Button mode="contained" onPress={register}>
             Sign Up
           </Button>
         </View>
-        {/* {registerCredentials.errorMessage ? (
-          <MyText style={styles.errorMessage}>
+        {registerCredentials.errorMessage ? (
+          <Text style={authStyles.errorMessage}>
             {registerCredentials.errorMessage}
-          </MyText>
-        ) : null} */}
+          </Text>
+        ) : null}
       </View>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
+  dateField: {
+    margin: 5,
   },
-  title: { textAlign: "center", fontSize: FontSizes.HUGE },
-  subheading: { textAlign: "center", fontSize: FontSizes.LARGE },
-  goToRegisterButton: { fontSize: FontSizes.SMALL },
-  inputs: { borderWidth: 1, margin: 5 },
-  top: { justifyContent: "space-evenly" },
-  errorMessage: { textAlign: "center", color: MyColors.WARNING },
+  date: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+  },
 });
 
 export default RegisterScreen;
