@@ -8,9 +8,12 @@ import {
 } from "react-native-paper";
 import { MyColors } from "@/styles/ColorPallete";
 
+const roundness = 5;
+
 export const CombinedDefaultTheme = {
   ...PaperDefaultTheme,
   ...NavigationDefaultTheme,
+  roundness,
   colors: {
     ...PaperDefaultTheme.colors,
     ...NavigationDefaultTheme.colors,
@@ -21,6 +24,7 @@ export const CombinedDefaultTheme = {
 export const CombinedDarkTheme = {
   ...PaperDarkTheme,
   ...NavigationDarkTheme,
+  roundness,
   colors: {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
