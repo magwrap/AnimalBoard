@@ -1,4 +1,7 @@
 export enum MyColors {
-  PRIMARY = "tomato",
-  ACCENT =  "green",
+  PRIMARY = "#35524A",
+  ACCENT =  "#779CAB",
+  EXTRA = "#ffffff",
 }
+
+//skipped: 627C85  A2E8DD

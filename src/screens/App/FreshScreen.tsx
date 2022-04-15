@@ -3,11 +3,11 @@ import DarkThemeSwitch from "@/components/DarkThemeSwitch";
 import * as React from "react";
 import { Button, Divider, Title } from "react-native-paper";
 
-interface TabOneScreenProps {
+interface FreshScreenProps {
   navigation: any;
 }
 
-const TabOneScreen: React.FC<TabOneScreenProps> = ({ navigation }) => {
+const FreshScreen: React.FC<FreshScreenProps> = ({ navigation }) => {
   return (
     <Center>
       <Title>Tab One</Title>
@@ -18,4 +18,4 @@ const TabOneScreen: React.FC<TabOneScreenProps> = ({ navigation }) => {
   );
 };
 
-export default TabOneScreen;
+export default FreshScreen;

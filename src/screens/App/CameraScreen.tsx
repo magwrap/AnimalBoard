@@ -2,11 +2,11 @@ import Center from "@/components/Center";
 import * as React from "react";
 import { Divider, Title } from "react-native-paper";
 
-interface TabTwoScreenProps {
+interface CameraScreenProps {
   navigation: any;
 }
 
-const TabTwoScreen: React.FC<TabTwoScreenProps> = ({ navigation }) => {
+const CameraScreen: React.FC<CameraScreenProps> = ({ navigation }) => {
   return (
     <Center>
       <Title>Tab Two</Title>
@@ -15,4 +15,4 @@ const TabTwoScreen: React.FC<TabTwoScreenProps> = ({ navigation }) => {
   );
 };
 
-export default TabTwoScreen;
+export default CameraScreen;

@@ -3,11 +3,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "@/screens/Auth/LoginScreen";
 import RegisterScreen from "@/screens/Auth/RegisterScreen";
 
-interface AppStackNavigatorProps {}
+interface AuthStackNavigatorProps {}
 
 const Stack = createNativeStackNavigator();
 
-const AppStackNavigator: React.FC<AppStackNavigatorProps> = ({}) => {
+const AuthStackNavigator: React.FC<AuthStackNavigatorProps> = ({}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -24,4 +24,4 @@ const AppStackNavigator: React.FC<AppStackNavigatorProps> = ({}) => {
   );
 };
 
-export default AppStackNavigator;
+export default AuthStackNavigator;

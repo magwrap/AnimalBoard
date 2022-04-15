@@ -16,16 +16,6 @@ const AppStackNavigator: React.FC<AppStackNavigatorProps> = ({}) => {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
-        name="Root"
-        component={TopTabNavigator}
-        options={{ headerShown: false }}
-      /> */}
-      {/* <Stack.Screen
-        name="Root"
-        component={DrawerNavigator}
-        options={{ headerShown: false }}
-      /> */}
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}

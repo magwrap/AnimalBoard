@@ -9,7 +9,6 @@ const DarkThemeSlice = createSlice({
   initialState,
   reducers: {
     toggleTheme : (state, action: PayloadAction<void>) => {
-      console.log("toggling...");
       return {
         isDarkTheme: !state.isDarkTheme,
       }

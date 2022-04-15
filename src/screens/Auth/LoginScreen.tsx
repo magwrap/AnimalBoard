@@ -1,3 +1,5 @@
+import Center from "@/components/Center";
+import MyActivityIndicator from "@/components/MyActivityIndicator";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -7,9 +9,10 @@ interface LoginScreenProps {
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   return (
-    <View>
-      <Text></Text>
-    </View>
+    <Center>
+      <MyActivityIndicator />
+      <Text>Login Screen</Text>
+    </Center>
   );
 };
 const styles = StyleSheet.create({});
