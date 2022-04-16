@@ -52,6 +52,5 @@ const GoogleSignInButton: React.FC<AuthButtonProps> = ({
     </Button>
   );
 };
-const styles = StyleSheet.create({});
 
 export default GoogleSignInButton;

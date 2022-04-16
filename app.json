@@ -33,6 +33,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "description": "An app where you can share photos of your animals",
-    "githubUrl": "https://github.com/magwrap/AnimalBoard.git"
+    "githubUrl": "https://github.com/magwrap/AnimalBoard.git",
+    "facebookScheme": "fb3343227415955530"
   }
 }

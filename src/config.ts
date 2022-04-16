@@ -8,4 +8,15 @@ export const googleConfigAuth = {
 export const googleFirebaseConfig = {
   clientId: `22475114245-u6lde6vl97g970ifml3hqb4kvkrsa7jl.apps.googleusercontent.com`,
 };
+
+export const facebookConfigAuth = {
+  clientId: `3343227415955530`,
+  expoClientId: `3343227415955530`,
+  iosClientId: `3343227415955530`,
+  androidClientId: `3343227415955530`,
+};
+
+export const facebookFirebaseConfig = {
+  clientID: `https://animalboard-861e5.firebaseapp.com/__/auth/handler`,
+};
 //tajny klucz expo: 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
