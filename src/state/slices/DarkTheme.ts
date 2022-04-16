@@ -7,7 +7,6 @@ const colorScheme = Appearance.getColorScheme();
 let initialState: InitialDarkThemeState = {
   isDarkTheme: colorScheme === "dark",
 };
-console.log(initialState);
 const STORAGE_KEY = "@theme";
 
 const storeTheme = async (isDarkTheme: boolean) => {

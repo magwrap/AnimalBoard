@@ -12,7 +12,7 @@ export const authStyles = StyleSheet.create({
     textAlign: "center",
     fontSize: FontSizes.HUGE,
   },
-  titleContainer: { marginVertical: 12 },
+  titleContainer: { marginVertical: 20 },
   subheading: {
     textAlign: "center",
     fontSize: FontSizes.LARGE,

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-template",
-    "slug": "expo-template",
+    "name": "AnimalBoard",
+    "slug": "animalboard",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -31,6 +31,8 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "description": "An app where you can share photos of your animals",
+    "githubUrl": "https://github.com/magwrap/AnimalBoard.git"
   }
 }

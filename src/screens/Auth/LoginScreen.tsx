@@ -1,3 +1,4 @@
+import GoogleSignInButton from "@/components/Auth/GoogleSignInButton";
 import Center from "@/components/Center";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import { AuthScreenNames } from "@/navigation/ScreenNames";
@@ -145,7 +146,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       <Divider />
       <View>
         <Button>Sign In with Facebook</Button>
-        <Button>Sign In with Google</Button>
+        <GoogleSignInButton />
       </View>
     </SafeAreaView>
   );
