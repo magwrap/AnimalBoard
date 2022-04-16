@@ -1,3 +1,4 @@
+import { addUserToDB } from "@/hooks/useFirebase";
 import LoadingScreen from "@/screens/LoadingScreen";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import React, { useState } from "react";
@@ -13,6 +14,7 @@ const Routes: React.FC<RoutesProps> = ({}) => {
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      addUserToDB(user);
       setLoggedIn(true);
     } else {
       setLoggedIn(false);

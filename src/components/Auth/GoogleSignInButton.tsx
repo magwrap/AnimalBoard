@@ -30,9 +30,8 @@ const GoogleSignInButton: React.FC<AuthButtonProps> = ({
         const auth = getAuth();
         const credential = GoogleAuthProvider.credential(id_token);
         const token = credential.accessToken;
-        console.log(credential);
+        setLoading(false);
         signInWithCredential(auth, credential);
-        // setLoading(false);
       } catch (err) {
         setLoginCredentials({
           ...loginCredentials,

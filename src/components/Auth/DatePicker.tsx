@@ -1,22 +1,19 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import * as React from "react";
-import { Button } from "react-native-paper";
+import { Button, Caption, Paragraph } from "react-native-paper";
 import { DatePickerModal } from "react-native-paper-dates";
 import { MyColors } from "@/styles/ColorPallete";
 
-interface DatePickerProps {
-  date: Date | undefined;
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
-  error: boolean;
-  thirteenYearsFromNow: number;
-}
+interface DatePickerProps {}
 
-const DatePicker: React.FC<DatePickerProps> = ({
-  date,
-  setDate,
-  error,
-  thirteenYearsFromNow,
-}) => {
+const DatePicker: React.FC<DatePickerProps> = ({}) => {
+  const nowDate = new Date();
+  const thirteenYearsFromNow = nowDate.setFullYear(nowDate.getFullYear() - 13);
+  const thirteenYearsFromNowPlsDay = thirteenYearsFromNow + 86400000;
+
+  const [date, setDate] = React.useState<Date | undefined>(
+    new Date(thirteenYearsFromNowPlsDay)
+  );
   const [open, setOpen] = React.useState(false);
 
   const onDismissSingle = React.useCallback(() => {
@@ -31,8 +28,6 @@ const DatePicker: React.FC<DatePickerProps> = ({
     [setOpen, setDate]
   );
 
-  const buttonColor = error ? MyColors.WARNING : undefined;
-
   return (
     <>
       <Button
@@ -40,10 +35,16 @@ const DatePicker: React.FC<DatePickerProps> = ({
         uppercase={false}
         mode="outlined"
         style={styles.buttonStyle}
-        contentStyle={styles.buttonContentStyle}
-        color={buttonColor}>
+        contentStyle={styles.buttonContentStyle}>
         Pick date
       </Button>
+      <View style={styles.dateField}>
+        <View style={styles.date}>
+          <Paragraph>Date of birth: </Paragraph>
+          <Paragraph>{date ? date?.toLocaleDateString() : "..."}</Paragraph>
+        </View>
+        <Caption>You must be over 13 years old in order to sign up</Caption>
+      </View>
 
       <DatePickerModal
         locale="en"
@@ -64,6 +65,14 @@ const DatePicker: React.FC<DatePickerProps> = ({
 const styles = StyleSheet.create({
   buttonStyle: { margin: 5 },
   buttonContentStyle: { width: "100%" },
+  dateField: {
+    margin: 5,
+  },
+  date: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+  },
 });
 
 export default DatePicker;

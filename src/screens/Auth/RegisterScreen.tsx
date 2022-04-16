@@ -2,11 +2,7 @@ import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import { AuthScreenNames } from "@/navigation/ScreenNames";
 import { MyColors } from "@/styles/ColorPallete";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  sendEmailVerification,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import {
@@ -19,8 +15,6 @@ import {
   Headline,
   Paragraph,
 } from "react-native-paper";
-import { doc, setDoc, Timestamp, getFirestore } from "firebase/firestore";
-import { FirestoreCollectionNames } from "@/hooks/useFirebase";
 import DatePicker from "@/components/Auth/DatePicker";
 import { authStyles } from "@/styles/Auth/authStyles";
 import Center from "@/components/Center";
@@ -39,15 +33,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     showPassword: false,
     showConfirmPassword: false,
   });
-  const nowDate = new Date();
-  const thirteenYearsFromNow = nowDate.setFullYear(nowDate.getFullYear() - 13);
-  const thirteenYearsFromNowPlsDay = thirteenYearsFromNow + 86400000;
 
-  const [date, setDate] = useState<Date | undefined>(
-    new Date(thirteenYearsFromNowPlsDay)
-  );
   const [loading, setLoading] = useState(false);
-  const db = getFirestore();
 
   const _setEmail = (value: string) => {
     setRegisterCredentials({ ...registerCredentials, email: value });
@@ -77,12 +64,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   };
 
   const register = () => {
-    if (
-      registerCredentials.email &&
-      registerCredentials.password &&
-      date?.toLocaleDateString() !==
-        new Date(thirteenYearsFromNowPlsDay).toLocaleDateString()
-    ) {
+    if (registerCredentials.email && registerCredentials.password) {
       if (
         registerCredentials.password === registerCredentials.confirmPassword
       ) {
@@ -93,20 +75,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
           registerCredentials.email,
           registerCredentials.password
         )
-          .then(async (userCredential) => {
-            const user = userCredential.user;
-            await setDoc(doc(db, FirestoreCollectionNames.USERS, user.uid), {
-              email: user.email,
-              displayName: user.displayName,
-              description: "",
-              avatar: user.photoURL,
-              emailVerified: user.emailVerified,
-              birthDate: date
-                ? Timestamp.fromDate(date)
-                : Timestamp.fromDate(new Date()),
-            });
-            await sendEmailVerification(user);
-            setLoading(false);
+          .then(async () => {
+            // setLoading(false);
           })
           .catch((error) => {
             const errorMessage = error.message;
@@ -135,11 +105,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 
   const { colors, roundness } = useTheme();
   const titleColor = { color: colors.primary };
-  const warningColor = registerCredentials.error
-    ? {
-        color: MyColors.WARNING,
-      }
-    : {};
 
   if (loading) {
     return (
@@ -206,19 +171,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               error={registerCredentials.error}
             />
           </View>
-          <DatePicker
-            date={date}
-            setDate={setDate}
-            error={registerCredentials.error}
-            thirteenYearsFromNow={thirteenYearsFromNow}
-          />
-          <View style={styles.dateField}>
-            <View style={styles.date}>
-              <Paragraph style={warningColor}>Date of birth: </Paragraph>
-              <Paragraph>{date ? date?.toLocaleDateString() : "..."}</Paragraph>
-            </View>
-            <Caption>You must be over 13 years old in order to sign up</Caption>
-          </View>
 
           <Button
             mode="contained"
@@ -236,15 +188,5 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
-  dateField: {
-    margin: 5,
-  },
-  date: {
-    flexDirection: "row",
-    width: "100%",
-    alignItems: "center",
-  },
-});
 
 export default RegisterScreen;

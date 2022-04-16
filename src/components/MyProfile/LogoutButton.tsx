@@ -1,6 +1,6 @@
 import { getAuth, signOut } from "firebase/auth";
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 
 interface LogoutButtonProps {}
