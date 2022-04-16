@@ -33,9 +33,7 @@ const DarkThemeSlice = createSlice({
   reducers: {
     toggleTheme: (state, action: PayloadAction<void>) => {
       storeTheme(!state.isDarkTheme);
-      return {
-        isDarkTheme: !state.isDarkTheme,
-      };
+      state.isDarkTheme = !state.isDarkTheme;
     },
   },
 });
