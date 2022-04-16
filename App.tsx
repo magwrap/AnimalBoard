@@ -19,18 +19,9 @@ import { getFirestore } from "firebase/firestore";
 import { en, registerTranslation } from "react-native-paper-dates";
 import "intl";
 import "intl/locale-data/jsonp/en"; // or any other locale you need
+import { firebaseConfig } from "@/config";
 
 LogBox.ignoreAllLogs();
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDOug8Vt3hPSfKkLHekJ84OYw2L4Zl9L1s",
-  authDomain: "animalboard-861e5.firebaseapp.com",
-  projectId: "animalboard-861e5",
-  storageBucket: "animalboard-861e5.appspot.com",
-  messagingSenderId: "22475114245",
-  appId: "1:22475114245:web:1e06d65ccad2164249596c",
-  measurementId: "G-LJBZENPNEP",
-};
 
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);

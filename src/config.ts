@@ -20,3 +20,12 @@ export const facebookFirebaseConfig = {
   clientID: `https://animalboard-861e5.firebaseapp.com/__/auth/handler`,
 };
 //tajny klucz expo: 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
+export const firebaseConfig = {
+  apiKey: "AIzaSyDOug8Vt3hPSfKkLHekJ84OYw2L4Zl9L1s",
+  authDomain: "animalboard-861e5.firebaseapp.com",
+  projectId: "animalboard-861e5",
+  storageBucket: "animalboard-861e5.appspot.com",
+  messagingSenderId: "22475114245",
+  appId: "1:22475114245:web:1e06d65ccad2164249596c",
+  measurementId: "G-LJBZENPNEP",
+};

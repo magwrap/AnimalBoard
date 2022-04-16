@@ -31,9 +31,9 @@ const FacebookSignInButton: React.FC<AuthButtonProps> = ({
       try {
         const auth = getAuth();
         const credential = FacebookAuthProvider.credential(access_token);
-        const token = credential.accessToken;
-        setLoading(false);
+        // const token = credential.accessToken;
         signInWithCredential(auth, credential);
+        setLoading(false);
       } catch (err) {
         setLoginCredentials({
           ...loginCredentials,
