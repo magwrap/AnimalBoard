@@ -1,9 +1,10 @@
+import FacebookSignInButton from "@/components/Auth/FacebookSignInButton";
 import GoogleSignInButton from "@/components/Auth/GoogleSignInButton";
+import LoginButton from "@/components/Auth/LoginButton";
 import Center from "@/components/Center";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import { AuthScreenNames } from "@/navigation/ScreenNames";
 import { authStyles } from "@/styles/Auth/authStyles";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { SafeAreaView, View } from "react-native";
 import {
@@ -47,37 +48,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     navigation.navigate(AuthScreenNames.REGISTER_SCREEN);
   };
 
-  const login = () => {
-    if (loginCredentials.email && loginCredentials.password) {
-      setLoading(true);
-
-      const auth = getAuth();
-      signInWithEmailAndPassword(
-        auth,
-        loginCredentials.email,
-        loginCredentials.password
-      )
-        .then(() => {
-          setLoading(false);
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          setLoginCredentials({
-            ...loginCredentials,
-            error: true,
-            errorMessage,
-          });
-          setLoading(false);
-        });
-    } else {
-      setLoginCredentials({
-        ...loginCredentials,
-        error: true,
-        errorMessage: "All fields must be filled",
-      });
-    }
-  };
-
   const { colors, roundness } = useTheme();
   const titleColor = { color: colors.primary };
   if (loading) {
@@ -87,6 +57,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       </Center>
     );
   }
+  const buttonProps = {
+    loginCredentials,
+    setLoginCredentials,
+    setLoading,
+  };
+
   return (
     <SafeAreaView style={authStyles.container}>
       <View style={authStyles.top}>
@@ -128,13 +104,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               error={loginCredentials.error}
             />
           </View>
-          <Button
-            mode="contained"
-            onPress={login}
-            style={authStyles.signingButton}>
-            Sign In
-          </Button>
         </View>
+        <LoginButton {...buttonProps} />
       </View>
       {loginCredentials.errorMessage ? (
         <Text style={authStyles.errorMessage}>
@@ -145,8 +116,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       <Caption style={{ textAlign: "center" }}>OR</Caption>
       <Divider />
       <View>
-        <Button>Sign In with Facebook</Button>
-        <GoogleSignInButton />
+        <FacebookSignInButton {...buttonProps} />
+        <GoogleSignInButton {...buttonProps} />
       </View>
     </SafeAreaView>
   );

@@ -2,20 +2,44 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithCredential,
+} from "firebase/auth";
 import { Button } from "react-native-paper";
-import { googleConfig } from "@/config";
+import { googleFirebaseConfig } from "@/config";
+import { AuthButtonProps } from "./AuthButtonProps";
 
 WebBrowser.maybeCompleteAuthSession();
 
-interface GoogleSignButtonInProps {}
-
-const GoogleSignInButton: React.FC<GoogleSignButtonInProps> = ({}) => {
-  const [request, response, promptAsync] = Google.useAuthRequest(googleConfig);
+const GoogleSignInButton: React.FC<AuthButtonProps> = ({
+  loginCredentials,
+  setLoginCredentials,
+  setLoading,
+}) => {
+  const [request, response, promptAsync] =
+    Google.useIdTokenAuthRequest(googleFirebaseConfig);
 
   React.useEffect(() => {
     if (response?.type === "success") {
-      const { authentication } = response;
-      console.log(authentication);
+      setLoading(true);
+      try {
+        const { id_token } = response.params;
+
+        const auth = getAuth();
+        const credential = GoogleAuthProvider.credential(id_token);
+        const token = credential.accessToken;
+        console.log(credential);
+        signInWithCredential(auth, credential);
+        // setLoading(false);
+      } catch (err) {
+        setLoginCredentials({
+          ...loginCredentials,
+          errorMessage: "Something went wrong with Google...",
+        });
+        setLoading(false);
+      }
     }
   }, [response]);
 
@@ -25,7 +49,7 @@ const GoogleSignInButton: React.FC<GoogleSignButtonInProps> = ({}) => {
       onPress={() => {
         promptAsync();
       }}>
-      Login
+      Sign In with Google
     </Button>
   );
 };
