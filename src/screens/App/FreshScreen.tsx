@@ -1,6 +1,7 @@
-import Center from "@/components/Center";
-import DarkThemeSwitch from "@/components/DarkThemeSwitch";
+import PostCard from "@/components/Fresh/PostCard";
 import * as React from "react";
+import { View, StyleSheet, SafeAreaView } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { Button, Divider, Title } from "react-native-paper";
 
 interface FreshScreenProps {
@@ -9,13 +10,19 @@ interface FreshScreenProps {
 
 const FreshScreen: React.FC<FreshScreenProps> = ({ navigation }) => {
   return (
-    <Center>
-      <Title>Tab One</Title>
-      <Button mode="contained">Press Me</Button>
-      <Divider />
-      <DarkThemeSwitch />
-    </Center>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <PostCard />
+        <PostCard />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default FreshScreen;

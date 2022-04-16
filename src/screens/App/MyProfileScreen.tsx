@@ -1,4 +1,5 @@
 import Center from "@/components/Center";
+import DarkThemeSwitch from "@/components/MyProfile/DarkThemeSwitch";
 import LogoutButton from "@/components/MyProfile/LogoutButton";
 import React from "react";
 import { StyleSheet } from "react-native";
@@ -10,6 +11,7 @@ const MyProfileScreen: React.FC<MyProfileScreenProps> = ({}) => {
   return (
     <Center>
       <Title>My profie</Title>
+      <DarkThemeSwitch />
       <LogoutButton />
     </Center>
   );
