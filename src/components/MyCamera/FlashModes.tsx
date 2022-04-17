@@ -99,8 +99,8 @@ const FlashModes: React.FC<FlashModesProps> = ({
 const styles = StyleSheet.create({
   flashModes: {
     position: "absolute",
-    left: 10,
-    top: 20,
+    left: "3%",
+    top: "10%",
     justifyContent: "space-around",
     height: "30%",
   },

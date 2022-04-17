@@ -1,24 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
+import { Button, IconButton } from "react-native-paper";
+
 import {
-  Button,
-  Caption,
-  Colors,
-  IconButton,
-  useTheme,
-} from "react-native-paper";
-import { CameraCapturedPicture } from "expo-camera/build/Camera.types";
-import Layout from "@/constants/Layout";
+  CameraCapturedPicture,
+  CameraMountError,
+} from "expo-camera/build/Camera.types";
 import { IconSizes } from "@/styles/Fonts";
 import { MaterialIcons } from "@expo/vector-icons";
 import FlashModes from "./FlashModes";
 import ZoomSlider from "./ZoomSlider";
+import PhotoModal from "./PhotoModal";
+import ErrorMessage from "./ErrorMessage";
+import Center from "../Center";
+import ImagePickerButton from "./ImagePickerButton";
 
 interface MyCameraProps {}
 
 export type FlashMode = "auto" | "on" | "off" | "torch";
+
+//TODO: dodac jakis safe zone zeby unikac status bar
 
 const MyCamera: React.FC<MyCameraProps> = ({}) => {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
@@ -26,13 +29,17 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
   const [errorMsg, setErrorMsg] = useState("");
   const cameraRef = useRef<Camera | null>(null);
   const [photoTaken, setPhotoTaken] = useState<CameraCapturedPicture | null>(
-    null
+    {
+      height: 50,
+      width: 100,
+      uri: "https://picsum.photos/200/200",
+    }
+    // null
   );
   const [cameraConfig, setCameraConfig] = useState<{
     flashMode: FlashMode;
     zoom: number;
   }>({ flashMode: "auto", zoom: 0 });
-  const { roundness, colors, dark } = useTheme();
 
   useEffect(() => {
     requestForPermission();
@@ -72,8 +79,17 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
     });
   };
 
+  const showError = (err: CameraMountError) => {
+    setErrorMsg(err.message);
+    setTimeout(() => setErrorMsg(""), 10000);
+  };
+
   if (hasPermission === null) {
-    return <MyActivityIndicator />;
+    return (
+      <Center>
+        <MyActivityIndicator />
+      </Center>
+    );
   }
   if (hasPermission === false) {
     return (
@@ -84,67 +100,44 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
     );
   }
 
-  const imageContainerRoundness = {
-    borderRadius: roundness,
-  };
-
-  const imageTextColor = {
-    color: colors.accent,
-  };
-  const iconColor = dark ? "black" : "white";
+  const iconColor = "white";
   return (
     <View style={styles.container}>
       <Camera
+        ratio="1:1"
         style={styles.camera}
         type={type}
         ref={(ref) => {
           cameraRef.current = ref;
         }}
-        useCamera2Api={true}
+        // useCamera2Api={true}
         autoFocus={true}
         flashMode={cameraConfig.flashMode}
         zoom={cameraConfig.zoom}
-        // focusDepth={1}
-        // ratio="4:3"
-        onMountError={(err) => {
-          setErrorMsg(err.message);
-        }}>
+        onMountError={showError}>
         <View style={styles.bottomButtons}>
           <View style={styles.openGalleryButtonContainer}>
-            <TouchableOpacity onPress={flipCamera}>
-              <MaterialIcons
-                name="photo-album"
-                size={IconSizes.LARGE}
-                color={iconColor}
-              />
-            </TouchableOpacity>
+            <ImagePickerButton iconColor={iconColor} />
           </View>
-
-          <View
-            style={[
-              styles.takePictureButtonContainer,
-              { backgroundColor: dark ? "white " : "black" },
-            ]}>
+          <View style={[styles.takePictureButtonContainer]}>
             <TouchableOpacity
               style={styles.takePictureButton}
               onPress={takePicture}>
-              <View
-                style={[
-                  styles.innerTakePictureButton,
-                  { backgroundColor: dark ? "black" : "white" },
-                ]}
-              />
+              <View style={[styles.innerTakePictureButton]} />
             </TouchableOpacity>
           </View>
 
           <View style={styles.flipButtonContainer}>
-            <TouchableOpacity onPress={flipCamera}>
-              <MaterialIcons
-                name="flip-camera-ios"
-                size={IconSizes.NORMAL}
-                color={iconColor}
-              />
-            </TouchableOpacity>
+            <IconButton
+              icon={() => (
+                <MaterialIcons
+                  name="flip-camera-ios"
+                  size={IconSizes.NORMAL}
+                  color={iconColor}
+                />
+              )}
+              onPress={flipCamera}
+            />
           </View>
         </View>
         <FlashModes
@@ -153,31 +146,8 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
           cameraConfig={cameraConfig}
         />
         <ZoomSlider setZoomValue={setZoomValue} />
-        {photoTaken && (
-          <View style={[styles.imageContainer, imageContainerRoundness]}>
-            <Image
-              source={{ uri: photoTaken.uri }}
-              // source={{ uri: "https://picsum.photos/200/200" }}
-              style={styles.image}
-            />
-            <View style={styles.imageButtons}>
-              <IconButton
-                icon="close"
-                size={IconSizes.NORMAL}
-                color={colors.accent}
-                onPress={() => setPhotoTaken(null)}
-              />
-              <Caption style={[styles.imageText, imageTextColor]}>
-                Press on photo to upload it...
-              </Caption>
-              <IconButton
-                icon="download"
-                size={IconSizes.NORMAL}
-                color={colors.accent}
-              />
-            </View>
-          </View>
-        )}
+        <PhotoModal photoTaken={photoTaken} setPhotoTaken={setPhotoTaken} />
+        <ErrorMessage message={errorMsg} />
       </Camera>
     </View>
   );
@@ -189,10 +159,9 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
   },
-
   bottomButtons: {
     position: "absolute",
-    bottom: 20,
+    bottom: "2%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
@@ -202,38 +171,21 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     height: 60,
     width: 60,
+    backgroundColor: "white",
   },
   takePictureButton: { flex: 1 },
   innerTakePictureButton: {
     borderRadius: 20,
     margin: 7.5,
     flex: 1,
-  },
-  flipButtonContainer: {
-    marginRight: 15,
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   openGalleryButtonContainer: {
-    marginLeft: 15,
+    marginLeft: "3%",
   },
-
-  imageContainer: {
-    position: "absolute",
-    alignSelf: "center",
-    top: 20,
-    width: Layout.window.width * 0.7,
-    height: Layout.window.height * 0.4,
-    backgroundColor: "rgba(50, 50, 50, 0.4)",
+  flipButtonContainer: {
+    marginRight: "3%",
   },
-  image: {
-    height: "85%",
-    width: "100%",
-  },
-  imageButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  imageText: { textAlign: "center" },
 });
 
 export default MyCamera;

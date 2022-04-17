@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Slider from "@react-native-community/slider";
-import { useTheme } from "react-native-paper";
+import { Caption, useTheme } from "react-native-paper";
 
 interface ZoomSliderProps {
   setZoomValue: (value: number) => void;
 }
-
+//TODO: strasznie laguje prawie nie dziala
 const ZoomSlider: React.FC<ZoomSliderProps> = ({ setZoomValue }) => {
   const { colors, dark } = useTheme();
   const maxTrackTintColor = dark ? "black" : "white";
@@ -16,11 +16,11 @@ const ZoomSlider: React.FC<ZoomSliderProps> = ({ setZoomValue }) => {
         style={styles.slider}
         minimumValue={0}
         maximumValue={1}
+        step={0.25}
         onValueChange={setZoomValue}
         minimumTrackTintColor={maxTrackTintColor}
         maximumTrackTintColor="#EEEEEE"
         thumbTintColor={colors.primary}
-        // inverted
       />
     </View>
   );
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   container: {
     position: "absolute",
 
-    top: 20,
+    top: "5%",
     right: -100,
     height: 250,
     width: 250,
