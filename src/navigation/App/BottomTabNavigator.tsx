@@ -30,6 +30,7 @@ const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
         component={CameraScreen}
         options={{
           // tabBarLabel: "Tab2",
+
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="camera" color={color} size={26} />
           ),

@@ -4,3 +4,8 @@ export enum FontSizes {
   LARGE = 20,
   HUGE = 28,
 }
+
+export enum IconSizes {
+  LARGE = 34,
+  NORMAL = 26,
+}
