@@ -14,7 +14,8 @@ const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
   return (
     <Tab.Navigator
       initialRouteName={AppScreenNames.FRESH_SCREEN}
-      shifting={true}>
+      shifting={true}
+      barStyle={{ height: 50 }}>
       <Tab.Screen
         name={AppScreenNames.FRESH_SCREEN}
         component={FreshScreen}

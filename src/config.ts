@@ -29,3 +29,5 @@ export const firebaseConfig = {
   appId: "1:22475114245:web:1e06d65ccad2164249596c",
   measurementId: "G-LJBZENPNEP",
 };
+
+export const photosRatio = "16:9";

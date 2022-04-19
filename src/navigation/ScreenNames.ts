@@ -3,7 +3,7 @@ export enum AppScreenNames {
   FRESH_SCREEN = "Fresh",
   CAMERA_SCREEN = "Camera",
   MYPROFILE_SCREEN = "My Profile",
-  UPLOAD_PHOTO_SCREEN = "Upload Photo",
+  UPLOAD_PHOTO_SCREEN = "UploadPhoto",
 }
 
 export enum AuthScreenNames {

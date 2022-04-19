@@ -1,11 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Image,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -24,7 +17,6 @@ const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({ iconColor }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    console.log(image);
     if (image) {
       navigation.navigate(AppScreenNames.UPLOAD_PHOTO_SCREEN, {
         imageURL: image,
@@ -33,11 +25,10 @@ const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({ iconColor }) => {
   }, [image]);
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [9, 16],
       quality: 1,
     });
     if (!result.cancelled) {

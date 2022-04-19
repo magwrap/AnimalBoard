@@ -16,6 +16,7 @@ import PhotoModal from "./PhotoModal";
 import ErrorMessage from "./ErrorMessage";
 import Center from "../Center";
 import ImagePickerButton from "./ImagePickerButton";
+import { photosRatio } from "@/config";
 
 interface MyCameraProps {}
 
@@ -104,7 +105,7 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
   return (
     <View style={styles.container}>
       <Camera
-        ratio="1:1"
+        ratio={photosRatio}
         style={styles.camera}
         type={type}
         ref={(ref) => {

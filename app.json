@@ -7,6 +7,22 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "plugins": [
+    [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow AnimalBoard to access your photos.",
+          "savePhotosPermission": "Allow Animal to save photos.",
+          "isAccessMediaLocationEnabled": "true"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -34,22 +50,6 @@
     },
     "description": "An app where you can share photos of your animals",
     "githubUrl": "https://github.com/magwrap/AnimalBoard.git",
-    "facebookScheme": "fb3343227415955530",
-     "plugins": [
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "Allow AnimalBoard to access your photos.",
-          "savePhotosPermission": "Allow AnimalBoard to save photos.",
-          "isAccessMediaLocationEnabled": "true" 
-        }
-      ],
-       [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ]
-    ]
+    "facebookScheme": "fb3343227415955530"
   }
 }

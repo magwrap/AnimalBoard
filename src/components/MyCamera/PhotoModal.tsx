@@ -2,14 +2,9 @@ import Layout from "@/constants/Layout";
 import { addPhotoToLibary } from "@/hooks/useMediaLibary";
 import { IconSizes } from "@/styles/Fonts";
 import { CameraCapturedPicture } from "expo-camera/build/Camera.types";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
-import {
-  Caption,
-  IconButton,
-  TouchableRipple,
-  useTheme,
-} from "react-native-paper";
+import { Caption, IconButton, useTheme } from "react-native-paper";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 import * as MediaLibrary from "expo-media-library";
 import { useNavigation } from "@react-navigation/native";
@@ -37,17 +32,18 @@ const PhotoModal: React.FC<PhotoModalProps> = ({
 
   const downloadPhoto = async () => {
     const permission = await MediaLibrary.getPermissionsAsync();
-    console.log(permission);
-    if (!permission.granted) {
+
+    if (!permission?.granted) {
       try {
         console.log("asking");
         const response = await MediaLibrary.requestPermissionsAsync();
+
         console.log(response);
       } catch (err) {
         console.log(err);
       }
     }
-    if (photoTaken && permission.granted) {
+    if (photoTaken && permission?.granted) {
       setDownloading(true);
       console.log(photoTaken.uri);
       try {

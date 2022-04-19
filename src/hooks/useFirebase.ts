@@ -17,9 +17,7 @@ export const addUserToDB = async (user: User) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    console.log("user exists in db");
   } else {
-    console.log("creating user instance");
     await setDoc(doc(db, FirestoreCollectionNames.USERS, user.uid), {
       email: user.email,
       displayName: user.displayName,

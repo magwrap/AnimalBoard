@@ -16,9 +16,6 @@ const CurrentUserSlice = createSlice({
       const unsub = onSnapshot(
         doc(db, FirestoreCollectionNames.USERS, action.payload),
         (doc) => {
-          const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
-          console.log(source, "- current User: ", doc.data());
-
           return { currentUser: doc.data() };
         }
       );
