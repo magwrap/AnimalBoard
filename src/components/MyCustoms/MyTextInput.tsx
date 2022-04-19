@@ -1,17 +1,9 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { TextInput } from "react-native-paper";
+import { TextInput, useTheme } from "react-native-paper";
+import { TextInputProps } from "react-native-paper/lib/typescript/components/TextInput/TextInput";
 
-interface MyTextInputProps {
-  label: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  secureTextEntry?: boolean;
-  error?: boolean;
-  right?: React.ReactNode;
-  left?: React.ReactNode;
-  errorMessage?: string;
-}
+type MyTextInputProps = Omit<TextInputProps, "theme">;
 
 const MyTextInput: React.FC<MyTextInputProps> = (props) => {
   return (

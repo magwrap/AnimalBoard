@@ -18,7 +18,7 @@ export const addPhotoToLibary = async (uri: string) => {
 };
 
 export const downloadPhoto = async (
-  photoTaken: CameraCapturedPicture | null,
+  photoUri: string | null,
   setDownloading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const permission = await MediaLibrary.getPermissionsAsync();
@@ -33,11 +33,11 @@ export const downloadPhoto = async (
       console.log(err);
     }
   }
-  if (photoTaken && permission?.granted) {
+  if (photoUri && permission?.granted) {
     setDownloading(true);
-    console.log(photoTaken.uri);
+    console.log(photoUri);
     try {
-      addPhotoToLibary(photoTaken.uri).then(() => {
+      addPhotoToLibary(photoUri).then(() => {
         setDownloading(false);
       });
     } catch (error) {

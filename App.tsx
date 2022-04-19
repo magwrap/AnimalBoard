@@ -20,11 +20,13 @@ import { en, registerTranslation } from "react-native-paper-dates";
 import "intl";
 import "intl/locale-data/jsonp/en"; // or any other locale you need
 import { firebaseConfig } from "@/config";
+import { getStorage } from "firebase/storage";
 
 LogBox.ignoreAllLogs();
 
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+const storage = getStorage(app);
 
 registerTranslation("en", en);
 

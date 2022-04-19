@@ -15,6 +15,8 @@ import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 import { useNavigation } from "@react-navigation/native";
 import { AppScreenNames } from "@/navigation/ScreenNames";
 import { downloadPhoto } from "@/hooks/useMediaLibary";
+import DownloadButton from "../CameraStack/DownloadButton";
+import { MyColors } from "@/styles/ColorPallete";
 
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
@@ -75,11 +77,9 @@ const PhotoModal: React.FC<PhotoModalProps> = ({
           {downloading ? (
             <MyActivityIndicator style={styles.activityIndicator} />
           ) : (
-            <IconButton
-              icon="download"
-              size={IconSizes.NORMAL}
-              color={colors.accent}
-              onPress={() => downloadPhoto(photoTaken, setDownloading)}
+            <DownloadButton
+              uri={photoTaken.uri}
+              setDownloading={setDownloading}
             />
           )}
         </View>
@@ -96,8 +96,9 @@ const styles = StyleSheet.create({
     top: STATUS_BAR_HEIGHT ? STATUS_BAR_HEIGHT + 20 : 30,
     width: Layout.window.width * 0.7,
     height: Layout.window.height * 0.4,
-    backgroundColor: "rgba(50, 50, 50, 0.4)",
+    backgroundColor: MyColors.TRANSPARENT_BLACK,
   },
+
   imageTouchable: {
     height: "85%",
     width: "100%",
