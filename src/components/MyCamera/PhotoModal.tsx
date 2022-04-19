@@ -1,14 +1,22 @@
 import Layout from "@/constants/Layout";
-import { addPhotoToLibary } from "@/hooks/useMediaLibary";
+
 import { IconSizes } from "@/styles/Fonts";
 import { CameraCapturedPicture } from "expo-camera/build/Camera.types";
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
 import { Caption, IconButton, useTheme } from "react-native-paper";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
-import * as MediaLibrary from "expo-media-library";
 import { useNavigation } from "@react-navigation/native";
 import { AppScreenNames } from "@/navigation/ScreenNames";
+import { downloadPhoto } from "@/hooks/useMediaLibary";
+
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
 interface PhotoModalProps {
   photoTaken: CameraCapturedPicture | null;
@@ -29,32 +37,6 @@ const PhotoModal: React.FC<PhotoModalProps> = ({
     setPhotoTaken(null);
   };
   const navigation = useNavigation();
-
-  const downloadPhoto = async () => {
-    const permission = await MediaLibrary.getPermissionsAsync();
-
-    if (!permission?.granted) {
-      try {
-        console.log("asking");
-        const response = await MediaLibrary.requestPermissionsAsync();
-
-        console.log(response);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    if (photoTaken && permission?.granted) {
-      setDownloading(true);
-      console.log(photoTaken.uri);
-      try {
-        addPhotoToLibary(photoTaken.uri).then(() => {
-          setDownloading(false);
-        });
-      } catch (error) {
-        setDownloading(false);
-      }
-    }
-  };
 
   const goToUploadPhoto = () => {
     if (photoTaken?.uri) {
@@ -97,7 +79,7 @@ const PhotoModal: React.FC<PhotoModalProps> = ({
               icon="download"
               size={IconSizes.NORMAL}
               color={colors.accent}
-              onPress={downloadPhoto}
+              onPress={() => downloadPhoto(photoTaken, setDownloading)}
             />
           )}
         </View>
@@ -111,7 +93,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: "absolute",
     alignSelf: "center",
-    top: 20,
+    top: STATUS_BAR_HEIGHT ? STATUS_BAR_HEIGHT + 20 : 30,
     width: Layout.window.width * 0.7,
     height: Layout.window.height * 0.4,
     backgroundColor: "rgba(50, 50, 50, 0.4)",

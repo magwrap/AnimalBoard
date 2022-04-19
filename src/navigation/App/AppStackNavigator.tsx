@@ -27,6 +27,7 @@ const AppStackNavigator: React.FC<AppStackNavigatorProps> = ({}) => {
         <Stack.Screen
           name={AppScreenNames.UPLOAD_PHOTO_SCREEN}
           component={UploadPhotoScreen}
+          options={{ headerShown: false }}
         />
         {/* zewnetrzny poza tabsami */}
       </Stack.Group>

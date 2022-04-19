@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { IconSizes } from "@/styles/Fonts";
@@ -17,7 +23,7 @@ enum FlashModesNames {
   OFF = "off",
   TORCH = "torch",
 }
-
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 const FlashModes: React.FC<FlashModesProps> = ({
   iconColor,
   setFlashMode,
@@ -98,9 +104,10 @@ const FlashModes: React.FC<FlashModesProps> = ({
 };
 const styles = StyleSheet.create({
   flashModes: {
+    marginTop: STATUS_BAR_HEIGHT,
     position: "absolute",
     left: "3%",
-    top: "10%",
+    top: "8%",
     justifyContent: "space-around",
     height: "30%",
   },

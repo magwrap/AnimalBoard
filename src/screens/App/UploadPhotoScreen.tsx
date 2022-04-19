@@ -1,8 +1,6 @@
 import Layout from "@/constants/Layout";
-import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Image, Platform, View } from "react-native";
-import { Paragraph } from "react-native-paper";
+import { Image, Platform, SafeAreaView, View, StatusBar } from "react-native";
 
 interface UploadPhotoScreenProps {
   navigation: any;
@@ -17,10 +15,10 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({
   navigation,
   route,
 }) => {
-  console.log(route.params.imageURL);
+  const statusBarHeight = StatusBar.currentHeight;
+
   return (
-    <View style={{ flex: 1 }}>
-      <Paragraph>Modal</Paragraph>
+    <SafeAreaView style={{ flex: 1 }}>
       <Image
         source={{ uri: route.params.imageURL }}
         style={{
@@ -30,8 +28,7 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({
         }}
       />
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
-    </View>
+    </SafeAreaView>
   );
 };
 

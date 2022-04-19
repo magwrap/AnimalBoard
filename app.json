@@ -8,7 +8,7 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "plugins": [
-    [
+      [
         "expo-media-library",
         {
           "photosPermission": "Allow AnimalBoard to access your photos.",

@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StatusBar, StyleSheet, Text, View } from "react-native";
 import Slider from "@react-native-community/slider";
-import { Caption, useTheme } from "react-native-paper";
-
+import { useTheme } from "react-native-paper";
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 interface ZoomSliderProps {
   setZoomValue: (value: number) => void;
 }
@@ -16,7 +16,7 @@ const ZoomSlider: React.FC<ZoomSliderProps> = ({ setZoomValue }) => {
         style={styles.slider}
         minimumValue={0}
         maximumValue={1}
-        step={0.25}
+        step={0.1}
         onValueChange={setZoomValue}
         minimumTrackTintColor={maxTrackTintColor}
         maximumTrackTintColor="#EEEEEE"
@@ -28,7 +28,7 @@ const ZoomSlider: React.FC<ZoomSliderProps> = ({ setZoomValue }) => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-
+    marginTop: STATUS_BAR_HEIGHT,
     top: "5%",
     right: -100,
     height: 250,

@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
 import { Camera } from "expo-camera";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 import { Button, IconButton } from "react-native-paper";
@@ -21,6 +27,8 @@ import { photosRatio } from "@/config";
 interface MyCameraProps {}
 
 export type FlashMode = "auto" | "on" | "off" | "torch";
+
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
 //TODO: dodac jakis safe zone zeby unikac status bar
 
@@ -116,6 +124,7 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
         flashMode={cameraConfig.flashMode}
         zoom={cameraConfig.zoom}
         onMountError={showError}>
+        <View style={styles.statusBar} />
         <View style={styles.bottomButtons}>
           <View style={styles.openGalleryButtonContainer}>
             <ImagePickerButton iconColor={iconColor} />
@@ -156,6 +165,11 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  statusBar: {
+    height: STATUS_BAR_HEIGHT,
+    width: "100%",
+    backgroundColor: "rgba(0,0,0,0.4)",
   },
   camera: {
     flex: 1,
