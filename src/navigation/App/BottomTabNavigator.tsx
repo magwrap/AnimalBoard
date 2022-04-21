@@ -5,6 +5,8 @@ import { AppScreenNames } from "../ScreenNames";
 import FreshScreen from "@/screens/App/FreshScreen";
 import CameraScreen from "@/screens/App/CameraScreen";
 import MyProfileScreen from "@/screens/App/MyProfileScreen";
+import { navigationStyles } from "@/styles/navigation";
+import { useTheme } from "react-native-paper";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -15,12 +17,14 @@ const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
     <Tab.Navigator
       initialRouteName={AppScreenNames.FRESH_SCREEN}
       shifting={true}
-      barStyle={{ height: 50 }}>
+      labeled={false}
+      barStyle={{ height: navigationStyles.bottomTabHeight }}>
       <Tab.Screen
         name={AppScreenNames.FRESH_SCREEN}
         component={FreshScreen}
         options={{
-          // tabBarLabel: "Tab1",
+          tabBarBadge: true,
+
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
@@ -30,8 +34,6 @@ const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
         name={AppScreenNames.CAMERA_SCREEN}
         component={CameraScreen}
         options={{
-          // tabBarLabel: "Tab2",
-
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="camera" color={color} size={26} />
           ),

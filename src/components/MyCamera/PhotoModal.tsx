@@ -1,6 +1,6 @@
 import Layout from "@/constants/Layout";
 
-import { IconSizes } from "@/styles/Fonts";
+import { FontSizes, IconSizes } from "@/styles/Fonts";
 import { CameraCapturedPicture } from "expo-camera/build/Camera.types";
 import React, { useState } from "react";
 import {
@@ -73,15 +73,16 @@ const PhotoModal: React.FC<PhotoModalProps> = ({
           <Caption style={[styles.imageText, imageTextColor]}>
             Press on photo to upload it...
           </Caption>
-
-          {downloading ? (
-            <MyActivityIndicator style={styles.activityIndicator} />
-          ) : (
-            <DownloadButton
-              uri={photoTaken.uri}
-              setDownloading={setDownloading}
-            />
-          )}
+          <View style={styles.downloadButton}>
+            {downloading ? (
+              <MyActivityIndicator style={styles.activityIndicator} />
+            ) : (
+              <DownloadButton
+                uri={photoTaken.uri}
+                setDownloading={setDownloading}
+              />
+            )}
+          </View>
         </View>
       </View>
     );
@@ -106,6 +107,8 @@ const styles = StyleSheet.create({
   image: {
     height: "100%",
     width: "100%",
+
+    // transform: [{ scaleX: -1 }],
   },
   imageButtons: {
     flexDirection: "row",
@@ -113,7 +116,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   activityIndicator: { width: IconSizes.NORMAL, marginRight: 5 },
-  imageText: { textAlign: "center" },
+  imageText: { textAlign: "center", fontSize: FontSizes.SMALL },
+  downloadButton: {
+    marginBottom: "1%",
+  },
 });
 
 export default PhotoModal;

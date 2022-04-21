@@ -21,6 +21,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
   const backgroundColor = {
     backgroundColor: background ? MyColors.TRANSPARENT_BLACK : "transparent",
   };
+  const margin = { margin: 0 };
   const iconColor = color ? color : colors.accent;
   return (
     <IconButton
@@ -28,7 +29,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
       size={IconSizes.NORMAL}
       color={iconColor}
       onPress={() => downloadPhoto(uri, setDownloading)}
-      style={backgroundColor}
+      style={[backgroundColor, margin]}
     />
   );
 };

@@ -1,4 +1,3 @@
-import { CameraCapturedPicture } from "expo-camera/build/Camera.types";
 import * as MediaLibrary from "expo-media-library";
 
 export const addPhotoToLibary = async (uri: string) => {
@@ -21,19 +20,7 @@ export const downloadPhoto = async (
   photoUri: string | null,
   setDownloading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-  const permission = await MediaLibrary.getPermissionsAsync();
-
-  if (!permission?.granted) {
-    try {
-      console.log("asking");
-      const response = await MediaLibrary.requestPermissionsAsync();
-
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  if (photoUri && permission?.granted) {
+  if (photoUri) {
     setDownloading(true);
     console.log(photoUri);
     try {
