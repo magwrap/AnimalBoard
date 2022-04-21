@@ -19,7 +19,6 @@ const Routes: React.FC<RoutesProps> = ({}) => {
   useEffect(() => {
     if (currentUser && loggedIn) {
       addUserToDB(currentUser);
-      // dispatch(fetchUser(currentUser.uid));
       dispatch(fetchUserThunk(currentUser.uid));
     }
   }, [loggedIn]);

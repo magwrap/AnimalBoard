@@ -44,7 +44,7 @@ export const fetchUserThunk = (uid: string) => {
       doc(db, FirestoreCollectionNames.USERS, uid),
       (doc) => {
         const fetchedUser = doc.data();
-        if (fetchedUser) {
+        if (fetchedUser && fetchedUser !== undefined) {
           dispatch(setCurrentUser(fetchedUser));
         }
       }
