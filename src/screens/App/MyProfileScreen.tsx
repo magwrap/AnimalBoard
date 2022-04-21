@@ -1,26 +1,35 @@
-import Center from "@/components/Center";
 import DarkThemeSwitch from "@/components/MyProfile/DarkThemeSwitch";
 import LogoutButton from "@/components/MyProfile/LogoutButton";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 import { Paragraph, Title } from "react-native-paper";
+import { Avatar } from "react-native-paper";
 
 interface MyProfileScreenProps {}
-
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 const MyProfileScreen: React.FC<MyProfileScreenProps> = ({}) => {
   const currentUser = useAppSelector(
     (state) => state.CurrentUserReducer.currentUser
   );
+  console.log(currentUser);
+
   return (
-    <Center>
+    <SafeAreaView style={styles.container}>
+      <View></View>
+
       <Title>My profie</Title>
       <DarkThemeSwitch />
       <LogoutButton />
       <Paragraph>{currentUser?.email}</Paragraph>
-    </Center>
+    </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: STATUS_BAR_HEIGHT,
+  },
+});
 
 export default MyProfileScreen;

@@ -5,13 +5,11 @@ import Layout from "@/constants/Layout";
 import { addPostToDB, storeImage } from "@/hooks/useFirebase";
 import { MyColors } from "@/styles/ColorPallete";
 import { IconSizes } from "@/styles/Fonts";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
   Alert,
-  BackHandler,
-  Image,
   ImageBackground,
   SafeAreaView,
   StatusBar,

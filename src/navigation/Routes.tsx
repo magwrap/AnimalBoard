@@ -1,6 +1,7 @@
 import { fetchUser, useAppDispatch } from "@/hooks/reduxHooks";
 import { addUserToDB } from "@/hooks/useFirebase";
 import LoadingScreen from "@/screens/LoadingScreen";
+import { fetchUserThunk } from "@/state";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import AppStackNavigator from "./App/AppStackNavigator";
@@ -18,7 +19,8 @@ const Routes: React.FC<RoutesProps> = ({}) => {
   useEffect(() => {
     if (currentUser && loggedIn) {
       addUserToDB(currentUser);
-      dispatch(fetchUser(currentUser.uid));
+      // dispatch(fetchUser(currentUser.uid));
+      dispatch(fetchUserThunk(currentUser.uid));
     }
   }, [loggedIn]);
 
