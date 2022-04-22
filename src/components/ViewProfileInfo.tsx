@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "flex-start",
   },
-  avatar: { margin: 20 },
+  avatar: { margin: 20, marginLeft: "10%" },
   userInfo: {
     justifyContent: "center",
   },

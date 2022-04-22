@@ -1,4 +1,5 @@
 import PostCard from "@/components/Fresh/PostCard";
+import MyHeader from "@/components/MyHeader";
 import * as React from "react";
 import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -10,6 +11,7 @@ interface FreshScreenProps {}
 const FreshScreen: React.FC<FreshScreenProps> = ({}) => {
   return (
     <SafeAreaView style={styles.container}>
+      <MyHeader showButtonsOnRight />
       <ScrollView
       // ref={scrollRef}
       >
@@ -23,7 +25,7 @@ const FreshScreen: React.FC<FreshScreenProps> = ({}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: STATUS_BAR_HEIGHT,
+    // paddingTop: STATUS_BAR_HEIGHT,
   },
 });
 

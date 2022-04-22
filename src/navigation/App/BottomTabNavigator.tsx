@@ -4,9 +4,12 @@ import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIc
 import { AppScreenNames } from "../ScreenNames";
 import FreshScreen from "@/screens/App/FreshScreen";
 import CameraScreen from "@/screens/App/CameraScreen";
-import MyProfileScreen from "@/screens/App/MyProfileScreen";
+import MyProfileScreen from "@/screens/App/MyProfileStack/MyProfileScreen";
 import { navigationStyles } from "@/styles/navigation";
 import { useTheme } from "react-native-paper";
+import AppStackNavigator from "./AppStackNavigator";
+import MyProfileStackNavigator from "./MyProfileStackNavigator";
+import { IconSizes } from "@/styles/Fonts";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -24,9 +27,12 @@ const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
         component={FreshScreen}
         options={{
           tabBarBadge: true,
-
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialCommunityIcons
+              name="home"
+              color={color}
+              size={IconSizes.NORMAL}
+            />
           ),
         }}
       />
@@ -35,16 +41,24 @@ const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
         component={CameraScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="camera" color={color} size={26} />
+            <MaterialCommunityIcons
+              name="camera"
+              color={color}
+              size={IconSizes.NORMAL}
+            />
           ),
         }}
       />
       <Tab.Screen
-        name={AppScreenNames.MYPROFILE_SCREEN}
-        component={MyProfileScreen}
+        name={AppScreenNames.MYPROFILE_STACK}
+        component={MyProfileStackNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={color} size={26} />
+            <MaterialCommunityIcons
+              name="account"
+              color={color}
+              size={IconSizes.NORMAL}
+            />
           ),
         }}
       />
