@@ -1,4 +1,4 @@
-import PostCard from "@/components/Fresh/PostCard";
+import PostCard from "@/components/PostCard";
 import MyHeader from "@/components/MyHeader";
 import * as React from "react";
 import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
@@ -15,8 +15,8 @@ const FreshScreen: React.FC<FreshScreenProps> = ({}) => {
       <ScrollView
       // ref={scrollRef}
       >
-        <PostCard />
-        <PostCard />
+        {/* <PostCard />
+        <PostCard /> */}
       </ScrollView>
     </SafeAreaView>
   );

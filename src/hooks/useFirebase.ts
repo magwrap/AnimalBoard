@@ -1,9 +1,17 @@
 import { getAuth, sendEmailVerification, User } from "firebase/auth";
 import {
+  collection,
   doc,
+  DocumentData,
   getDoc,
+  getDocs,
   getFirestore,
+  limit,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
   setDoc,
+  startAfter,
   Timestamp,
 } from "firebase/firestore";
 import {
@@ -12,7 +20,6 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-
 export enum FirestoreCollectionNames {
   USERS = "users",
   POSTS = "posts",
@@ -133,10 +140,68 @@ export const storeImage = async (
     setError("Something went wrong with authorization...");
   }
 };
+
 const generateRandomId = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0,
       v = c == "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
+};
+
+export const getUserPostsQueryFirst = async (
+  uid: string,
+  setFetching: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setFetching(true);
+  try {
+    const db = getFirestore();
+    const first = query(
+      collection(
+        db,
+        FirestoreCollectionNames.POSTS,
+        uid,
+        FirestoreCollectionNames.USER_POSTS
+      ),
+      orderBy("creationDate"),
+      limit(25)
+    );
+
+    const documentSnapshots = await getDocs(first);
+    setFetching(false);
+    return documentSnapshots;
+  } catch (err) {
+    setFetching(false);
+    console.log(err);
+  }
+  return null;
+};
+
+export const getUserPostsQueryNext = async (
+  uid: string,
+  prevLastDoc: QueryDocumentSnapshot<DocumentData>,
+  setFetching: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setFetching(true);
+  try {
+    const db = getFirestore();
+    const next = query(
+      collection(
+        db,
+        FirestoreCollectionNames.POSTS,
+        uid,
+        FirestoreCollectionNames.USER_POSTS
+      ),
+      orderBy("creationDate"),
+      startAfter(prevLastDoc),
+      limit(25)
+    );
+    const documentSnapshots = await getDocs(next);
+    setFetching(false);
+    return documentSnapshots;
+  } catch (err) {
+    setFetching(false);
+    console.log(err);
+  }
+  return null;
 };

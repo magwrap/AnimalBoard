@@ -1,13 +1,12 @@
 import MyHeader from "@/components/MyHeader";
-import CustomizeProfileScreen from "@/screens/App/MyProfileStack/CustomizeProfileScreen";
 import EditProfileScreen from "@/screens/App/MyProfileStack/EditProfileScreen";
 import FriendsScreen from "@/screens/App/MyProfileStack/FriendsScreen";
 import MyProfileScreen from "@/screens/App/MyProfileStack/MyProfileScreen";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 
 import { AppScreenNames } from "../ScreenNames";
+import MyProfilePostsScreen from "@/screens/App/MyProfileStack/MyProfilePostsScreen";
 
 interface MyProfileStackNavigatorProps {}
 
@@ -33,7 +32,7 @@ const MyProfileStackNavigator: React.FC<
       />
       <Stack.Screen
         name={AppScreenNames.CUSTOMIZE_PROFILE_SCREEN}
-        component={CustomizeProfileScreen}
+        component={MyProfilePostsScreen}
       />
       <Stack.Screen
         name={AppScreenNames.EDIT_PROFILE_SCREEN}

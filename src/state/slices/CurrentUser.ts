@@ -49,8 +49,5 @@ export const fetchUserThunk = (uid: string) => {
         }
       }
     );
-    const stateAfter = getState();
-    console.log(`Counter after: ${stateAfter.DarkThemeReducer.isDarkTheme}`);
   };
 };
-// store.dispatch(logAndAdd(5))
