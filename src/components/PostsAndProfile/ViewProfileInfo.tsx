@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import {
   Avatar,
   Caption,
+  Card,
   Colors,
   Paragraph,
   Subheading,
@@ -14,12 +15,11 @@ import { DBUser } from "types";
 type ViewProfileInfoProps = Omit<DBUser, "emailVerified">;
 
 const ViewProfileInfo: React.FC<ViewProfileInfoProps> = (props) => {
-  const { colors, roundness, dark } = useTheme();
+  const { colors } = useTheme();
   const borderColor = { borderColor: colors.accent };
-  const borderRadius = { borderRadius: roundness };
 
   return (
-    <View style={[styles.container, borderRadius]}>
+    <Card style={styles.container}>
       <View style={styles.top}>
         <View style={styles.avatarAndTitle}>
           <Avatar.Image
@@ -43,7 +43,7 @@ const ViewProfileInfo: React.FC<ViewProfileInfoProps> = (props) => {
           {props.description ? props.description : "No description..."}
         </Paragraph>
       </View>
-    </View>
+    </Card>
   );
 };
 const styles = StyleSheet.create({

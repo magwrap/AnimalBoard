@@ -111,7 +111,7 @@ const PostCard: React.FC<PostCardProps> = ({
     const auth = getAuth();
     if (userId === auth.currentUser?.uid) {
       return (
-        <View style={{ flexDirection: "row" }}>
+        <View style={styles.crudButtons}>
           <Button
             compact
             mode="contained"
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
   actions: { justifyContent: "space-around" },
 
   crudButton: { marginHorizontal: 2 },
+  crudButtons: { flexDirection: "row", marginRight: "1%" },
 });
 
 export default PostCard;

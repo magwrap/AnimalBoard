@@ -1,17 +1,24 @@
-import PostCard from "@/components/PostsAndProfile/PostCard";
-import MyHeader from "@/components/MyHeader";
+import MyHeader from "@/components/Header/MyHeader";
+import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
+import { useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Button, Divider, Title } from "react-native-paper";
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
 interface FreshScreenProps {}
 
 const FreshScreen: React.FC<FreshScreenProps> = ({}) => {
+  const navigation = useNavigation();
+  const isFocused = navigation.isFocused();
+  useEffect(() => {
+    if (isFocused) {
+      navigation.setOptions({ tabBarBadge: false });
+    }
+  }, [isFocused]);
   return (
     <SafeAreaView style={styles.container}>
-      <MyHeader showButtonsOnRight />
+      <MyHeader more search />
       <ScrollView
       // ref={scrollRef}
       >

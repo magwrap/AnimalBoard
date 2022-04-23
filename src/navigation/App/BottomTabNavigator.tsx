@@ -1,21 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 import { AppScreenNames } from "../ScreenNames";
 import FreshScreen from "@/screens/App/FreshScreen";
 import CameraScreen from "@/screens/App/CameraScreen";
-import MyProfileScreen from "@/screens/App/MyProfileStack/MyProfileScreen";
 import { navigationStyles } from "@/styles/navigation";
-import { useTheme } from "react-native-paper";
-import AppStackNavigator from "./AppStackNavigator";
 import MyProfileStackNavigator from "./MyProfileStackNavigator";
 import { IconSizes } from "@/styles/Fonts";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
 const Tab = createMaterialBottomTabNavigator();
 
 interface BottomTabNavigatorProps {}
 
 const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
+  const [myProfileBadgeShown, setMyProfileBadgeShown] = useState(false);
+  const [freshBadgeShow, setFreshBadgeShown] = useState(true);
+
+  const snackBarVisible = useAppSelector(
+    (state) => state.SnackBarReducer.visible
+  );
+
+  useEffect(() => {
+    if (snackBarVisible) {
+      setMyProfileBadgeShown(true);
+    }
+  }, [snackBarVisible]);
   return (
     <Tab.Navigator
       initialRouteName={AppScreenNames.FRESH_SCREEN}
@@ -26,7 +36,7 @@ const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
         name={AppScreenNames.FRESH_SCREEN}
         component={FreshScreen}
         options={{
-          tabBarBadge: true,
+          tabBarBadge: freshBadgeShow,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="home"
@@ -53,6 +63,7 @@ const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
         name={AppScreenNames.MYPROFILE_STACK}
         component={MyProfileStackNavigator}
         options={{
+          tabBarBadge: myProfileBadgeShown,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="account"

@@ -2,7 +2,7 @@ import ViewProfileInfo from "@/components/PostsAndProfile/ViewProfileInfo";
 import ViewUserPosts from "@/components/PostsAndProfile/ViewUserPosts";
 import { getUserFromDB } from "@/hooks/useFirebase";
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Paragraph } from "react-native-paper";
 import { DBUser } from "types";
@@ -24,7 +24,7 @@ const UserProfileScreen: React.FC<UserProfileScreenProps> = ({ route }) => {
   useEffect(() => {
     _fetchUser();
   }, []);
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setParams({
       name: user?.displayName,
     });

@@ -72,7 +72,7 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
     return <MyActivityIndicator />;
   }
 
-  //TODO: dodac on end reached - pobiera nastepna strone
+  //TODO: dodac on end reached - pobiera nastepna strone - zajebac z wallpaper app
   if (postsQuerySnapschot && postsQuerySnapschot.docs !== undefined) {
     return (
       <FlatList

@@ -1,21 +1,24 @@
-import ViewProfileInfo from "@/components/PostsAndProfile/ViewProfileInfo";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { AppScreenNames } from "@/navigation/ScreenNames";
 import { useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
-import { Button } from "react-native-paper";
+import MyButton from "@/components/MyCustoms/MyButton";
 
 interface MyProfileScreenProps {}
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 const MyProfileScreen: React.FC<MyProfileScreenProps> = ({}) => {
-  const currentUser = useAppSelector(
-    (state) => state.CurrentUserReducer.currentUser
-  );
-
   const navigation = useNavigation();
   const auth = getAuth();
+  const isFocused = navigation.isFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      const profileStackTab = navigation.getParent();
+      profileStackTab && profileStackTab.setOptions({ tabBarBadge: false });
+    }
+  }, [isFocused]);
 
   const _goToMyProfileView = () => {
     if (auth.currentUser) {
@@ -33,27 +36,22 @@ const MyProfileScreen: React.FC<MyProfileScreenProps> = ({}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        {currentUser?.avatar !== undefined && currentUser.displayName ? (
-          <ViewProfileInfo {...currentUser} />
-        ) : null}
-      </View>
       <View style={styles.buttons}>
-        <Button
-          mode="contained"
-          style={styles.button}
-          onPress={_goToMyProfileView}>
-          My Profile
-        </Button>
-        <Button
-          mode="contained"
-          style={styles.button}
-          onPress={_goToEditProfile}>
-          Edit Profile
-        </Button>
-        <Button mode="contained" style={styles.button} onPress={_goToFriends}>
-          Friends
-        </Button>
+        <MyButton
+          text="View My Profile"
+          func={_goToMyProfileView}
+          iconName="switch-account"
+        />
+        <MyButton
+          text="Edit My Profile"
+          func={_goToEditProfile}
+          iconName="edit"
+        />
+        <MyButton
+          text="View Friends"
+          func={_goToFriends}
+          iconName="supervisor-account"
+        />
       </View>
     </SafeAreaView>
   );
@@ -66,12 +64,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     alignItems: "center",
-    width: "100%",
-    flex: 1,
-  },
-  button: {
-    width: "97%",
-    marginVertical: 3,
     flex: 1,
   },
 });

@@ -1,4 +1,4 @@
-import MyHeader from "@/components/MyHeader";
+import MyHeader from "@/components/Header/MyHeader";
 import EditProfileScreen from "@/screens/App/MyProfileStack/EditProfileScreen";
 import FriendsScreen from "@/screens/App/MyProfileStack/FriendsScreen";
 import MyProfileScreen from "@/screens/App/MyProfileStack/MyProfileScreen";
@@ -28,6 +28,11 @@ const MyProfileStackNavigator: React.FC<
       />
       <Stack.Screen
         name={AppScreenNames.EDIT_PROFILE_SCREEN}
+        options={{
+          header: (props) => (
+            <MyHeader title={props.route.name} showBackButton more />
+          ),
+        }}
         component={EditProfileScreen}
       />
       <Stack.Screen

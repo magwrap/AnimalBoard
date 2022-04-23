@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import UploadPhotoScreen from "@/screens/App/UploadPhotoScreen";
 import { AppScreenNames } from "../ScreenNames";
 import UserProfileScreen from "@/screens/App/UserProfileScreen";
-import MyHeader from "@/components/MyHeader";
+import MyHeader from "@/components/Header/MyHeader";
 import PostUploadedSnackbar from "@/components/CameraStack/PostUploadedSnackbar";
 
 interface AppStackNavigatorProps {}

@@ -1,25 +1,23 @@
-import DarkThemeSwitch from "@/components/MyProfile/DarkThemeSwitch";
-import LogoutButton from "@/components/MyProfile/LogoutButton";
+import MyButton from "@/components/MyCustoms/MyButton";
+
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Paragraph } from "react-native-paper";
 
 interface EditProfileScreenProps {}
 
 const EditProfileScreen: React.FC<EditProfileScreenProps> = ({}) => {
   return (
     <View style={styles.container}>
-      <Paragraph>
-        Zmiana hasla, weryfikacja emaila, zmiana nazwy, opisu, usuniecie konta
-        (weryfikacja recaptcha?)
-      </Paragraph>
-      <DarkThemeSwitch />
-      <LogoutButton />
+      <MyButton text="Change name/description" iconName="" func={() => {}} />
+      <MyButton text="Change password" iconName="" func={() => {}} />
+      <MyButton text="Verify email/recaptcha" iconName="" func={() => {}} />
+      <MyButton text="Logout" iconName="" func={() => {}} />
+      <MyButton text="Remove account" iconName="" func={() => {}} />
     </View>
   );
 };
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, justifyContent: "space-between" },
 });
 
 export default EditProfileScreen;
