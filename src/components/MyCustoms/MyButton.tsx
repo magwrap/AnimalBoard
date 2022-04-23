@@ -30,7 +30,7 @@ const MyButton: React.FC<MyButtonProps> = ({
       ]}
       onPress={func}>
       <>
-        <Button mode="contained" compact>
+        <Button mode="contained" color={bgcolor ? bgcolor : ""}>
           {text}
         </Button>
         <MaterialIcons
