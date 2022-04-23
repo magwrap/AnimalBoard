@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Appearance } from "react-native";
+import { InitialDarkThemeState } from "types";
 
 const colorScheme = Appearance.getColorScheme();
 

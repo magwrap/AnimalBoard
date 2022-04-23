@@ -7,6 +7,7 @@ import {
 } from "@reduxjs/toolkit";
 import { getAuth, User } from "firebase/auth";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { DBUser, InitialCurrentUserState } from "types";
 import { RootState } from "../store";
 
 let initialState: InitialCurrentUserState = {
@@ -18,12 +19,10 @@ const CurrentUserSlice = createSlice({
   initialState,
   reducers: {
     fetchUser: (state, action: PayloadAction<User["uid"]>) => {
-      console.log("fetching user");
       const db = getFirestore();
       const unsub = onSnapshot(
         doc(db, FirestoreCollectionNames.USERS, action.payload),
         (doc) => {
-          console.log(doc.data());
           return { currentUser: doc.data() };
         }
       );

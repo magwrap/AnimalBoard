@@ -4,9 +4,7 @@ import FriendsScreen from "@/screens/App/MyProfileStack/FriendsScreen";
 import MyProfileScreen from "@/screens/App/MyProfileStack/MyProfileScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-
 import { AppScreenNames } from "../ScreenNames";
-import MyProfilePostsScreen from "@/screens/App/MyProfileStack/MyProfilePostsScreen";
 
 interface MyProfileStackNavigatorProps {}
 
@@ -17,7 +15,6 @@ const MyProfileStackNavigator: React.FC<
 > = ({}) => {
   return (
     <Stack.Navigator
-      // screenOptions={{ headerShown: false }}
       screenOptions={{
         header: (props) => <MyHeader title={props.route.name} showBackButton />,
       }}
@@ -25,14 +22,9 @@ const MyProfileStackNavigator: React.FC<
       <Stack.Screen
         options={{
           headerShown: false,
-          // header: (props) => <MyHeader title={props.route.name} />,
         }}
         name={AppScreenNames.MYPROFILE_SCREEN}
         component={MyProfileScreen}
-      />
-      <Stack.Screen
-        name={AppScreenNames.CUSTOMIZE_PROFILE_SCREEN}
-        component={MyProfilePostsScreen}
       />
       <Stack.Screen
         name={AppScreenNames.EDIT_PROFILE_SCREEN}

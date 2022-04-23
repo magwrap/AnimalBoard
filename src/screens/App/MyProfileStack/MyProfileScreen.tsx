@@ -1,7 +1,8 @@
-import ViewProfileInfo from "@/components/ViewProfileInfo";
+import ViewProfileInfo from "@/components/PostsAndProfile/ViewProfileInfo";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { AppScreenNames } from "@/navigation/ScreenNames";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth } from "firebase/auth";
 import React from "react";
 import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
@@ -14,9 +15,14 @@ const MyProfileScreen: React.FC<MyProfileScreenProps> = ({}) => {
   );
 
   const navigation = useNavigation();
+  const auth = getAuth();
 
-  const _goToCustomizeProfile = () => {
-    navigation.navigate(AppScreenNames.CUSTOMIZE_PROFILE_SCREEN);
+  const _goToMyProfileView = () => {
+    if (auth.currentUser) {
+      navigation.navigate(AppScreenNames.USER_PROFILE_SCREEN, {
+        uid: auth.currentUser.uid,
+      });
+    }
   };
   const _goToEditProfile = () => {
     navigation.navigate(AppScreenNames.EDIT_PROFILE_SCREEN);
@@ -28,22 +34,15 @@ const MyProfileScreen: React.FC<MyProfileScreenProps> = ({}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        {currentUser?.avatar !== undefined ? (
-          <ViewProfileInfo
-            {...{
-              avatar: currentUser?.avatar,
-              birthDate: currentUser?.birthDate,
-              description: currentUser?.description,
-              displayName: currentUser?.displayName,
-            }}
-          />
+        {currentUser?.avatar !== undefined && currentUser.displayName ? (
+          <ViewProfileInfo {...currentUser} />
         ) : null}
       </View>
       <View style={styles.buttons}>
         <Button
           mode="contained"
           style={styles.button}
-          onPress={_goToCustomizeProfile}>
+          onPress={_goToMyProfileView}>
           My Profile
         </Button>
         <Button

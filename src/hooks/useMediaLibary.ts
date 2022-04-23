@@ -22,7 +22,6 @@ export const downloadPhoto = async (
 ) => {
   if (photoUri) {
     setDownloading(true);
-    console.log(photoUri);
     try {
       addPhotoToLibary(photoUri).then(() => {
         setDownloading(false);

@@ -1,8 +1,10 @@
 import { getAuth, sendEmailVerification, User } from "firebase/auth";
 import {
   collection,
+  deleteDoc,
   doc,
   DocumentData,
+  DocumentReference,
   getDoc,
   getDocs,
   getFirestore,
@@ -19,7 +21,9 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  deleteObject,
 } from "firebase/storage";
+import { DBUser } from "types";
 export enum FirestoreCollectionNames {
   USERS = "users",
   POSTS = "posts",
@@ -47,6 +51,23 @@ export const addUserToDB = async (user: User) => {
   }
 };
 
+export const getUserFromDB = async (uid: string) => {
+  const db = getFirestore();
+  const docRef: DocumentReference<DBUser> = doc(
+    db,
+    FirestoreCollectionNames.USERS,
+    uid
+  );
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    // doc.data() will be undefined in this case
+    return null;
+  }
+};
+
 export const addPostToDB = async (
   title: string,
   description: string,
@@ -56,7 +77,6 @@ export const addPostToDB = async (
 
   if (auth.currentUser) {
     let postId = generateRandomId();
-    console.log("creating uid: ", postId);
     const uid = auth.currentUser.uid;
     const db = getFirestore();
     const now = Timestamp.now();
@@ -79,12 +99,28 @@ export const addPostToDB = async (
   }
 };
 
+export const removePostFromDB = async (postPath: string, imageURL: string) => {
+  console.log("removing image");
+  const status = await removeImageFromStorage(imageURL);
+
+  // if (status === "success") {
+  try {
+    console.log("removing post");
+    const db = getFirestore();
+    const postDoc = doc(db, postPath);
+    await deleteDoc(postDoc);
+  } catch (err) {
+    console.log(err);
+  }
+  // }
+};
+
 export const storeImage = async (
   imageURL: string,
   setDownloadURL: (text: string) => void,
-  setPhotoDownloadProgress: (num: number) => void,
   setPhotoDownloadState: (text: string) => void,
-  setError: (text: string) => void
+  setError: (text: string) => void,
+  progressRef: React.MutableRefObject<number>
 ) => {
   const auth = getAuth();
   const storage = getStorage();
@@ -106,7 +142,7 @@ export const storeImage = async (
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        setPhotoDownloadProgress(progress);
+        progressRef.current = progress;
         switch (snapshot.state) {
           case "paused":
             setPhotoDownloadState(snapshot.state);
@@ -141,12 +177,17 @@ export const storeImage = async (
   }
 };
 
-const generateRandomId = () => {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0,
-      v = c == "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+const removeImageFromStorage = async (imageURL: string) => {
+  const storage = getStorage();
+  const imageRef = ref(storage, imageURL);
+  deleteObject(imageRef)
+    .then(() => {
+      return "success";
+    })
+    .catch((error) => {
+      return "fail";
+    });
+  return "unknown";
 };
 
 export const getUserPostsQueryFirst = async (
@@ -204,4 +245,12 @@ export const getUserPostsQueryNext = async (
     console.log(err);
   }
   return null;
+};
+
+const generateRandomId = () => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 };

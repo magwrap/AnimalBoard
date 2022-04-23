@@ -1,4 +1,4 @@
-import { fetchUser, useAppDispatch } from "@/hooks/reduxHooks";
+import { useAppDispatch } from "@/hooks/reduxHooks";
 import { addUserToDB } from "@/hooks/useFirebase";
 import LoadingScreen from "@/screens/LoadingScreen";
 import { fetchUserThunk } from "@/state";

@@ -77,7 +77,8 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
   const takePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current?.takePictureAsync({
-        isImageMirror: type !== Camera.Constants.Type.front,
+        isImageMirror: type === Camera.Constants.Type.front,
+        skipProcessing: true,
       });
       FileSystem.copyAsync({ from: photo.uri, to: "photos" });
       setPhotoTaken(photo);
@@ -85,7 +86,6 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
   };
 
   const setFlashMode = (mode: FlashMode) => {
-    console.log(mode);
     setCameraConfig({
       ...cameraConfig,
       flashMode: mode,

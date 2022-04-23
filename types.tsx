@@ -1,21 +1,31 @@
 // import { Timestamp } from "firebase/firestore";
 
-type InitialCurrentUserState = {
+import { Timestamp } from "@firebase/firestore";
+
+export type InitialCurrentUserState = {
   currentUser: null | DBUser;
 };
+export type InitialSnackBarState = {
+  visible: boolean;
+};
 
-type DBUser = {
+export type InitialDarkThemeState = {
+  isDarkTheme: boolean;
+};
+
+export type DBUserPost = {
+  photoURL: string;
+  title: string;
+  description: string;
+  creationDate: Timestamp;
+
+  editionDate: Timestamp;
+};
+export type DBUser = {
   avatar: string | null;
-  birthDate: {
-    nanoseconds: number;
-    seconds: number;
-  };
+  birthDate: Timestamp;
   description: string;
   displayName: string | null;
   email: string;
   emailVerified: boolean;
-};
-
-type InitialDarkThemeState = {
-  isDarkTheme: boolean;
 };

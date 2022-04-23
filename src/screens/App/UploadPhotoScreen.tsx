@@ -2,6 +2,11 @@ import DownloadButton from "@/components/CameraStack/DownloadButton";
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import Layout from "@/constants/Layout";
+import {
+  useAppSelector,
+  useAppDispatch,
+  toggleSnackBar,
+} from "@/hooks/reduxHooks";
 import { addPostToDB, storeImage } from "@/hooks/useFirebase";
 import { MyColors } from "@/styles/ColorPallete";
 import { IconSizes } from "@/styles/Fonts";
@@ -43,68 +48,59 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
   const [downloading, setDownloading] = useState(false);
   const [photoUploadState, setPhotoUploadState] = useState({
     downloadURL: "",
-    progress: 0,
     state: "",
   });
   const [errorMsg, setErrorMsg] = useState("");
+  const timeOutRef = React.useRef<null | NodeJS.Timeout>(null);
+  const goBackWithoutAskingRef = React.useRef(false);
+  const progressRef = React.useRef(0);
   const image = { uri: route.params.imageURL };
   const navigation = useNavigation();
   const { roundness, colors } = useTheme();
   const disable = photoUploadState.state === "running";
-
+  const dispatch = useAppDispatch();
   const goBackAlertTitle = "Warning";
   const goBackAlertDes = "Do you want do remove this post and leave?";
 
-  React.useEffect(
-    () =>
-      navigation.addListener("beforeRemove", (e) => {
-        e.preventDefault();
-        Alert.alert(goBackAlertTitle, goBackAlertDes, [
-          { text: "Don't leave", style: "cancel", onPress: () => {} },
-          {
-            text: "Remove",
-            style: "destructive",
-
-            onPress: () => navigation.dispatch(e.data.action),
-          },
-        ]);
-      }),
-    [navigation]
-  );
-
   useEffect(() => {
     if (photoUploadState.downloadURL) {
-      console.log("photo uploaded: ", photoUploadState);
       (async () => {
         await addPostToDB(title, description, photoUploadState.downloadURL);
-        photoUploadedInfoAlert();
+        goBackWithoutAskingRef.current = true;
+        console.log("_goback");
+        _goBack();
+        dispatch(toggleSnackBar());
       })();
     }
   }, [photoUploadState.downloadURL]);
 
-  const photoUploadedInfoAlert = () => {
-    Alert.alert(
-      "Your photo has been uploaded!",
-      "Click OK to leave this screen",
-      [
-        {
-          text: "OK",
-          onPress: () => navigation.goBack(),
-          style: "default",
-        },
-      ]
-    );
-  };
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        timeOutRef.current && clearTimeout(timeOutRef.current);
+        console.log("going back");
+        e.preventDefault();
+        if (goBackWithoutAskingRef.current) {
+          navigation.dispatch(e.data.action);
+        } else {
+          Alert.alert(goBackAlertTitle, goBackAlertDes, [
+            { text: "Don't leave", style: "cancel", onPress: () => {} },
+            {
+              text: "Remove",
+              style: "destructive",
+
+              onPress: () => navigation.dispatch(e.data.action),
+            },
+          ]);
+        }
+      }),
+    [navigation]
+  );
+
   const setDownloadURL = (text: string) => {
     setPhotoUploadState({
       ...photoUploadState,
       downloadURL: text,
-    });
-  };
-  const setPhotoDownloadProgress = (num: number) => {
-    setPhotoUploadState({
-      ...photoUploadState,
-      progress: num,
     });
   };
   const setPhotoDownloadState = (text: string) => {
@@ -120,20 +116,39 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
   const _goBack = () => {
     navigation.goBack();
   };
-
   const _uploadPhoto = () => {
     if (title || description) {
       storeImage(
         image.uri,
         setDownloadURL,
-        setPhotoDownloadProgress,
         setPhotoDownloadState,
-        setError
+        setError,
+        progressRef
       );
+      timeOutRef.current = timeOut();
     } else {
-      setErrorMsg("Post has to have at least title or/and description");
+      setErrorMsg("Post has to have at least title or description");
     }
   };
+
+  const timeOut = () =>
+    setTimeout(() => {
+      setPhotoDownloadState("error");
+      setError("Request timeout");
+      Alert.alert(
+        "Request Timeout",
+        "Something went wrong while uploading photo, check if everything is fine with your internet connection.",
+        [
+          { text: "Ok", style: "cancel", onPress: () => {} },
+          {
+            text: "Try again",
+            style: "default",
+
+            onPress: () => _uploadPhoto(),
+          },
+        ]
+      );
+    }, 10000); //TODO: wydluzyc timeout do produkcji - 60 sekund?
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
@@ -162,6 +177,7 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
           showsVerticalScrollIndicator={false}
           contentOffset={{ x: 0, y: IMAGE_HEIGHT }}>
           <View style={styles.bottom} />
+          <Paragraph style={styles.errorMsg}>{errorMsg}</Paragraph>
           <View style={styles.inputs}>
             <MyTextInput
               label="Title"
@@ -191,18 +207,13 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
           </View>
         </ScrollView>
       </ImageBackground>
+
       {photoUploadState.state === "running" ? (
         <View style={[styles.uploadInfo, { borderRadius: roundness }]}>
-          <Paragraph style={{ color: MyColors.WARNING }}>{errorMsg}</Paragraph>
-          <ProgressBar
-            progress={photoUploadState.progress}
-            indeterminate
-            visible={photoUploadState.state === "running"}
-          />
-          <Paragraph style={{ color: Colors.white }}>
-            {photoUploadState.progress} {"\n"}
-            {photoUploadState.state === "running" ? "uploading..." : null}
+          <Paragraph style={styles.white}>
+            uploaded: {progressRef.current.toFixed(2)}%
           </Paragraph>
+          <ProgressBar progress={progressRef.current} />
         </View>
       ) : null}
     </SafeAreaView>
@@ -243,9 +254,12 @@ const styles = StyleSheet.create({
     top: "35%",
     padding: 25,
     width: "60%",
+
     alignItems: "center",
     backgroundColor: MyColors.TRANSPARENT_BLACK,
   },
+  errorMsg: { color: "black", textAlign: "center" },
+  white: { color: Colors.white },
 });
 
 export default UploadPhotoScreen;

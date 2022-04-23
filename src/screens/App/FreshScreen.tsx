@@ -1,4 +1,4 @@
-import PostCard from "@/components/PostCard";
+import PostCard from "@/components/PostsAndProfile/PostCard";
 import MyHeader from "@/components/MyHeader";
 import * as React from "react";
 import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
