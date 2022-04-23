@@ -3,6 +3,7 @@ import { IconSizes } from "@/styles/Fonts";
 import React from "react";
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import {
+  Card,
   Colors,
   IconButton,
   Modal,
@@ -21,27 +22,26 @@ const PhotoZoomModal: React.FC<PhotoZoomModalProps> = ({
   hideModal,
   photoURL,
 }) => {
-  const { colors, roundness } = useTheme();
+  const { roundness } = useTheme();
   const roundEdges = { borderRadius: roundness };
-  const background = { backgroundColor: colors.background };
+
   return (
     <Portal>
       <View style={styles.modalContainer}>
-        <Modal
-          visible={visible}
-          onDismiss={hideModal}
-          contentContainerStyle={[styles.modal, roundEdges, background]}>
-          <ImageBackground
-            source={{ uri: photoURL }}
-            style={[styles.image, roundEdges]}>
-            <IconButton
-              icon="arrow-left"
-              color={Colors.white}
-              size={IconSizes.NORMAL}
-              onPress={hideModal}
-              style={styles.goBackButton}
-            />
-          </ImageBackground>
+        <Modal visible={visible} onDismiss={hideModal}>
+          <Card elevation={1} style={styles.modal}>
+            <ImageBackground
+              source={{ uri: photoURL }}
+              style={[styles.image, roundEdges]}>
+              {/* <IconButton
+                icon="arrow-left"
+                color={Colors.white}
+                size={IconSizes.NORMAL}
+                onPress={hideModal}
+                style={styles.goBackButton}
+              /> */}
+            </ImageBackground>
+          </Card>
         </Modal>
       </View>
     </Portal>
@@ -53,11 +53,12 @@ const styles = StyleSheet.create({
   },
   modal: {
     padding: 10,
-    margin: 10,
+    alignSelf: "center",
+    height: "90%",
+    width: "90%",
   },
   image: {
-    height: "95%",
-    width: "100%",
+    flex: 1,
   },
   goBackButton: {
     backgroundColor: MyColors.TRANSPARENT_BLACK,

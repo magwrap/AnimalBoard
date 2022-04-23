@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import {
   Avatar,
   Caption,
+  Colors,
   Paragraph,
   Subheading,
   Title,
@@ -13,8 +14,8 @@ import { DBUser } from "types";
 type ViewProfileInfoProps = Omit<DBUser, "emailVerified">;
 
 const ViewProfileInfo: React.FC<ViewProfileInfoProps> = (props) => {
-  const { colors, roundness } = useTheme();
-  const backgroundColor = { backgroundColor: colors.accent };
+  const { colors, roundness, dark } = useTheme();
+  const borderColor = { borderColor: colors.accent };
   const borderRadius = { borderRadius: roundness };
 
   return (
@@ -26,9 +27,9 @@ const ViewProfileInfo: React.FC<ViewProfileInfoProps> = (props) => {
             source={{ uri: props.avatar }}
             style={styles.avatar}
           />
-          <Title>{props.displayName}</Title>
+          {/* <Title>{props.displayName}</Title> */}
         </View>
-        <View style={styles.seperator} />
+        <View style={[styles.seperator, borderColor]} />
         <View style={styles.userInfo}>
           <Subheading>{props.email}</Subheading>
           <Caption style={styles.centerText}>
@@ -36,7 +37,7 @@ const ViewProfileInfo: React.FC<ViewProfileInfoProps> = (props) => {
           </Caption>
         </View>
       </View>
-      <View style={styles.seperator} />
+      <View style={[styles.seperator, borderColor]} />
       <View style={styles.userDes}>
         <Paragraph>
           {props.description ? props.description : "No description..."}

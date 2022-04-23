@@ -34,23 +34,13 @@ const UserProfileScreen: React.FC<UserProfileScreenProps> = ({ route }) => {
     const fetchedUser = await getUserFromDB(uid);
     setUser(fetchedUser);
   };
+  const HeaderComponent = () => {
+    return user ? <ViewProfileInfo {...user} /> : <></>;
+  };
   return (
     <View style={styles.container}>
-      {/* {user?.displayName !== undefined ? (
-        <ViewProfileInfo
-          {...{
-            avatar: user?.avatar,
-            birthDate: user?.birthDate,
-            description: user?.description,
-            email: user?.email,
-          }}
-        />
-      ) : null} */}
       {uid && user?.displayName !== undefined ? (
-        <ViewUserPosts
-          uid={uid}
-          headerComponent={<ViewProfileInfo {...user} />}
-        />
+        <ViewUserPosts uid={uid} HeaderComponent={<HeaderComponent />} />
       ) : (
         <Paragraph>blad</Paragraph>
       )}

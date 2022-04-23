@@ -9,24 +9,26 @@ import {
   QuerySnapshot,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { Paragraph } from "react-native-paper";
 import { DBUserPost } from "types";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
+import MySeperator from "../MyCustoms/MySeperator";
 import PostCard from "./PostCard";
 
 interface ViewUserPostsProps {
   uid: User["uid"];
-  headerComponent?: JSX.Element;
+  HeaderComponent?: JSX.Element;
 }
 
 const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
   uid,
-  headerComponent,
+  HeaderComponent,
 }) => {
   const [postsQuerySnapschot, setPostsQuerySnapschot] =
     useState<QuerySnapshot<DocumentData> | null>(null);
   const [fetching, setFetching] = useState(true);
+
   useEffect(() => {
     getUserPostsQuery();
   }, [uid]);
@@ -55,7 +57,13 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
   }) => {
     const userId = item.ref.parent.parent?.id;
     if (userId) {
-      return <PostCard item={item} userId={userId} />;
+      return (
+        <PostCard
+          item={item}
+          userId={userId}
+          getUserPostsQuery={getUserPostsQuery}
+        />
+      );
     }
     return <></>;
   };
@@ -63,6 +71,7 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
   if (fetching) {
     return <MyActivityIndicator />;
   }
+
   //TODO: dodac on end reached - pobiera nastepna strone
   if (postsQuerySnapschot && postsQuerySnapschot.docs !== undefined) {
     return (
@@ -71,18 +80,19 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
         renderItem={_renderItem}
         keyExtractor={(item) => item.id}
         onEndReached={() => {}}
-        ItemSeparatorComponent={() => <></>}
-        ListEmptyComponent={() => <></>}
-        HeaderComponent={headerComponent}
-        style={styles.list}
+        ItemSeparatorComponent={() => <MySeperator />}
+        ListEmptyComponent={() => <Paragraph>No posts yet...</Paragraph>}
+        ListFooterComponent={<ListFooter />}
+        ListHeaderComponent={HeaderComponent}
+        showsVerticalScrollIndicator={false}
       />
     );
   }
   return <Paragraph>Something went wrong...</Paragraph>;
 };
 
-const styles = StyleSheet.create({
-  list: { flex: 1 },
-});
-
 export default ViewUserPosts;
+
+const ListFooter = () => {
+  return <View style={{ padding: 5, height: 100 }} />;
+};

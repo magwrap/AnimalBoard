@@ -21,10 +21,17 @@ import { DBUser, DBUserPost } from "types";
 import PhotoZoomModal from "./PhotoZoomModal";
 
 // nazwa, photoUrl, opis, data_powstania, data_edycji
-const PostCard: React.FC<{
+interface PostCardProps {
   item: QueryDocumentSnapshot<DBUserPost>;
   userId: User["uid"];
-}> = ({ item, userId }) => {
+  getUserPostsQuery?: () => Promise<void>;
+}
+
+const PostCard: React.FC<PostCardProps> = ({
+  item,
+  userId,
+  getUserPostsQuery,
+}) => {
   const [user, setUser] = useState<DBUser | null>();
   const [visible, setVisible] = React.useState(false);
   const [keepVisible, setKeepVisible] = React.useState(true);
@@ -80,7 +87,10 @@ const PostCard: React.FC<{
         },
         {
           text: "Delete",
-          onPress: () => removePostFromDB(item.ref.path, photoURL),
+          onPress: () => {
+            removePostFromDB(item.ref.path, photoURL);
+            getUserPostsQuery && getUserPostsQuery();
+          },
           style: "destructive",
         },
       ]
@@ -142,7 +152,7 @@ const PostCard: React.FC<{
           photoURL={photoURL}
         />
         <Pressable
-          onPressIn={showModal}
+          // onPressIn={showModal}
           delayLongPress={100}
           onLongPress={onLongPress}
           onPressOut={keepVisible ? () => {} : hideModal}>
@@ -154,14 +164,11 @@ const PostCard: React.FC<{
         </Pressable>
         <Card.Actions style={styles.actions}>
           <Caption>
-            created: {creationDate.toDate().toLocaleDateString()}
+            Created: {creationDate.toDate().toLocaleDateString()}
           </Caption>
-          <Caption>
-            last edit: {editionDate.toDate().toLocaleDateString()}
-          </Caption>
+          <Caption>Edited: {editionDate.toDate().toLocaleDateString()}</Caption>
         </Card.Actions>
       </Card>
-      <View style={styles.seperator} />
     </>
   );
 };
@@ -175,7 +182,7 @@ const styles = StyleSheet.create({
   coverReplacement: {},
 
   actions: { justifyContent: "space-around" },
-  seperator: { height: "1%" },
+
   crudButton: { marginHorizontal: 2 },
 });
 
