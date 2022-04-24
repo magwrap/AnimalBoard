@@ -20,28 +20,29 @@ const ViewProfileInfo: React.FC<ViewProfileInfoProps> = (props) => {
 
   return (
     <Card style={styles.container}>
-      <View style={styles.top}>
-        <View style={styles.avatarAndTitle}>
-          <Avatar.Image
-            size={70}
-            source={{ uri: props.avatar }}
-            style={styles.avatar}
-          />
-          {/* <Title>{props.displayName}</Title> */}
+      <View>
+        <View style={styles.top}>
+          <View style={styles.avatarAndTitle}>
+            <Avatar.Image
+              size={70}
+              source={{ uri: props.avatar }}
+              style={styles.avatar}
+            />
+          </View>
+          <View style={[styles.seperator, borderColor]} />
+          <View style={styles.userInfo}>
+            <Subheading>{props.email}</Subheading>
+            <Caption style={styles.centerText}>
+              born: {props.birthDate.toDate().toLocaleDateString()}
+            </Caption>
+          </View>
         </View>
-        <View style={[styles.seperator, borderColor]} />
-        <View style={styles.userInfo}>
-          <Subheading>{props.email}</Subheading>
-          <Caption style={styles.centerText}>
-            born: {props.birthDate.toDate().toLocaleDateString()}
-          </Caption>
+        <View style={styles.userDes}>
+          <View style={[styles.seperator, borderColor]} />
+          <Paragraph>
+            {props.description ? props.description : "No description..."}
+          </Paragraph>
         </View>
-      </View>
-      <View style={[styles.seperator, borderColor]} />
-      <View style={styles.userDes}>
-        <Paragraph>
-          {props.description ? props.description : "No description..."}
-        </Paragraph>
       </View>
     </Card>
   );
@@ -56,22 +57,24 @@ const styles = StyleSheet.create({
   },
   top: {
     width: "100%",
-    justifyContent: "space-around",
+    justifyContent: "center",
     alignItems: "center",
   },
   avatar: {
     marginHorizontal: 20,
   },
   avatarAndTitle: {
+    width: "100%",
     alignItems: "center",
     paddingVertical: 5,
+    justifyContent: "center",
   },
   userInfo: {
     flexDirection: "column",
 
     justifyContent: "center",
   },
-  userDes: { width: "80%", alignItems: "center" },
+  userDes: { width: "100%", alignItems: "center", justifyContent: "center" },
   centerText: { textAlign: "center" },
   seperator: {
     height: 1,

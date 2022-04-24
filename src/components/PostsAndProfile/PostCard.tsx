@@ -13,6 +13,7 @@ import {
   Button,
   Caption,
   Card,
+  Divider,
   Paragraph,
   Title,
   useTheme,
@@ -142,9 +143,12 @@ const PostCard: React.FC<PostCardProps> = ({
           style={[styles.user]}
           right={RightContent}
         />
+        <Divider />
         <Card.Content>
-          {title ? <Title>{title}</Title> : null}
-          {description ? <Paragraph>{description}</Paragraph> : null}
+          <View style={styles.text}>
+            {title ? <Title>{title}</Title> : null}
+            {description ? <Paragraph>{description}</Paragraph> : null}
+          </View>
         </Card.Content>
         <PhotoZoomModal
           visible={visible}
@@ -178,7 +182,11 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   user: {},
-  cover: { height: WINDOW_WIDTH, width: WINDOW_WIDTH },
+  text: { marginVertical: 5 },
+  cover: {
+    height: WINDOW_WIDTH,
+    width: WINDOW_WIDTH,
+  },
   coverReplacement: {},
 
   actions: { justifyContent: "space-around" },

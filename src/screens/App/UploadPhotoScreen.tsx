@@ -28,6 +28,7 @@ import {
   IconButton,
   Paragraph,
   ProgressBar,
+  TextInput,
   useTheme,
 } from "react-native-paper";
 
@@ -183,9 +184,10 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
               label="Title"
               value={title}
               onChangeText={setTitle}
-              maxLength={16}
+              maxLength={25}
               disabled={disable}
               placeholder="Give a title to this photo!"
+              right={<TextInput.Affix text={`${title.length}/25`} />}
             />
             <MyTextInput
               label="Description"

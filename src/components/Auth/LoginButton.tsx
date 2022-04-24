@@ -1,7 +1,6 @@
 import { authStyles } from "@/styles/Auth/authStyles";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
-import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { AuthButtonProps } from "./AuthButtonProps";
 

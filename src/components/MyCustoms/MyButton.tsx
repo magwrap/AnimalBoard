@@ -6,14 +6,14 @@ import { Button, Colors, TouchableRipple, useTheme } from "react-native-paper";
 
 interface MyButtonProps {
   text: string;
-  func: () => void;
+  onPress: () => void;
   iconName: string;
   bgcolor?: string;
 }
 
 const MyButton: React.FC<MyButtonProps> = ({
   text,
-  func,
+  onPress,
   iconName,
   bgcolor,
 }) => {
@@ -28,16 +28,21 @@ const MyButton: React.FC<MyButtonProps> = ({
         borderRadius,
         bgcolor ? { backgroundColor: bgcolor } : {},
       ]}
-      onPress={func}>
+      onPress={onPress}>
       <>
-        <Button mode="contained" color={bgcolor ? bgcolor : ""}>
+        <Button
+          mode="contained"
+          color={bgcolor ? bgcolor : ""}
+          labelStyle={styles.buttonLabel}>
           {text}
         </Button>
-        <MaterialIcons
-          name={iconName}
-          size={IconSizes.HUGE}
-          color={Colors.white}
-        />
+        {iconName ? (
+          <MaterialIcons
+            name={iconName}
+            size={IconSizes.HUGE}
+            color={Colors.white}
+          />
+        ) : null}
       </>
     </TouchableRipple>
   );
@@ -50,6 +55,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  buttonLabel: { color: Colors.white },
 });
 
 export default MyButton;

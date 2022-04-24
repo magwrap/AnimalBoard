@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Colors } from "react-native-paper";
 import { AuthButtonProps } from "./AuthButtonProps";
 import * as WebBrowser from "expo-web-browser";
 import * as Facebook from "expo-auth-session/providers/facebook";
@@ -46,7 +46,10 @@ const FacebookSignInButton: React.FC<AuthButtonProps> = ({
 
   return (
     <Button
+      mode="outlined"
       disabled={!request}
+      icon="facebook"
+      color={"#3b5998"}
       onPress={() => {
         promptAsync();
       }}>

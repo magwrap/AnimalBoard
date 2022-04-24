@@ -1,43 +1,114 @@
 import MyButton from "@/components/MyCustoms/MyButton";
-
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import MyModal from "@/components/MyCustoms/MyModal";
+import ChangeNameDesBirth from "@/components/MyProfile/EditProfile/ChangeNameDesBirth";
+import ChangePassword from "@/components/MyProfile/EditProfile/ChangePassword";
+import LogoutUser from "@/components/MyProfile/EditProfile/LogoutUser";
+import RemoveAccount from "@/components/MyProfile/EditProfile/RemoveAccount";
+import VerifyEmail from "@/components/MyProfile/EditProfile/VerifyEmail";
+import React, { useState } from "react";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
 
 interface EditProfileScreenProps {}
 
 const EditProfileScreen: React.FC<EditProfileScreenProps> = ({}) => {
+  //TODO: on mount ma weryfikowac uzytkownika i dopiero wtedy pozwala na zmiany
+  const [visibleChangeNameDesBirthModal, setVisibleChangeNameDesBirthModal] =
+    useState(false);
+  const [visibleChangePasswordModal, setVisibleChangePasswordModal] =
+    useState(false);
+  const [visibleVerifyEmailModal, setVisibleVerifyEmailModal] = useState(false);
+  const [visibleLogoutModal, setVisibleLogoutModal] = useState(false);
+  const [visibleRemoveAccountModal, setVisibleRemoveAccountModal] =
+    useState(false);
+
+  const showChangeNameDesBirthModal = () =>
+    setVisibleChangeNameDesBirthModal(true);
+  const showChangePasswordModal = () => setVisibleChangePasswordModal(true);
+  const showVerifyEmailModal = () => setVisibleVerifyEmailModal(true);
+  const showLogoutModal = () => setVisibleLogoutModal(true);
+  const showRemoveAccountModal = () => setVisibleRemoveAccountModal(true);
+  const hideChangeNameDesBirthModal = () =>
+    setVisibleChangeNameDesBirthModal(false);
+  const hideChangePasswordModal = () => setVisibleChangePasswordModal(false);
+  const hideVerifyEmailModal = () => setVisibleVerifyEmailModal(false);
+  const hideLogoutModal = () => setVisibleLogoutModal(false);
+  const hideRemoveAccountModal = () => setVisibleRemoveAccountModal(false);
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={[styles.container]} behavior="height">
       <MyButton
-        text="Change name/description"
+        text="Change name/description/date of birth"
         iconName=""
-        func={() => {}}
+        onPress={showChangeNameDesBirthModal}
         bgcolor="#35524a"
       />
       <MyButton
         text="Change password"
         iconName=""
-        func={() => {}}
+        onPress={showChangePasswordModal}
         bgcolor="#466441"
       />
       <MyButton
         text="Verify email/recaptcha"
         iconName=""
-        func={() => {}}
+        onPress={showVerifyEmailModal}
         bgcolor="#96967d"
       />
-      <MyButton text="Logout" iconName="" func={() => {}} bgcolor="#b86450" />
+      <MyButton
+        text="Logout"
+        iconName=""
+        onPress={showLogoutModal}
+        bgcolor="#b86450"
+      />
       <MyButton
         text="Remove account"
         iconName=""
-        func={() => {}}
+        onPress={showRemoveAccountModal}
         bgcolor="#ef5350"
       />
-    </View>
+      <MyModal
+        visible={visibleChangeNameDesBirthModal}
+        showModal={showChangeNameDesBirthModal}
+        hideModal={hideChangeNameDesBirthModal}
+        children={
+          <ChangeNameDesBirth hideModal={hideChangeNameDesBirthModal} />
+        }
+      />
+      <MyModal
+        visible={visibleChangePasswordModal}
+        showModal={showChangePasswordModal}
+        hideModal={hideChangePasswordModal}
+        children={<ChangePassword hideModal={hideChangePasswordModal} />}
+      />
+      <MyModal
+        visible={visibleVerifyEmailModal}
+        showModal={showVerifyEmailModal}
+        hideModal={hideVerifyEmailModal}
+        children={<VerifyEmail hideModal={hideVerifyEmailModal} />}
+      />
+      <MyModal
+        visible={visibleLogoutModal}
+        showModal={showLogoutModal}
+        hideModal={hideLogoutModal}
+        children={<LogoutUser hideModal={hideLogoutModal} />}
+      />
+      <MyModal
+        visible={visibleRemoveAccountModal}
+        showModal={showRemoveAccountModal}
+        hideModal={hideRemoveAccountModal}
+        children={<RemoveAccount hideModal={hideRemoveAccountModal} />}
+      />
+    </KeyboardAvoidingView>
   );
 };
+
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "space-between", alignItems: "center" },
+  container: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
 });
 
 export default EditProfileScreen;

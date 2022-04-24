@@ -1,11 +1,11 @@
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "@/screens/Auth/LoginScreen";
 import RegisterScreen from "@/screens/Auth/RegisterScreen";
+import { createStackNavigator } from "@react-navigation/stack";
 
 interface AuthStackNavigatorProps {}
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 const AuthStackNavigator: React.FC<AuthStackNavigatorProps> = ({}) => {
   return (

@@ -1,7 +1,9 @@
 import FacebookSignInButton from "@/components/Auth/FacebookSignInButton";
 import GoogleSignInButton from "@/components/Auth/GoogleSignInButton";
 import LoginButton from "@/components/Auth/LoginButton";
+import ResetPassword from "@/components/Auth/ResetPassword";
 import Center from "@/components/Center";
+import MyModal from "@/components/MyCustoms/MyModal";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import { AuthScreenNames } from "@/navigation/ScreenNames";
 import { authStyles } from "@/styles/Auth/authStyles";
@@ -17,6 +19,7 @@ import {
   TextInput,
   Text,
   useTheme,
+  Paragraph,
 } from "react-native-paper";
 
 interface LoginScreenProps {
@@ -32,6 +35,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     showPassword: false,
   });
   const [loading, setLoading] = useState(false);
+  const [visibleReset, setVisibleReset] = useState(false);
+  const showResetPassModal = () => setVisibleReset(true);
+  const hideResetPassModal = () => setVisibleReset(false);
   const _setEmail = (value: string) => {
     setLoginCredentials({ ...loginCredentials, email: value });
   };
@@ -106,19 +112,36 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           </View>
         </View>
         <LoginButton {...buttonProps} />
+        <Button
+          onPress={showResetPassModal}
+          style={authStyles.resetPasswordButton}
+          labelStyle={authStyles.resetPasswordButtonLabel}
+          uppercase={false}
+          color={colors.accent}
+          compact>
+          Don't rembember your password?
+        </Button>
       </View>
       {loginCredentials.errorMessage ? (
-        <Text style={authStyles.errorMessage}>
+        <Paragraph style={[authStyles.errorMessage, { color: colors.error }]}>
           {loginCredentials.errorMessage}
-        </Text>
+        </Paragraph>
       ) : null}
-      <Divider />
-      <Caption style={{ textAlign: "center" }}>OR</Caption>
-      <Divider />
-      <View>
-        <FacebookSignInButton {...buttonProps} />
-        <GoogleSignInButton {...buttonProps} />
+      <View style={authStyles.divider}>
+        <Divider />
+        <Caption style={{ textAlign: "center" }}>OR</Caption>
+        <Divider />
       </View>
+      <View>
+        <GoogleSignInButton {...buttonProps} />
+        <FacebookSignInButton {...buttonProps} />
+      </View>
+      <MyModal
+        visible={visibleReset}
+        showModal={showResetPassModal}
+        hideModal={hideResetPassModal}
+        children={<ResetPassword hideModal={hideResetPassModal} />}
+      />
     </SafeAreaView>
   );
 };

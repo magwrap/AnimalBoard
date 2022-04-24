@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Colors } from "react-native-paper";
 import { MyColors } from "../ColorPallete";
 import { FontSizes } from "../Fonts";
 
@@ -28,5 +29,15 @@ export const authStyles = StyleSheet.create({
   },
   signingButton: {
     marginVertical: 5,
+  },
+  resetPasswordButton: { alignSelf: "flex-end" },
+  resetPasswordButtonLabel: {
+    fontSize: FontSizes.SMALL - 2,
+    fontWeight: "100",
+    alignSelf: "baseline",
+  },
+  divider: {
+    marginTop: "3%",
+    marginBottom: "6%",
   },
 });

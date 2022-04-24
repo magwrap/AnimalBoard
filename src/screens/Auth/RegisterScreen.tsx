@@ -1,7 +1,6 @@
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import { AuthScreenNames } from "@/navigation/ScreenNames";
-import { MyColors } from "@/styles/ColorPallete";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
@@ -15,7 +14,7 @@ import {
   Headline,
   Paragraph,
 } from "react-native-paper";
-import DatePicker from "@/components/Auth/DatePicker";
+import DatePicker from "@/components/MyProfile/EditProfile/DatePicker";
 import { authStyles } from "@/styles/Auth/authStyles";
 import Center from "@/components/Center";
 
@@ -180,9 +179,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
           </Button>
         </View>
         {registerCredentials.errorMessage ? (
-          <Text style={authStyles.errorMessage}>
+          <Paragraph style={[authStyles.errorMessage, { color: colors.error }]}>
             {registerCredentials.errorMessage}
-          </Text>
+          </Paragraph>
         ) : null}
       </View>
     </SafeAreaView>

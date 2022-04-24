@@ -7,10 +7,11 @@ import { AppScreenNames } from "../ScreenNames";
 import UserProfileScreen from "@/screens/App/UserProfileScreen";
 import MyHeader from "@/components/Header/MyHeader";
 import PostUploadedSnackbar from "@/components/CameraStack/PostUploadedSnackbar";
+import { createStackNavigator } from "@react-navigation/stack";
 
 interface AppStackNavigatorProps {}
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 const AppStackNavigator: React.FC<AppStackNavigatorProps> = ({}) => {
   return (

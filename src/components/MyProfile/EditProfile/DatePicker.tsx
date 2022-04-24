@@ -2,18 +2,18 @@ import { StyleSheet, View } from "react-native";
 import * as React from "react";
 import { Button, Caption, Paragraph } from "react-native-paper";
 import { DatePickerModal } from "react-native-paper-dates";
-import { MyColors } from "@/styles/ColorPallete";
 
-interface DatePickerProps {}
+interface DatePickerProps {
+  date: Date | undefined;
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  thirteenYearsFromNow: number;
+}
 
-const DatePicker: React.FC<DatePickerProps> = ({}) => {
-  const nowDate = new Date();
-  const thirteenYearsFromNow = nowDate.setFullYear(nowDate.getFullYear() - 13);
-  const thirteenYearsFromNowPlsDay = thirteenYearsFromNow + 86400000;
-
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(thirteenYearsFromNowPlsDay)
-  );
+const DatePicker: React.FC<DatePickerProps> = ({
+  date,
+  setDate,
+  thirteenYearsFromNow,
+}) => {
   const [open, setOpen] = React.useState(false);
 
   const onDismissSingle = React.useCallback(() => {
@@ -43,7 +43,9 @@ const DatePicker: React.FC<DatePickerProps> = ({}) => {
           <Paragraph>Date of birth: </Paragraph>
           <Paragraph>{date ? date?.toLocaleDateString() : "..."}</Paragraph>
         </View>
-        <Caption>You must be over 13 years old in order to sign up</Caption>
+        <Caption>
+          You must be over 13 years old in order to use this app
+        </Caption>
       </View>
 
       <DatePickerModal

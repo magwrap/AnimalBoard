@@ -39,17 +39,17 @@ const MyProfileScreen: React.FC<MyProfileScreenProps> = ({}) => {
       <View style={styles.buttons}>
         <MyButton
           text="View My Profile"
-          func={_goToMyProfileView}
+          onPress={_goToMyProfileView}
           iconName="switch-account"
         />
         <MyButton
           text="Edit My Profile"
-          func={_goToEditProfile}
+          onPress={_goToEditProfile}
           iconName="edit"
         />
         <MyButton
           text="View Friends"
-          func={_goToFriends}
+          onPress={_goToFriends}
           iconName="supervisor-account"
         />
       </View>

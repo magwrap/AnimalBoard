@@ -44,6 +44,9 @@ const GoogleSignInButton: React.FC<AuthButtonProps> = ({
 
   return (
     <Button
+      mode="outlined"
+      color="#34A853"
+      icon="google"
       disabled={!request}
       onPress={() => {
         promptAsync();
