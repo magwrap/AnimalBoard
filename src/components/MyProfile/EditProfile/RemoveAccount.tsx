@@ -63,7 +63,8 @@ const RemoveAccount: React.FC<RemoveAccountProps> = ({ hideModal }) => {
         mode="contained"
         color={colors.error}
         onPress={_removeAccount}
-        loading={loading}>
+        loading={loading}
+        disabled={loading}>
         remove account
       </Button>
     </View>

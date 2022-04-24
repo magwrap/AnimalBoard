@@ -54,7 +54,11 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ hideModal }) => {
         left={<TextInput.Icon name={"email"} />}
       />
       <Paragraph style={{ color: colors.error }}>{errorMsg}</Paragraph>
-      <Button loading={loading} onPress={_sendEmail} mode="contained">
+      <Button
+        loading={loading}
+        onPress={_sendEmail}
+        mode="contained"
+        disabled={loading}>
         Send reset email
       </Button>
     </View>

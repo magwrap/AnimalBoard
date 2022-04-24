@@ -39,7 +39,8 @@ const VerifyEmail: React.FC<VerifyEmailProps> = ({ hideModal }) => {
         mode="contained"
         onPress={_sendVerifyEmail}
         color={colors.accent}
-        loading={loading}>
+        loading={loading}
+        disabled={loading}>
         Verify Your Email
       </Button>
     </View>

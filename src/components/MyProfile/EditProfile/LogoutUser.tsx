@@ -41,6 +41,7 @@ const LogoutUser: React.FC<LogoutUserProps> = ({ hideModal }) => {
     <View style={styles.container}>
       <Button
         loading={loading}
+        disabled={loading}
         onPress={logout}
         mode="contained"
         color={colors.error}>

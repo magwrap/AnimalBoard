@@ -120,7 +120,8 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ hideModal }) => {
         mode="contained"
         onPress={_changePassword}
         color={colors.accent}
-        loading={loading}>
+        loading={loading}
+        disabled={loading}>
         Submit Changes
       </Button>
     </View>
