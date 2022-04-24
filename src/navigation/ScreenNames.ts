@@ -9,6 +9,7 @@ export enum AppScreenNames {
   FRIENDS_SCREEN = "Friends Screen",
   UPLOAD_PHOTO_SCREEN = "UploadPhoto",
   USER_PROFILE_SCREEN = "User Profile",
+  EDIT_POST_SCREEN = "Edit Post",
 }
 
 export enum AuthScreenNames {

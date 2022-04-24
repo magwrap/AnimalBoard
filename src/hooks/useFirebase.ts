@@ -17,6 +17,7 @@ import {
   getFirestore,
   limit,
   orderBy,
+  Query,
   query,
   QueryDocumentSnapshot,
   setDoc,
@@ -31,7 +32,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import { DBUser } from "types";
+import { DBUser, DBUserPost } from "types";
 export enum FirestoreCollectionNames {
   USERS = "users",
   POSTS = "posts",
@@ -177,8 +178,48 @@ export const addPostToDB = async (
   }
 };
 
+export const getPostFromDB = async (postPath: string) => {
+  const db = getFirestore();
+  try {
+    const postRef: DocumentReference<DBUserPost> = doc(db, postPath);
+    const postSnap = await getDoc(postRef);
+
+    if (postSnap.exists()) {
+      return postSnap.data();
+    } else {
+      return null;
+    }
+  } catch (err) {
+    return null;
+  }
+};
+
+export const editPostInDB = async (
+  props: DBUserPost & {
+    postPath: string;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  }
+) => {
+  const db = getFirestore();
+  props.setLoading(true);
+  try {
+    const postRef: DocumentReference<DBUserPost> = doc(db, props.postPath);
+
+    await updateDoc(postRef, {
+      title: props.title,
+      description: props.description,
+      photoURL: props.photoURL,
+      creationDate: props.creationDate,
+      editionDate: props.editionDate,
+    });
+    props.setLoading(false);
+  } catch (err) {
+    console.log(err);
+    props.setLoading(false);
+  }
+};
+
 export const removePostFromDB = async (postPath: string, imageURL: string) => {
-  console.log("removing image");
   const status = await removeImageFromStorage(imageURL);
 
   // if (status === "success") {
@@ -282,7 +323,8 @@ export const getUserPostsQueryFirst = async (
         uid,
         FirestoreCollectionNames.USER_POSTS
       ),
-      orderBy("creationDate"),
+
+      orderBy("creationDate", "desc"),
       limit(25)
     );
 
@@ -311,7 +353,7 @@ export const getUserPostsQueryNext = async (
         uid,
         FirestoreCollectionNames.USER_POSTS
       ),
-      orderBy("creationDate"),
+      orderBy("creationDate", "desc"),
       startAfter(prevLastDoc),
       limit(25)
     );

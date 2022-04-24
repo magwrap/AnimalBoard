@@ -1,12 +1,12 @@
-import Layout from "@/constants/Layout";
 import { getUserFromDB, removePostFromDB } from "@/hooks/useFirebase";
 import { AppScreenNames } from "@/navigation/ScreenNames";
+import { cardStyles } from "@/styles/Card/cardStyles";
 import { MyColors } from "@/styles/ColorPallete";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { getAuth, User } from "firebase/auth";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Alert, Pressable, StyleSheet, View } from "react-native";
+import { Alert, Pressable, View } from "react-native";
 
 import {
   Avatar,
@@ -98,6 +98,13 @@ const PostCard: React.FC<PostCardProps> = ({
     );
   };
 
+  const _editPost = () => {
+    navigation.navigate(AppScreenNames.EDIT_POST_SCREEN, {
+      postPath: item.ref.path,
+      getUserPostsQuery,
+    });
+  };
+
   const LeftContent = (props: object) => {
     if (user) {
       return (
@@ -112,18 +119,19 @@ const PostCard: React.FC<PostCardProps> = ({
     const auth = getAuth();
     if (userId === auth.currentUser?.uid) {
       return (
-        <View style={styles.crudButtons}>
+        <View style={cardStyles.crudButtons}>
           <Button
             compact
             mode="contained"
-            style={styles.crudButton}
-            color={colors.accent}>
+            style={cardStyles.crudButton}
+            color={colors.accent}
+            onPress={_editPost}>
             edit
           </Button>
           <Button
             compact
             mode="contained"
-            style={styles.crudButton}
+            style={cardStyles.crudButton}
             color={MyColors.WARNING}
             onPress={_removePost}>
             remove
@@ -135,64 +143,44 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   return (
-    <>
-      <Card style={styles.container} mode="elevated">
-        <Card.Title
-          title={user ? user.displayName : "user"}
-          left={LeftContent}
-          style={[styles.user]}
-          right={RightContent}
-        />
-        <Divider />
-        <Card.Content>
-          <View style={styles.text}>
-            {title ? <Title>{title}</Title> : null}
-            {description ? <Paragraph>{description}</Paragraph> : null}
-          </View>
-        </Card.Content>
-        <PhotoZoomModal
-          visible={visible}
-          hideModal={hideModal}
-          photoURL={photoURL}
-        />
-        <Pressable
-          // onPressIn={showModal}
-          delayLongPress={100}
-          onLongPress={onLongPress}
-          onPressOut={keepVisible ? () => {} : hideModal}>
-          {visible ? (
-            <View style={[styles.cover, styles.coverReplacement]} />
-          ) : (
-            <Card.Cover source={{ uri: photoURL }} style={[styles.cover]} />
-          )}
-        </Pressable>
-        <Card.Actions style={styles.actions}>
-          <Caption>
-            Created: {creationDate.toDate().toLocaleDateString()}
-          </Caption>
-          <Caption>Edited: {editionDate.toDate().toLocaleDateString()}</Caption>
-        </Card.Actions>
-      </Card>
-    </>
+    <Card style={cardStyles.container} mode="elevated">
+      <Card.Title
+        title={user ? user.displayName : "user"}
+        left={LeftContent}
+        style={[cardStyles.user]}
+        right={RightContent}
+      />
+      <Divider />
+      <Card.Content>
+        <View style={cardStyles.text}>
+          {title ? <Title>{title}</Title> : null}
+          {description ? <Paragraph>{description}</Paragraph> : null}
+        </View>
+      </Card.Content>
+      <PhotoZoomModal
+        visible={visible}
+        hideModal={hideModal}
+        photoURL={photoURL}
+      />
+      <Pressable
+        // onPressIn={showModal}
+        delayLongPress={100}
+        onLongPress={onLongPress}
+        onPressOut={keepVisible ? () => {} : hideModal}>
+        {visible ? (
+          <View style={[cardStyles.cover, cardStyles.coverReplacement]} />
+        ) : (
+          <Card.Cover source={{ uri: photoURL }} style={[cardStyles.cover]} />
+        )}
+      </Pressable>
+      <Card.Actions style={cardStyles.actions}>
+        <Caption>
+          Last edit: {editionDate.toDate().toLocaleDateString()} -{" "}
+          {editionDate.toDate().toLocaleTimeString()}
+        </Caption>
+      </Card.Actions>
+    </Card>
   );
 };
-const WINDOW_WIDTH = Layout.window.width;
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 0,
-  },
-  user: {},
-  text: { marginVertical: 5 },
-  cover: {
-    height: WINDOW_WIDTH,
-    width: WINDOW_WIDTH,
-  },
-  coverReplacement: {},
-
-  actions: { justifyContent: "space-around" },
-
-  crudButton: { marginHorizontal: 2 },
-  crudButtons: { flexDirection: "row", marginRight: "1%" },
-});
 
 export default PostCard;

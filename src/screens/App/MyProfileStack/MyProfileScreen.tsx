@@ -2,7 +2,7 @@ import { useAppSelector } from "@/hooks/reduxHooks";
 import { AppScreenNames } from "@/navigation/ScreenNames";
 import { useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 import MyButton from "@/components/MyCustoms/MyButton";
 

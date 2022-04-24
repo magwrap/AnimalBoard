@@ -28,6 +28,7 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
   const [postsQuerySnapschot, setPostsQuerySnapschot] =
     useState<QuerySnapshot<DocumentData> | null>(null);
   const [fetching, setFetching] = useState(true);
+  //TODO: dodac nasluchwanie postow uzytkownika ze jak sie zmienia to sie automatycznie rerenderuje
 
   useEffect(() => {
     getUserPostsQuery();

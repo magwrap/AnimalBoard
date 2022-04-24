@@ -8,6 +8,7 @@ import UserProfileScreen from "@/screens/App/UserProfileScreen";
 import MyHeader from "@/components/Header/MyHeader";
 import PostUploadedSnackbar from "@/components/CameraStack/PostUploadedSnackbar";
 import { createStackNavigator } from "@react-navigation/stack";
+import EditPostScreen from "@/screens/App/EditPostScreen";
 
 interface AppStackNavigatorProps {}
 
@@ -52,7 +53,16 @@ const AppStackNavigator: React.FC<AppStackNavigatorProps> = ({}) => {
               ),
             }}
           />
-          {/* zewnetrzny poza tabsami */}
+          <Stack.Screen
+            name={AppScreenNames.EDIT_POST_SCREEN}
+            component={EditPostScreen}
+            initialParams={{
+              PostPath: "",
+            }}
+            options={{
+              header: (props) => <MyHeader title="Editing..." showBackButton />,
+            }}
+          />
         </Stack.Group>
       </Stack.Navigator>
       <PostUploadedSnackbar />

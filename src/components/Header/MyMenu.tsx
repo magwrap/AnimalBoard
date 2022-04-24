@@ -10,7 +10,6 @@ interface MyMenuProps {
 }
 
 const MyMenu: React.FC<MyMenuProps> = ({ visible, closeMenu, openMenu }) => {
-  console.log(visible);
   return (
     <Menu
       visible={visible}

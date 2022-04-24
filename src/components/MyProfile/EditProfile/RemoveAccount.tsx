@@ -19,7 +19,6 @@ const RemoveAccount: React.FC<RemoveAccountProps> = ({ hideModal }) => {
     const auth = getAuth();
     const user = auth.currentUser;
     if (randNum === +num && user) {
-      console.log("removing");
       Alert.alert(
         "WARNING",
         "Do you really want to premanently remove this account?",

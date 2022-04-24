@@ -68,7 +68,6 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
       (async () => {
         await addPostToDB(title, description, photoUploadState.downloadURL);
         goBackWithoutAskingRef.current = true;
-        console.log("_goback");
         _goBack();
         dispatch(toggleSnackBar());
       })();
@@ -79,7 +78,6 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
     () =>
       navigation.addListener("beforeRemove", (e) => {
         timeOutRef.current && clearTimeout(timeOutRef.current);
-        console.log("going back");
         e.preventDefault();
         if (goBackWithoutAskingRef.current) {
           navigation.dispatch(e.data.action);
