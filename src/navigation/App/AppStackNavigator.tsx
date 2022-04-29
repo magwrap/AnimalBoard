@@ -1,14 +1,13 @@
 import React from "react";
 import NotFoundScreen from "@/screens/App/NotFoundScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import UploadPhotoScreen from "@/screens/App/UploadPhotoScreen";
 import { AppScreenNames } from "../ScreenNames";
 import UserProfileScreen from "@/screens/App/UserProfileScreen";
 import MyHeader from "@/components/Header/MyHeader";
-import PostUploadedSnackbar from "@/components/CameraStack/PostUploadedSnackbar";
 import { createStackNavigator } from "@react-navigation/stack";
 import EditPostScreen from "@/screens/App/EditPostScreen";
+import ViewSnackBars from "@/components/SnackBars/ViewSnackBars";
 
 interface AppStackNavigatorProps {}
 
@@ -65,7 +64,7 @@ const AppStackNavigator: React.FC<AppStackNavigatorProps> = ({}) => {
           />
         </Stack.Group>
       </Stack.Navigator>
-      <PostUploadedSnackbar />
+      <ViewSnackBars />
     </>
   );
 };

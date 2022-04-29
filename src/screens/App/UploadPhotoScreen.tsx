@@ -2,11 +2,7 @@ import DownloadButton from "@/components/CameraStack/DownloadButton";
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import Layout from "@/constants/Layout";
-import {
-  useAppSelector,
-  useAppDispatch,
-  toggleSnackBar,
-} from "@/hooks/reduxHooks";
+import { useAppDispatch, toggleUploadSnackBar } from "@/hooks/reduxHooks";
 import { addPostToDB, storeImage } from "@/hooks/useFirebase";
 import { MyColors } from "@/styles/ColorPallete";
 import { IconSizes } from "@/styles/Fonts";
@@ -69,7 +65,7 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
         await addPostToDB(title, description, photoUploadState.downloadURL);
         goBackWithoutAskingRef.current = true;
         _goBack();
-        dispatch(toggleSnackBar());
+        dispatch(toggleUploadSnackBar());
       })();
     }
   }, [photoUploadState.downloadURL]);
@@ -217,7 +213,10 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
           <Paragraph style={[styles.white, styles.uploadProgress]}>
             uploaded: {progressRef.current.toFixed(2)}%
           </Paragraph>
-          <ProgressBar progress={progressRef.current} />
+          <ProgressBar
+            progress={progressRef.current / 100}
+            style={styles.progressBar}
+          />
         </View>
       ) : null}
     </SafeAreaView>
@@ -259,6 +258,7 @@ const styles = StyleSheet.create({
     width: "60%",
     backgroundColor: MyColors.TRANSPARENT_BLACK,
   },
+  progressBar: { backgroundColor: Colors.grey500 },
   uploadProgress: { textAlign: "center" },
   errorMsg: { color: "black", textAlign: "center" },
   white: { color: Colors.white },

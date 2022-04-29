@@ -2,21 +2,51 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialSnackBarState } from "types";
 
 let initialState: InitialSnackBarState = {
-  visible: false,
+  visibleUpload: true,
+  visibleEdit: true,
+  visibleRemove: true,
+  visibleDownload: true,
 };
 
 const SnackBarSlice = createSlice({
   name: "SnackBar",
   initialState,
   reducers: {
-    toggleSnackBar: (state, action: PayloadAction<void>) => {
-      state.visible = !state.visible;
+    toggleUploadSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleUpload = !state.visibleUpload;
     },
-    dismissSnackBar: (state, action: PayloadAction<void>) => {
-      state.visible = false;
+    dismissUploadSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleUpload = false;
+    },
+    toggleEditSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleEdit = !state.visibleEdit;
+    },
+    dismissEditSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleEdit = false;
+    },
+    toggleRemoveSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleRemove = !state.visibleRemove;
+    },
+    dismissRemoveSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleRemove = false;
+    },
+    toggleDownloadSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleDownload = !state.visibleDownload;
+    },
+    dismissDownloadSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleDownload = false;
     },
   },
 });
 
-export const { toggleSnackBar, dismissSnackBar } = SnackBarSlice.actions;
+export const {
+  toggleUploadSnackBar,
+  dismissUploadSnackBar,
+  toggleEditSnackBar,
+  toggleRemoveSnackBar,
+  toggleDownloadSnackBar,
+  dismissEditSnackBar,
+  dismissRemoveSnackBar,
+  dismissDownloadSnackBar,
+} = SnackBarSlice.actions;
 export default SnackBarSlice.reducer;

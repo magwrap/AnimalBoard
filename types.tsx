@@ -1,5 +1,3 @@
-// import { Timestamp } from "firebase/firestore";
-
 import { Timestamp } from "@firebase/firestore";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 
@@ -9,7 +7,10 @@ export type InitialCurrentUserState = {
   currentUser: null | DBUser;
 };
 export type InitialSnackBarState = {
-  visible: boolean;
+  visibleUpload: boolean;
+  visibleEdit: boolean;
+  visibleRemove: boolean;
+  visibleDownload: boolean;
 };
 
 export type InitialDarkThemeState = {
@@ -21,7 +22,6 @@ export type DBUserPost = {
   title: string;
   description: string;
   creationDate: Timestamp;
-
   editionDate: Timestamp;
 };
 export type DBUser = {
