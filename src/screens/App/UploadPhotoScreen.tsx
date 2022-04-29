@@ -176,7 +176,13 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
           showsVerticalScrollIndicator={false}
           contentOffset={{ x: 0, y: IMAGE_HEIGHT }}>
           <View style={styles.bottom} />
-          <Paragraph style={styles.errorMsg}>{errorMsg}</Paragraph>
+          {errorMsg ? (
+            <Paragraph style={[styles.errorMsg, styles.white]}>
+              {errorMsg}
+            </Paragraph>
+          ) : (
+            <Paragraph> </Paragraph>
+          )}
           <View style={styles.inputs}>
             <MyTextInput
               label="Title"
@@ -244,11 +250,12 @@ const styles = StyleSheet.create({
     marginRight: "2%",
   },
   uploadButton: {
-    margin: "1%",
+    // margin: "1%",
     flex: 1,
   },
   inputs: {
     backgroundColor: MyColors.TRANSPARENT_BLACK,
+    marginBottom: "2%",
   },
   uploadInfo: {
     position: "absolute",
@@ -260,7 +267,11 @@ const styles = StyleSheet.create({
   },
   progressBar: { backgroundColor: Colors.grey500 },
   uploadProgress: { textAlign: "center" },
-  errorMsg: { color: "black", textAlign: "center" },
+  errorMsg: {
+    color: "black",
+    textAlign: "center",
+    backgroundColor: MyColors.TRANSPARENT_BLACK,
+  },
   white: { color: Colors.white },
 });
 

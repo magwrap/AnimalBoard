@@ -1,5 +1,4 @@
 import Layout from "@/constants/Layout";
-
 import { FontSizes, IconSizes } from "@/styles/Fonts";
 import { CameraCapturedPicture } from "expo-camera/build/Camera.types";
 import React, { useState } from "react";
@@ -10,13 +9,19 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
-import { Caption, IconButton, useTheme } from "react-native-paper";
+import {
+  Caption,
+  Colors,
+  IconButton,
+  Paragraph,
+  useTheme,
+} from "react-native-paper";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 import { useNavigation } from "@react-navigation/native";
 import { AppScreenNames } from "@/navigation/ScreenNames";
-import { downloadPhoto } from "@/hooks/useMediaLibary";
 import DownloadButton from "../CameraStack/DownloadButton";
 import { MyColors } from "@/styles/ColorPallete";
+import Center from "../Center";
 
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
@@ -25,11 +30,13 @@ interface PhotoModalProps {
   setPhotoTaken: React.Dispatch<
     React.SetStateAction<CameraCapturedPicture | null>
   >;
+  loading: boolean;
 }
 
 const PhotoModal: React.FC<PhotoModalProps> = ({
   photoTaken,
   setPhotoTaken,
+  loading,
 }) => {
   const [downloading, setDownloading] = useState(false);
 
@@ -55,6 +62,18 @@ const PhotoModal: React.FC<PhotoModalProps> = ({
   const imageTextColor = {
     color: colors.accent,
   };
+  if (loading) {
+    return (
+      <View style={[styles.imageContainer, imageContainerRoundness]}>
+        <Center>
+          <MyActivityIndicator />
+          <Paragraph style={styles.loadingInfo}>
+            Hold your phone steady...
+          </Paragraph>
+        </Center>
+      </View>
+    );
+  }
   if (photoTaken) {
     return (
       <View style={[styles.imageContainer, imageContainerRoundness]}>
@@ -94,14 +113,17 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: "absolute",
     alignSelf: "center",
+    // top: STATUS_BAR_HEIGHT ? STATUS_BAR_HEIGHT + 20 : 30,
+    // width: Layout.window.width * 0.7,
+    // height: Layout.window.height * 0.4,
     top: STATUS_BAR_HEIGHT ? STATUS_BAR_HEIGHT + 20 : 30,
-    width: Layout.window.width * 0.7,
-    height: Layout.window.height * 0.4,
+    width: Layout.window.width * 0.85,
+    height: Layout.window.height * 0.75,
     backgroundColor: MyColors.TRANSPARENT_BLACK,
   },
 
   imageTouchable: {
-    height: "85%",
+    height: "90%",
     width: "100%",
   },
   image: {
@@ -120,6 +142,7 @@ const styles = StyleSheet.create({
   downloadButton: {
     marginBottom: "1%",
   },
+  loadingInfo: { color: Colors.white },
 });
 
 export default PhotoModal;

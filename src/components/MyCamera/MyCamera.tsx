@@ -26,7 +26,6 @@ import Layout from "@/constants/Layout";
 import { navigationStyles } from "@/styles/navigation";
 import calculateResize from "./calculateResize";
 import * as FileSystem from "expo-file-system";
-import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 
 interface MyCameraProps {}
@@ -48,6 +47,7 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
 
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const cameraRef = useRef<Camera | null>(null);
   const [photoTaken, setPhotoTaken] = useState<CameraCapturedPicture | null>(
     null
@@ -75,11 +75,13 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
   };
   const takePicture = async () => {
     if (cameraRef.current) {
+      setLoading(true);
       const photo = await cameraRef.current?.takePictureAsync({
         isImageMirror: type === Camera.Constants.Type.front,
         skipProcessing: true,
       });
       FileSystem.copyAsync({ from: photo.uri, to: "photos" });
+      setLoading(false);
       setPhotoTaken(photo);
     }
   };
@@ -167,7 +169,11 @@ const MyCamera: React.FC<MyCameraProps> = ({}) => {
             cameraConfig={cameraConfig}
           />
           <ZoomSlider setZoomValue={setZoomValue} />
-          <PhotoModal photoTaken={photoTaken} setPhotoTaken={setPhotoTaken} />
+          <PhotoModal
+            photoTaken={photoTaken}
+            setPhotoTaken={setPhotoTaken}
+            loading={loading}
+          />
           <ErrorMessage message={errorMsg} />
         </View>
       </Camera>
@@ -194,21 +200,21 @@ const styles = StyleSheet.create({
   },
   bottomButtons: {
     position: "absolute",
-    bottom: "0%",
+    bottom: 2,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
     width: "100%",
   },
   takePictureButtonContainer: {
-    borderRadius: 25,
+    borderRadius: 30,
     height: 60,
     width: 60,
     backgroundColor: "white",
   },
   takePictureButton: { flex: 1 },
   innerTakePictureButton: {
-    borderRadius: 20,
+    borderRadius: 30,
     margin: 7.5,
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",

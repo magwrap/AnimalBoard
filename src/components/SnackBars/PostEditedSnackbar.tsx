@@ -16,7 +16,7 @@ const PostEditedSnackbar: React.FC<PostEditedSnackbarProps> = ({}) => {
   };
   return (
     <MySnackbar
-      text="Post Edited"
+      text="Changes Saved"
       visible={visible}
       onDismiss={onDismissSnackBar}
     />
