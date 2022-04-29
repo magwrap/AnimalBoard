@@ -1,3 +1,4 @@
+import { toggleDownloadSnackBar, useAppDispatch } from "@/hooks/reduxHooks";
 import { downloadPhoto } from "@/hooks/useMediaLibary";
 import { MyColors } from "@/styles/ColorPallete";
 import { IconSizes } from "@/styles/Fonts";
@@ -18,17 +19,22 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
   color = "",
 }) => {
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
   const backgroundColor = {
     backgroundColor: background ? MyColors.TRANSPARENT_BLACK : "transparent",
   };
   const margin = { margin: 0 };
   const iconColor = color ? color : colors.accent;
+  const _download = async () => {
+    await downloadPhoto(uri, setDownloading);
+    dispatch(toggleDownloadSnackBar());
+  };
   return (
     <IconButton
       icon="download"
       size={IconSizes.NORMAL}
       color={iconColor}
-      onPress={() => downloadPhoto(uri, setDownloading)}
+      onPress={_download}
       style={[backgroundColor, margin]}
     />
   );

@@ -1,3 +1,4 @@
+import { toggleRemoveSnackBar, useAppDispatch } from "@/hooks/reduxHooks";
 import { getUserFromDB, removePostFromDB } from "@/hooks/useFirebase";
 import { AppScreenNames } from "@/navigation/ScreenNames";
 import { cardStyles } from "@/styles/Card/cardStyles";
@@ -19,6 +20,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import { DBUser, DBUserPost } from "types";
+import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 import PhotoZoomModal from "./PhotoZoomModal";
 
 // nazwa, photoUrl, opis, data_powstania, data_edycji
@@ -31,6 +33,7 @@ const PostCard: React.FC<PostCardProps> = ({ item, userId }) => {
   const [user, setUser] = useState<DBUser | null>();
   const [visible, setVisible] = React.useState(false);
   const [keepVisible, setKeepVisible] = React.useState(true);
+  const [loading, setLoading] = useState(false);
   const showModal = () => setVisible(true);
   const hideModal = () => {
     setVisible(false);
@@ -41,18 +44,13 @@ const PostCard: React.FC<PostCardProps> = ({ item, userId }) => {
   const navigation = useNavigation();
   const route = useRoute();
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     _fetchUser();
   }, []);
 
-  const {
-    title,
-    description,
-    photoURL,
-    creationDate,
-    editionDate,
-  }: DBUserPost = item.data();
+  const { title, description, photoURL, editionDate }: DBUserPost = item.data();
 
   const onLongPress = () => {
     showModal();
@@ -85,7 +83,8 @@ const PostCard: React.FC<PostCardProps> = ({ item, userId }) => {
         {
           text: "Delete",
           onPress: () => {
-            removePostFromDB(item.ref.path, photoURL);
+            removePostFromDB(item.ref.path, photoURL, setLoading);
+            dispatch(toggleRemoveSnackBar());
           },
           style: "destructive",
         },
@@ -135,6 +134,23 @@ const PostCard: React.FC<PostCardProps> = ({ item, userId }) => {
     }
     return <></>;
   };
+
+  if (loading) {
+    return (
+      <Card style={cardStyles.container}>
+        <Card.Title title="" style={cardStyles.user} />
+        <Card.Content>
+          <Title> </Title>
+        </Card.Content>
+        <View style={[cardStyles.cover, cardStyles.coverReplacement]}>
+          <MyActivityIndicator />
+        </View>
+        <Card.Actions>
+          <Caption> </Caption>
+        </Card.Actions>
+      </Card>
+    );
+  }
 
   return (
     <Card style={cardStyles.container} mode="elevated">

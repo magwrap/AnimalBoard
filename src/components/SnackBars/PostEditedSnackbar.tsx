@@ -1,5 +1,5 @@
 import {
-  dismissRemoveSnackBar,
+  dismissEditSnackBar,
   useAppDispatch,
   useAppSelector,
 } from "@/hooks/reduxHooks";
@@ -9,12 +9,10 @@ import MySnackbar from "./MySnackBar";
 interface PostEditedSnackbarProps {}
 
 const PostEditedSnackbar: React.FC<PostEditedSnackbarProps> = ({}) => {
-  const visible = useAppSelector(
-    (state) => state.SnackBarReducer.visibleRemove
-  );
+  const visible = useAppSelector((state) => state.SnackBarReducer.visibleEdit);
   const dispatch = useAppDispatch();
   const onDismissSnackBar = () => {
-    dispatch(dismissRemoveSnackBar());
+    dispatch(dismissEditSnackBar());
   };
   return (
     <MySnackbar

@@ -2,7 +2,6 @@ import {
   deleteUser,
   getAuth,
   sendEmailVerification,
-  updatePassword,
   updateProfile,
   User,
 } from "firebase/auth";
@@ -10,10 +9,8 @@ import {
   collection,
   deleteDoc,
   doc,
-  DocumentData,
   DocumentReference,
   getDoc,
-  getDocs,
   getFirestore,
   limit,
   onSnapshot,
@@ -40,7 +37,7 @@ export enum FirestoreCollectionNames {
   POSTS = "posts",
   USER_POSTS = "userPosts",
 }
-
+//TODO: refaktoryzacja tego pliku
 export const addUserToDB = async (user: User) => {
   const db = getFirestore();
   const docRef = doc(db, FirestoreCollectionNames.USERS, user.uid);
@@ -75,7 +72,6 @@ export const getUserFromDB = async (uid: string) => {
   if (userSnap.exists()) {
     return userSnap.data();
   } else {
-    // doc.data() will be undefined in this case
     return null;
   }
 };
@@ -223,19 +219,23 @@ export const editPostInDB = async (
   }
 };
 
-export const removePostFromDB = async (postPath: string, imageURL: string) => {
+export const removePostFromDB = async (
+  postPath: string,
+  imageURL: string,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setLoading(true);
   const status = await removeImageFromStorage(imageURL);
-
-  // if (status === "success") {
   try {
     console.log("removing post");
     const db = getFirestore();
     const postDoc = doc(db, postPath);
     await deleteDoc(postDoc);
+    setLoading(false);
   } catch (err) {
     console.log(err);
+    setLoading(false);
   }
-  // }
 };
 
 export const storeImage = async (

@@ -2,10 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialSnackBarState } from "types";
 
 let initialState: InitialSnackBarState = {
-  visibleUpload: true,
-  visibleEdit: true,
-  visibleRemove: true,
-  visibleDownload: true,
+  visibleUpload: false,
+  visibleEdit: false,
+  visibleRemove: false,
+  visibleDownload: false,
 };
 
 const SnackBarSlice = createSlice({

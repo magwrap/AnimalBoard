@@ -1,6 +1,7 @@
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import Layout from "@/constants/Layout";
+import { toggleEditSnackBar, useAppDispatch } from "@/hooks/reduxHooks";
 import { editPostInDB, getPostFromDB } from "@/hooks/useFirebase";
 import { cardStyles } from "@/styles/Card/cardStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -34,6 +35,7 @@ const EditPostScreen: React.FC<EditPostScreenProps> = ({ route }) => {
   const now = new Date();
   const path = route.params.postPath;
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
     (async () => {
@@ -56,13 +58,8 @@ const EditPostScreen: React.FC<EditPostScreenProps> = ({ route }) => {
         postPath: path,
         setLoading,
       });
-      //TODO: zamiast alerta dac snackbar
-      Alert.alert(
-        "Changes Saved",
-        "",
-        [{ text: "OK", onPress: navigation.goBack }],
-        { cancelable: true, onDismiss: navigation.goBack }
-      );
+      dispatch(toggleEditSnackBar());
+      navigation.goBack();
     }
   };
 
@@ -100,11 +97,8 @@ const EditPostScreen: React.FC<EditPostScreenProps> = ({ route }) => {
                 multiline
               />
             </View>
-            <Card.Cover
-              source={{ uri: post.photoURL }}
-              style={[styles.cover]}
-            />
           </Card.Content>
+          <Card.Cover source={{ uri: post.photoURL }} style={[styles.cover]} />
 
           <Card.Actions style={[cardStyles.actions]}>
             <View>

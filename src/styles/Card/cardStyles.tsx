@@ -11,7 +11,10 @@ export const cardStyles = StyleSheet.create({
     height: WINDOW_WIDTH,
     width: WINDOW_WIDTH,
   },
-  coverReplacement: {},
+  coverReplacement: {
+    backgroundColor: "rgba(0,0,0,0.2)",
+    justifyContent: "center",
+  },
 
   actions: { justifyContent: "space-around" },
 
