@@ -1,6 +1,6 @@
 import ViewProfileInfo from "@/components/PostsAndProfile/ViewProfileInfo";
 import ViewUserPosts from "@/components/PostsAndProfile/ViewUserPosts";
-import { getUserFromDB } from "@/hooks/useFirebase";
+import { getUserFromDB } from "@/hooks/firebase/User/FirestoreUser";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";

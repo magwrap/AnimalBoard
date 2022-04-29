@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import {

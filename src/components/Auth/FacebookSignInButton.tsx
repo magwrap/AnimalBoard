@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Button, Colors } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { AuthButtonProps } from "./AuthButtonProps";
 import * as WebBrowser from "expo-web-browser";
 import * as Facebook from "expo-auth-session/providers/facebook";
@@ -10,7 +10,7 @@ import {
   FacebookAuthProvider,
   signInWithCredential,
 } from "firebase/auth";
-import { facebookConfigAuth, facebookFirebaseConfig } from "@/config";
+import { facebookConfigAuth } from "@/config";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -22,7 +22,6 @@ const FacebookSignInButton: React.FC<AuthButtonProps> = ({
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: ResponseType.Token,
     ...facebookConfigAuth,
-    // ...facebookFirebaseConfig,
   });
 
   React.useEffect(() => {

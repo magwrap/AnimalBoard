@@ -1,15 +1,7 @@
 import { MyColors } from "@/styles/ColorPallete";
-import { IconSizes } from "@/styles/Fonts";
 import React from "react";
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
-import {
-  Card,
-  Colors,
-  IconButton,
-  Modal,
-  Portal,
-  useTheme,
-} from "react-native-paper";
+import { ImageBackground, StyleSheet, View } from "react-native";
+import { Card, Modal, Portal, useTheme } from "react-native-paper";
 
 interface PhotoZoomModalProps {
   visible: boolean;

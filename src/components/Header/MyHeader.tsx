@@ -1,3 +1,4 @@
+import { AppScreenNames } from "@/navigation/ScreenNames";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Appbar } from "react-native-paper";
@@ -24,7 +25,8 @@ const MyHeader: React.FC<MyHeaderProps> = ({
   const navigation = useNavigation();
   const _goBack = () => navigation.goBack();
 
-  const _handleSearch = () => console.log("Searching");
+  const _handleSearch = () =>
+    navigation.navigate(AppScreenNames.SEARCH_USERS_SCREEN);
 
   return (
     <Appbar.Header>

@@ -1,5 +1,5 @@
+import { addUserToDB } from "@/hooks/firebase/User/FirestoreUser";
 import { useAppDispatch } from "@/hooks/reduxHooks";
-import { addUserToDB } from "@/hooks/useFirebase";
 import LoadingScreen from "@/screens/LoadingScreen";
 import { fetchUserThunk } from "@/state";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";

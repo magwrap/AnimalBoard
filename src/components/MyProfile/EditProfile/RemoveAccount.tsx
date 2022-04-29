@@ -1,7 +1,7 @@
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
-import { deleteUser, getAuth } from "firebase/auth";
+import { removeUserFromDB } from "@/hooks/firebase/User/FirestoreUser";
 import React, { useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { Button, Headline, Paragraph, useTheme } from "react-native-paper";
 
 interface RemoveAccountProps {
@@ -16,8 +16,6 @@ const RemoveAccount: React.FC<RemoveAccountProps> = ({ hideModal }) => {
   const { colors } = useTheme();
   const errorColor = { color: colors.error };
   const _removeAccount = () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
     if (randNum === +num && user) {
       Alert.alert(
         "WARNING",
@@ -29,14 +27,7 @@ const RemoveAccount: React.FC<RemoveAccountProps> = ({ hideModal }) => {
             style: "destructive",
             onPress: () => {
               setLoading(true);
-              deleteUser(user)
-                .then(() => {
-                  setLoading(false);
-                })
-                .catch((error) => {
-                  setErrorMsg("Something went wrong...");
-                  setLoading(false);
-                });
+              removeUserFromDB(setLoading, setErrorMsg);
             },
           },
         ],

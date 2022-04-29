@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { TapGestureHandler } from "react-native-gesture-handler";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 interface ClickBoxProps {
   children: React.ReactNode;

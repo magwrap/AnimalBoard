@@ -1,8 +1,11 @@
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import Layout from "@/constants/Layout";
+import {
+  editPostInDB,
+  getPostFromDB,
+} from "@/hooks/firebase/Posts/FirestorePostsCrud";
 import { toggleEditSnackBar, useAppDispatch } from "@/hooks/reduxHooks";
-import { editPostInDB, getPostFromDB } from "@/hooks/useFirebase";
 import { cardStyles } from "@/styles/Card/cardStyles";
 import { useNavigation } from "@react-navigation/native";
 import { Timestamp } from "firebase/firestore";

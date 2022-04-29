@@ -8,6 +8,7 @@ import MyHeader from "@/components/Header/MyHeader";
 import { createStackNavigator } from "@react-navigation/stack";
 import EditPostScreen from "@/screens/App/EditPostScreen";
 import ViewSnackBars from "@/components/SnackBars/ViewSnackBars";
+import SearchUsersScreen from "@/screens/App/SearchUsersScreen";
 
 interface AppStackNavigatorProps {}
 
@@ -60,6 +61,28 @@ const AppStackNavigator: React.FC<AppStackNavigatorProps> = ({}) => {
             }}
             options={{
               header: (props) => <MyHeader title="Editing..." showBackButton />,
+            }}
+          />
+          <Stack.Screen
+            name={AppScreenNames.SEARCH_USERS_SCREEN}
+            component={SearchUsersScreen}
+            options={{
+              headerShown: false,
+              gestureDirection: "horizontal",
+              transitionSpec: {
+                open: { animation: "timing", config: { duration: 0 } },
+                close: {
+                  animation: "spring",
+                  config: {
+                    stiffness: 1000,
+                    damping: 500,
+                    mass: 3,
+                    overshootClamping: true,
+                    restDisplacementThreshold: 0.01,
+                    restSpeedThreshold: 0.01,
+                  },
+                },
+              },
             }}
           />
         </Stack.Group>

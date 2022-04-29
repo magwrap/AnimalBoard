@@ -1,4 +1,7 @@
-import { getUserPosts, getUserPostsNext } from "@/hooks/useFirebase";
+import {
+  getUserPosts,
+  getUserPostsNext,
+} from "@/hooks/firebase/Posts/FirestoreUserPosts";
 import { User } from "firebase/auth";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
@@ -66,13 +69,7 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
     ({ item }: { item: QueryDocumentSnapshot<DBUserPost> }) => {
       const userId = item.ref.parent.parent?.id;
       if (userId) {
-        return (
-          <PostCard
-            item={item}
-            userId={userId}
-            getUserPostsQuery={getNextUserPostsSnapschot}
-          />
-        );
+        return <PostCard item={item} userId={userId} />;
       }
       return <View style={{ height: 500 }}></View>;
     },

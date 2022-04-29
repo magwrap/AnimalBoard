@@ -4,10 +4,8 @@ import {
   Avatar,
   Caption,
   Card,
-  Colors,
   Paragraph,
   Subheading,
-  Title,
   useTheme,
 } from "react-native-paper";
 import { DBUser } from "types";

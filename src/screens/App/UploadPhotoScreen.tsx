@@ -2,8 +2,9 @@ import DownloadButton from "@/components/CameraStack/DownloadButton";
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import Layout from "@/constants/Layout";
+import { addPostToDB } from "@/hooks/firebase/Posts/FirestorePostsCrud";
+import { storeImage } from "@/hooks/firebase/Posts/StorageImages";
 import { useAppDispatch, toggleUploadSnackBar } from "@/hooks/reduxHooks";
-import { addPostToDB, storeImage } from "@/hooks/useFirebase";
 import { MyColors } from "@/styles/ColorPallete";
 import { IconSizes } from "@/styles/Fonts";
 import { useNavigation } from "@react-navigation/native";
@@ -64,8 +65,8 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
       (async () => {
         await addPostToDB(title, description, photoUploadState.downloadURL);
         goBackWithoutAskingRef.current = true;
-        _goBack();
         dispatch(toggleUploadSnackBar());
+        _goBack();
       })();
     }
   }, [photoUploadState.downloadURL]);

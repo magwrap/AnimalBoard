@@ -6,7 +6,7 @@ import { Button, Paragraph, Title, useTheme } from "react-native-paper";
 interface VerifyEmailProps {
   hideModal: () => void;
 }
-
+//TODO: sprawdz czy sie aktualizuje weryfikacja hasla
 const VerifyEmail: React.FC<VerifyEmailProps> = ({ hideModal }) => {
   const [loading, setLoading] = useState(false);
   const auth = getAuth();

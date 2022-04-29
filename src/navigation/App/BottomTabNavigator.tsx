@@ -15,10 +15,11 @@ interface BottomTabNavigatorProps {}
 
 const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
   const [myProfileBadgeShown, setMyProfileBadgeShown] = useState(false);
-  const [freshBadgeShow, setFreshBadgeShown] = useState(true);
+  const [freshBadgeShow, setFreshBadgeShown] = useState(false);
+  //TODO: pokazywac fesh badge kiedy nowe posty sa w fresh
 
   const snackBarVisible = useAppSelector(
-    (state) => state.SnackBarReducer.visible
+    (state) => state.SnackBarReducer.visibleUpload
   );
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({}) => {
   }, [snackBarVisible]);
   return (
     <Tab.Navigator
-      initialRouteName={AppScreenNames.FRESH_SCREEN}
+      initialRouteName={AppScreenNames.CAMERA_SCREEN}
       shifting={true}
       labeled={false}
       barStyle={{ height: navigationStyles.bottomTabHeight }}>

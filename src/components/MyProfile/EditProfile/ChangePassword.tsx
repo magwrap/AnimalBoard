@@ -1,12 +1,7 @@
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
-import {
-  AuthCredential,
-  getAuth,
-  reauthenticateWithCredential,
-  updatePassword,
-} from "firebase/auth";
+import { getAuth, updatePassword } from "firebase/auth";
 import React, { useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import {
   Button,
   Paragraph,

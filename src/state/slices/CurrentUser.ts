@@ -1,11 +1,6 @@
-import { FirestoreCollectionNames } from "@/hooks/useFirebase";
-import {
-  createAsyncThunk,
-  createSlice,
-  Dispatch,
-  PayloadAction,
-} from "@reduxjs/toolkit";
-import { getAuth, User } from "firebase/auth";
+import { FirestoreCollectionNames } from "@/hooks/firebase/CollectionNames";
+import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "firebase/auth";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { DBUser, InitialCurrentUserState } from "types";
 import { RootState } from "../store";

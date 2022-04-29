@@ -1,7 +1,7 @@
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
+import { editUserInDB } from "@/hooks/firebase/User/FirestoreUser";
 import { useAppSelector } from "@/hooks/reduxHooks";
-import { editUserInDB } from "@/hooks/useFirebase";
 import { Timestamp } from "firebase/firestore";
 import React, { useLayoutEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";

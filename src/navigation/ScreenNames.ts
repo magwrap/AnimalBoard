@@ -10,6 +10,7 @@ export enum AppScreenNames {
   UPLOAD_PHOTO_SCREEN = "UploadPhoto",
   USER_PROFILE_SCREEN = "User Profile",
   EDIT_POST_SCREEN = "Edit Post",
+  SEARCH_USERS_SCREEN = "Search Users",
 }
 
 export enum AuthScreenNames {

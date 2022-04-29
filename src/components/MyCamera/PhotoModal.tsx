@@ -80,7 +80,10 @@ const PhotoModal: React.FC<PhotoModalProps> = ({
         <TouchableOpacity
           style={styles.imageTouchable}
           onPress={goToUploadPhoto}>
-          <Image source={{ uri: photoTaken.uri }} style={styles.image} />
+          <Image
+            source={{ uri: photoTaken.uri }}
+            style={[styles.image, imageContainerRoundness]}
+          />
         </TouchableOpacity>
         <View style={styles.imageButtons}>
           <IconButton

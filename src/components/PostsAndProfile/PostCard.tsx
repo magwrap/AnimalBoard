@@ -1,5 +1,6 @@
+import { removePostFromDB } from "@/hooks/firebase/Posts/FirestorePostsCrud";
+import { getUserFromDB } from "@/hooks/firebase/User/FirestoreUser";
 import { toggleRemoveSnackBar, useAppDispatch } from "@/hooks/reduxHooks";
-import { getUserFromDB, removePostFromDB } from "@/hooks/useFirebase";
 import { AppScreenNames } from "@/navigation/ScreenNames";
 import { cardStyles } from "@/styles/Card/cardStyles";
 import { MyColors } from "@/styles/ColorPallete";
@@ -82,8 +83,8 @@ const PostCard: React.FC<PostCardProps> = ({ item, userId }) => {
         },
         {
           text: "Delete",
-          onPress: () => {
-            removePostFromDB(item.ref.path, photoURL, setLoading);
+          onPress: async () => {
+            await removePostFromDB(item.ref.path, photoURL, setLoading);
             dispatch(toggleRemoveSnackBar());
           },
           style: "destructive",
