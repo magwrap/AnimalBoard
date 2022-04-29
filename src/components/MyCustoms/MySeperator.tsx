@@ -6,6 +6,6 @@ interface MySeperatorProps {}
 const MySeperator: React.FC<MySeperatorProps> = ({}) => {
   return <View style={styles.seperator} />;
 };
-const styles = StyleSheet.create({ seperator: { height: "1%" } });
+const styles = StyleSheet.create({ seperator: { height: "0.5%" } });
 
 export default MySeperator;

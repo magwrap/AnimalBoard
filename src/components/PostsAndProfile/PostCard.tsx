@@ -175,8 +175,13 @@ const PostCard: React.FC<PostCardProps> = ({
       </Pressable>
       <Card.Actions style={cardStyles.actions}>
         <Caption>
-          Last edit: {editionDate.toDate().toLocaleDateString()} -{" "}
-          {editionDate.toDate().toLocaleTimeString()}
+          {editionDate.toDate().toLocaleTimeString([], {
+            // hour: "2-digit",
+            // minute: "2-digit",
+            // hourCycle: "h24",
+          })}
+          {" - "}
+          {editionDate.toDate().toLocaleDateString()}
         </Caption>
       </Card.Actions>
     </Card>

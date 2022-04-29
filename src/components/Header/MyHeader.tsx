@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
 import MyMenu from "./MyMenu";
 
@@ -27,8 +26,6 @@ const MyHeader: React.FC<MyHeaderProps> = ({
 
   const _handleSearch = () => console.log("Searching");
 
-  const _handleMore = () => openMenu();
-  //TODO: dac w handleMore wyswietlanie badge w ktorym jest toggleDarkModeButton
   return (
     <Appbar.Header>
       {showBackButton && <Appbar.BackAction onPress={_goBack} />}
@@ -40,6 +37,5 @@ const MyHeader: React.FC<MyHeaderProps> = ({
     </Appbar.Header>
   );
 };
-const styles = StyleSheet.create({});
 
 export default MyHeader;

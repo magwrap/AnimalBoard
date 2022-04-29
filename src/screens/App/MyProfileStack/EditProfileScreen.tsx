@@ -6,7 +6,7 @@ import LogoutUser from "@/components/MyProfile/EditProfile/LogoutUser";
 import RemoveAccount from "@/components/MyProfile/EditProfile/RemoveAccount";
 import VerifyEmail from "@/components/MyProfile/EditProfile/VerifyEmail";
 import React, { useState } from "react";
-import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet } from "react-native";
 
 interface EditProfileScreenProps {}
 

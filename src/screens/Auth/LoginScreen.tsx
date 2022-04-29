@@ -25,7 +25,6 @@ import {
 interface LoginScreenProps {
   navigation: any;
 }
-//TODO: upiększyć
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [loginCredentials, setLoginCredentials] = useState({
     email: "",

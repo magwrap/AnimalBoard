@@ -23,14 +23,7 @@ const PostUploadedSnackbar: React.FC<PostUploadedSnackbarProps> = () => {
         action={{
           label: "OK",
           onPress: onDismissSnackBar,
-        }}
-        // action={{
-        //   label: "View",
-        //   onPress: () => {
-        //     //TODO: dodac przekierowanie do edit mode
-        //   },
-        // }}
-      >
+        }}>
         Your photo has been uploaded
       </Snackbar>
     </View>

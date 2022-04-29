@@ -148,6 +148,10 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
         ]
       );
     }, 10000); //TODO: wydluzyc timeout do produkcji - 60 sekund?
+
+  const uploadButtonBackground = {
+    backgroundColor: disable ? Colors.grey400 : colors.primary,
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
@@ -197,7 +201,7 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
             />
             <Button
               mode="contained"
-              style={styles.uploadButton}
+              style={[styles.uploadButton, uploadButtonBackground]}
               onPress={disable ? () => {} : _uploadPhoto}
               loading={disable}
               disabled={disable}
@@ -210,7 +214,7 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
 
       {photoUploadState.state === "running" ? (
         <View style={[styles.uploadInfo, { borderRadius: roundness }]}>
-          <Paragraph style={styles.white}>
+          <Paragraph style={[styles.white, styles.uploadProgress]}>
             uploaded: {progressRef.current.toFixed(2)}%
           </Paragraph>
           <ProgressBar progress={progressRef.current} />
@@ -234,7 +238,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     paddingTop: STATUS_BAR_HEIGHT,
-    // transform: [{ scaleX: -1 }],
   },
   topButtons: {
     flexDirection: "row",
@@ -246,7 +249,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inputs: {
-    backgroundColor: Colors.grey400,
+    backgroundColor: MyColors.TRANSPARENT_BLACK,
   },
   uploadInfo: {
     position: "absolute",
@@ -254,10 +257,9 @@ const styles = StyleSheet.create({
     top: "35%",
     padding: 25,
     width: "60%",
-
-    alignItems: "center",
     backgroundColor: MyColors.TRANSPARENT_BLACK,
   },
+  uploadProgress: { textAlign: "center" },
   errorMsg: { color: "black", textAlign: "center" },
   white: { color: Colors.white },
 });

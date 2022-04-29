@@ -9,7 +9,7 @@ import {
   QuerySnapshot,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, View } from "react-native";
 import { Paragraph } from "react-native-paper";
 import { DBUserPost } from "types";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
@@ -77,6 +77,7 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
   if (postsQuerySnapschot && postsQuerySnapschot.docs !== undefined) {
     return (
       <FlatList
+        // collapsable
         data={postsQuerySnapschot?.docs}
         renderItem={_renderItem}
         keyExtractor={(item) => item.id}

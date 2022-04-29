@@ -40,7 +40,6 @@ const { width: CAMERA_WIDTH, height: CAMERA_HEIGHT } = calculateResize(
   WINDOW_HEIGHT,
   WINDOW_WIDTH
 );
-//TODO: dodaj permissions
 const MyCamera: React.FC<MyCameraProps> = ({}) => {
   const [statusCamera, requestCameraPermission] =
     ImagePicker.useCameraPermissions();

@@ -1,12 +1,11 @@
 import React from "react";
-import { StatusBar, StyleSheet, Text, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import Slider from "@react-native-community/slider";
 import { useTheme } from "react-native-paper";
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 interface ZoomSliderProps {
   setZoomValue: (value: number) => void;
 }
-//TODO: strasznie laguje prawie nie dziala
 const ZoomSlider: React.FC<ZoomSliderProps> = ({ setZoomValue }) => {
   const { colors, dark } = useTheme();
   const maxTrackTintColor = dark ? "black" : "white";
