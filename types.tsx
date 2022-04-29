@@ -1,6 +1,9 @@
 // import { Timestamp } from "firebase/firestore";
 
 import { Timestamp } from "@firebase/firestore";
+import { QueryDocumentSnapshot } from "firebase/firestore";
+
+export type QueryDocUserPost = QueryDocumentSnapshot<DBUserPost>;
 
 export type InitialCurrentUserState = {
   currentUser: null | DBUser;

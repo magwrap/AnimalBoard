@@ -6,7 +6,7 @@ import { cardStyles } from "@/styles/Card/cardStyles";
 import { useNavigation } from "@react-navigation/native";
 import { Timestamp } from "firebase/firestore";
 import React, { useLayoutEffect, useState } from "react";
-import { Alert, Settings, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
   Button,
@@ -22,7 +22,6 @@ interface EditPostScreenProps {
   route: {
     params: {
       postPath: string;
-      getUserPostsQuery: () => Promise<void>;
     };
   };
 }
@@ -34,7 +33,6 @@ const EditPostScreen: React.FC<EditPostScreenProps> = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const now = new Date();
   const path = route.params.postPath;
-  const getUserPostsQuery = route.params.getUserPostsQuery;
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
@@ -58,7 +56,7 @@ const EditPostScreen: React.FC<EditPostScreenProps> = ({ route }) => {
         postPath: path,
         setLoading,
       });
-      getUserPostsQuery && getUserPostsQuery();
+      //TODO: zamiast alerta dac snackbar
       Alert.alert(
         "Changes Saved",
         "",

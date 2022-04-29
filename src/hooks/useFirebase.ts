@@ -16,10 +16,12 @@ import {
   getDocs,
   getFirestore,
   limit,
+  onSnapshot,
   orderBy,
   Query,
   query,
   QueryDocumentSnapshot,
+  QuerySnapshot,
   setDoc,
   startAfter,
   Timestamp,
@@ -32,7 +34,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import { DBUser, DBUserPost } from "types";
+import { DBUser, DBUserPost, QueryDocUserPost } from "types";
 export enum FirestoreCollectionNames {
   USERS = "users",
   POSTS = "posts",
@@ -63,6 +65,7 @@ export const addUserToDB = async (user: User) => {
 export const getUserFromDB = async (uid: string) => {
   const db = getFirestore();
   const userRef: DocumentReference<DBUser> = doc(
+    //custom type
     db,
     FirestoreCollectionNames.USERS,
     uid
@@ -92,6 +95,7 @@ export const editUserInDB = async (
   if (currentUser) {
     const db = getFirestore();
     const userRef: DocumentReference<DBUser> = doc(
+      //custom type
       db,
       FirestoreCollectionNames.USERS,
       currentUser.uid
@@ -181,7 +185,7 @@ export const addPostToDB = async (
 export const getPostFromDB = async (postPath: string) => {
   const db = getFirestore();
   try {
-    const postRef: DocumentReference<DBUserPost> = doc(db, postPath);
+    const postRef: DocumentReference<DBUserPost> = doc(db, postPath); //custom type
     const postSnap = await getDoc(postRef);
 
     if (postSnap.exists()) {
@@ -203,7 +207,7 @@ export const editPostInDB = async (
   const db = getFirestore();
   props.setLoading(true);
   try {
-    const postRef: DocumentReference<DBUserPost> = doc(db, props.postPath);
+    const postRef: DocumentReference<DBUserPost> = doc(db, props.postPath); //custom type
 
     await updateDoc(postRef, {
       title: props.title,
@@ -309,14 +313,19 @@ const removeImageFromStorage = async (imageURL: string) => {
   return "unknown";
 };
 
-export const getUserPostsQueryFirst = async (
+export const getUserPosts = async (
   uid: string,
-  setFetching: React.Dispatch<React.SetStateAction<boolean>>
+  postsPerPage: number,
+  setFetching: React.Dispatch<React.SetStateAction<boolean>>,
+  updatePosts: (
+    postsData: QueryDocUserPost[],
+    lastVisible: QueryDocUserPost
+  ) => void
 ) => {
   setFetching(true);
   try {
     const db = getFirestore();
-    const first = query(
+    const firstQuery: Query<DBUserPost> = query(
       collection(
         db,
         FirestoreCollectionNames.POSTS,
@@ -325,12 +334,26 @@ export const getUserPostsQueryFirst = async (
       ),
 
       orderBy("creationDate", "desc"),
-      limit(25)
+      limit(postsPerPage)
     );
 
-    const documentSnapshots = await getDocs(first);
-    setFetching(false);
-    return documentSnapshots;
+    const unsubscribe = onSnapshot(firstQuery, (documentSnapshots) => {
+      const posts: {
+        postsData: QueryDocumentSnapshot<DBUserPost>[];
+        lastVisible: QueryDocumentSnapshot<DBUserPost> | null;
+      } = {
+        postsData: [],
+        lastVisible: null,
+      };
+      documentSnapshots.forEach((item) => {
+        posts.postsData.push(item);
+      });
+      const lastVisible =
+        documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+      updatePosts(posts.postsData, lastVisible);
+      setFetching(false);
+    });
   } catch (err) {
     setFetching(false);
     console.log(err);
@@ -338,15 +361,21 @@ export const getUserPostsQueryFirst = async (
   return null;
 };
 
-export const getUserPostsQueryNext = async (
+export const getUserPostsNext = async (
   uid: string,
-  prevLastDoc: QueryDocumentSnapshot<DocumentData>,
-  setFetching: React.Dispatch<React.SetStateAction<boolean>>
+  postsPerPage: number,
+  startAfterDoc: QueryDocumentSnapshot<DBUserPost>,
+  setFetching: React.Dispatch<React.SetStateAction<boolean>>,
+  updatePosts: (
+    postsData: QueryDocUserPost[],
+    lastVisible: QueryDocUserPost
+  ) => void,
+  triggerEndOfPosts: () => void
 ) => {
   setFetching(true);
   try {
     const db = getFirestore();
-    const next = query(
+    const nextQuery: Query<DBUserPost> = query(
       collection(
         db,
         FirestoreCollectionNames.POSTS,
@@ -354,12 +383,30 @@ export const getUserPostsQueryNext = async (
         FirestoreCollectionNames.USER_POSTS
       ),
       orderBy("creationDate", "desc"),
-      startAfter(prevLastDoc),
-      limit(25)
+      startAfter(startAfterDoc), //custom type
+      limit(postsPerPage)
     );
-    const documentSnapshots = await getDocs(next);
-    setFetching(false);
-    return documentSnapshots;
+    const unsubscribe = onSnapshot(nextQuery, (documentSnapshots) => {
+      const posts: {
+        postsData: QueryDocumentSnapshot<DBUserPost>[];
+        lastVisible: QueryDocumentSnapshot<DBUserPost> | null;
+      } = {
+        postsData: [],
+        lastVisible: null,
+      };
+      if (documentSnapshots.docs.length > 0) {
+        documentSnapshots.forEach((item) => {
+          posts.postsData.push(item);
+        });
+        const lastVisible =
+          documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+        updatePosts(posts.postsData, lastVisible);
+      } else {
+        triggerEndOfPosts();
+      }
+      setFetching(false);
+    });
   } catch (err) {
     setFetching(false);
     console.log(err);

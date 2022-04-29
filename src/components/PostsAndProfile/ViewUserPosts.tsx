@@ -1,17 +1,10 @@
-import {
-  getUserPostsQueryFirst,
-  getUserPostsQueryNext,
-} from "@/hooks/useFirebase";
+import { getUserPosts, getUserPostsNext } from "@/hooks/useFirebase";
 import { User } from "firebase/auth";
-import {
-  DocumentData,
-  QueryDocumentSnapshot,
-  QuerySnapshot,
-} from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { QueryDocumentSnapshot } from "firebase/firestore";
+import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { Paragraph } from "react-native-paper";
-import { DBUserPost } from "types";
+import { DBUserPost, QueryDocUserPost } from "types";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 import MySeperator from "../MyCustoms/MySeperator";
 import PostCard from "./PostCard";
@@ -25,76 +18,100 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
   uid,
   HeaderComponent,
 }) => {
-  const [postsQuerySnapschot, setPostsQuerySnapschot] =
-    useState<QuerySnapshot<DocumentData> | null>(null);
+  const [posts, setPosts] = useState<{
+    postsData: QueryDocUserPost[];
+    lastVisible: QueryDocUserPost | null;
+  }>({ postsData: [], lastVisible: null });
   const [fetching, setFetching] = useState(true);
-  //TODO: dodac nasluchwanie postow uzytkownika ze jak sie zmienia to sie automatycznie rerenderuje
-
+  const [postsPerPage] = useState(10);
+  const [lastPost, setLastPost] = useState(false);
   useEffect(() => {
-    getUserPostsQuery();
+    getUserPostsSnapschot();
   }, [uid]);
 
-  const getUserPostsQuery = async () => {
+  const updatePosts = (
+    postsData: QueryDocUserPost[],
+    lastVisible: QueryDocUserPost
+  ) => {
+    setPosts({
+      postsData: posts?.postsData.concat(postsData),
+      lastVisible,
+    });
+  };
+
+  const triggerEndOfPosts = () => {
+    setLastPost(true);
+  };
+
+  const getUserPostsSnapschot = async () => {
     if (uid) {
-      const q = await getUserPostsQueryFirst(uid, setFetching);
-      setPostsQuerySnapschot(q);
+      await getUserPosts(uid, postsPerPage, setFetching, updatePosts);
     }
   };
-  //TODO: dodac paging
-  const getNextUserPostsQuery = async () => {
-    if (uid) {
-      if (postsQuerySnapschot) {
-        const lastVisible =
-          postsQuerySnapschot.docs[postsQuerySnapschot.docs.length - 1];
-        const q = await getUserPostsQueryNext(uid, lastVisible, setFetching);
-        setPostsQuerySnapschot(q);
-      }
-    }
-  };
-  const _renderItem = ({
-    item,
-  }: {
-    item: QueryDocumentSnapshot<DBUserPost>;
-  }) => {
-    const userId = item.ref.parent.parent?.id;
-    if (userId) {
-      return (
-        <PostCard
-          item={item}
-          userId={userId}
-          getUserPostsQuery={getUserPostsQuery}
-        />
+
+  const getNextUserPostsSnapschot = async () => {
+    if (posts?.postsData && posts.lastVisible && uid && !lastPost) {
+      console.log("next");
+      await getUserPostsNext(
+        uid,
+        postsPerPage,
+        posts.lastVisible,
+        setFetching,
+        updatePosts,
+        triggerEndOfPosts
       );
     }
-    return <></>;
+  };
+  const _renderItem = useCallback(
+    ({ item }: { item: QueryDocumentSnapshot<DBUserPost> }) => {
+      const userId = item.ref.parent.parent?.id;
+      if (userId) {
+        return (
+          <PostCard
+            item={item}
+            userId={userId}
+            getUserPostsQuery={getNextUserPostsSnapschot}
+          />
+        );
+      }
+      return <View style={{ height: 500 }}></View>;
+    },
+    [posts?.postsData]
+  );
+  const ListFooter = () => {
+    return (
+      <View style={{ padding: 5, height: 100 }}>
+        {fetching && <MyActivityIndicator />}
+      </View>
+    );
   };
 
-  if (fetching) {
-    return <MyActivityIndicator />;
-  }
-
-  //TODO: dodac on end reached - pobiera nastepna strone - zajebac z wallpaper app
-  if (postsQuerySnapschot && postsQuerySnapschot.docs !== undefined) {
+  if (posts?.postsData) {
     return (
       <FlatList
-        // collapsable
-        data={postsQuerySnapschot?.docs}
+        data={posts.postsData}
         renderItem={_renderItem}
         keyExtractor={(item) => item.id}
-        onEndReached={() => {}}
+        onEndReached={getNextUserPostsSnapschot}
+        onEndReachedThreshold={0.01}
+        scrollEventThrottle={150}
         ItemSeparatorComponent={() => <MySeperator />}
-        ListEmptyComponent={() => <Paragraph>No posts yet...</Paragraph>}
+        ListEmptyComponent={() =>
+          fetching ? <></> : <Paragraph>No posts yet...</Paragraph>
+        }
         ListFooterComponent={<ListFooter />}
         ListHeaderComponent={HeaderComponent}
         showsVerticalScrollIndicator={false}
       />
     );
   }
+
+  if (fetching) {
+    return <MyActivityIndicator />;
+  }
   return <Paragraph>Something went wrong...</Paragraph>;
 };
 
 export default ViewUserPosts;
 
-const ListFooter = () => {
-  return <View style={{ padding: 5, height: 100 }} />;
-};
+//na podstawie: https://youtu.be/huJhkqED0ig

@@ -25,14 +25,9 @@ import PhotoZoomModal from "./PhotoZoomModal";
 interface PostCardProps {
   item: QueryDocumentSnapshot<DBUserPost>;
   userId: User["uid"];
-  getUserPostsQuery?: () => Promise<void>;
 }
 
-const PostCard: React.FC<PostCardProps> = ({
-  item,
-  userId,
-  getUserPostsQuery,
-}) => {
+const PostCard: React.FC<PostCardProps> = ({ item, userId }) => {
   const [user, setUser] = useState<DBUser | null>();
   const [visible, setVisible] = React.useState(false);
   const [keepVisible, setKeepVisible] = React.useState(true);
@@ -77,6 +72,7 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   const _removePost = () => {
+    //TODO: zamiast alerta dac snackbar
     Alert.alert(
       "Warning!",
       "Are you sure you want to permanently delete this post?",
@@ -90,7 +86,6 @@ const PostCard: React.FC<PostCardProps> = ({
           text: "Delete",
           onPress: () => {
             removePostFromDB(item.ref.path, photoURL);
-            getUserPostsQuery && getUserPostsQuery();
           },
           style: "destructive",
         },
@@ -101,7 +96,6 @@ const PostCard: React.FC<PostCardProps> = ({
   const _editPost = () => {
     navigation.navigate(AppScreenNames.EDIT_POST_SCREEN, {
       postPath: item.ref.path,
-      getUserPostsQuery,
     });
   };
 
