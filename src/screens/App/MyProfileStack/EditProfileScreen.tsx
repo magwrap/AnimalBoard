@@ -8,12 +8,18 @@ import VerifyEmail from "@/components/MyProfile/EditProfile/VerifyEmail";
 import React, { useState } from "react";
 import { KeyboardAvoidingView, StyleSheet } from "react-native";
 
-interface EditProfileScreenProps {}
+interface EditProfileScreenProps {
+  route: {
+    params: {
+      shownChgNameDesBirth: boolean;
+    };
+  };
+}
 
-const EditProfileScreen: React.FC<EditProfileScreenProps> = ({}) => {
+const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ route }) => {
   //TODO: on mount ma weryfikowac uzytkownika i dopiero wtedy pozwala na zmiany
   const [visibleChangeNameDesBirthModal, setVisibleChangeNameDesBirthModal] =
-    useState(false);
+    useState(route.params.shownChgNameDesBirth);
   const [visibleChangePasswordModal, setVisibleChangePasswordModal] =
     useState(false);
   const [visibleVerifyEmailModal, setVisibleVerifyEmailModal] = useState(false);

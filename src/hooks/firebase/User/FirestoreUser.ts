@@ -30,7 +30,7 @@ export const addUserToDB = async (user: User) => {
       email: user.email,
       displayName: user.displayName
         ? user.displayName
-        : generateRandomNum().toString(),
+        : `user${generateRandomNum().toString()}`,
       description: "",
       avatar: user.photoURL,
       emailVerified: user.emailVerified,

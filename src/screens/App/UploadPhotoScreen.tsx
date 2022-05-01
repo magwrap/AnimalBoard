@@ -4,10 +4,13 @@ import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import Layout from "@/constants/Layout";
 import { addPostToDB } from "@/hooks/firebase/Posts/FirestorePostsCrud";
 import { storeImage } from "@/hooks/firebase/Posts/StorageImages";
+import { getUserFromDB } from "@/hooks/firebase/User/FirestoreUser";
 import { useAppDispatch, toggleUploadSnackBar } from "@/hooks/reduxHooks";
+import { AppScreenNames } from "@/navigation/ScreenNames";
 import { MyColors } from "@/styles/ColorPallete";
 import { IconSizes } from "@/styles/Fonts";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth } from "firebase/auth";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
@@ -112,8 +115,50 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
   const _goBack = () => {
     navigation.goBack();
   };
-  const _uploadPhoto = () => {
-    if (title || description) {
+
+  const checkIfOver13 = async () => {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      const user = await getUserFromDB(currentUser.uid);
+      if (user) {
+        const userBirthDate = user.birthDate.toDate();
+        const userBirthYear = userBirthDate.setFullYear(
+          userBirthDate.getFullYear()
+        );
+        const nowDate = new Date();
+        const thirteenYearsFromNow = nowDate.setFullYear(
+          nowDate.getFullYear() - 13
+        );
+        console.log(userBirthYear, thirteenYearsFromNow);
+        return userBirthYear < thirteenYearsFromNow;
+      }
+    }
+    return false;
+  };
+
+  const _goToProfileEdit = () => {
+    navigation.navigate(AppScreenNames.EDIT_PROFILE_SCREEN, {
+      shownChgNameDesBirth: true,
+    });
+  };
+
+  const _uploadPhoto = async () => {
+    const ifOver13 = await checkIfOver13();
+    if (!ifOver13) {
+      Alert.alert(
+        "Hey!",
+        "You have to be over 13 years old in order to upload photos! Check your account settings...",
+        [
+          {
+            text: "Open profile settings",
+            style: "default",
+            onPress: _goToProfileEdit,
+          },
+          { text: "Ok", style: "cancel" },
+        ]
+      );
+    } else if ((title || description) && ifOver13) {
       storeImage(
         image.uri,
         setDownloadURL,

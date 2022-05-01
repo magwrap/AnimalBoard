@@ -15,8 +15,9 @@ const RemoveAccount: React.FC<RemoveAccountProps> = ({ hideModal }) => {
   const [loading, setLoading] = useState(false);
   const { colors } = useTheme();
   const errorColor = { color: colors.error };
+  //TODO: fix remove account
   const _removeAccount = () => {
-    if (randNum === +num && user) {
+    if (randNum === +num) {
       Alert.alert(
         "WARNING",
         "Do you really want to premanently remove this account?",
@@ -26,7 +27,6 @@ const RemoveAccount: React.FC<RemoveAccountProps> = ({ hideModal }) => {
             text: "Yes",
             style: "destructive",
             onPress: () => {
-              setLoading(true);
               removeUserFromDB(setLoading, setErrorMsg);
             },
           },

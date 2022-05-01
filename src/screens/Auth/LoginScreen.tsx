@@ -93,6 +93,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               onChangeText={_setEmail}
               error={loginCredentials.error}
               left={<TextInput.Icon name={"email"} />}
+              keyboardType="email-address"
             />
             <MyTextInput
               label="Password"
@@ -107,6 +108,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 />
               }
               error={loginCredentials.error}
+              keyboardType={
+                loginCredentials.showPassword ? "visible-password" : "default"
+              }
             />
           </View>
         </View>

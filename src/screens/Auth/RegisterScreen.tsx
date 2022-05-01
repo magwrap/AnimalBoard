@@ -137,6 +137,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               onChangeText={_setEmail}
               error={registerCredentials.error}
               left={<TextInput.Icon name={"email"} />}
+              keyboardType="email-address"
             />
             <MyTextInput
               label="Password"
@@ -151,6 +152,11 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
                 />
               }
               error={registerCredentials.error}
+              keyboardType={
+                registerCredentials.showPassword
+                  ? "visible-password"
+                  : "default"
+              }
             />
 
             <MyTextInput
@@ -168,6 +174,11 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
                 />
               }
               error={registerCredentials.error}
+              keyboardType={
+                registerCredentials.showConfirmPassword
+                  ? "visible-password"
+                  : "default"
+              }
             />
           </View>
 

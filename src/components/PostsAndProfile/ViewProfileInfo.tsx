@@ -1,3 +1,4 @@
+import { IconSizes } from "@/styles/Fonts";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import {
@@ -21,11 +22,15 @@ const ViewProfileInfo: React.FC<ViewProfileInfoProps> = (props) => {
       <View>
         <View style={styles.top}>
           <View style={styles.avatarAndTitle}>
-            <Avatar.Image
-              size={70}
-              source={{ uri: props.avatar }}
-              style={styles.avatar}
-            />
+            {props.avatar ? (
+              <Avatar.Image
+                source={{ uri: props.avatar }}
+                size={IconSizes.GIGANT}
+                style={styles.avatar}
+              />
+            ) : (
+              <Avatar.Icon icon={"account"} size={IconSizes.GIGANT} />
+            )}
           </View>
           <View style={[styles.seperator, borderColor]} />
           <View style={styles.userInfo}>
