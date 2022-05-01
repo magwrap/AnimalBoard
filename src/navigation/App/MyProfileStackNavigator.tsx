@@ -28,6 +28,9 @@ const MyProfileStackNavigator: React.FC<
       />
       <Stack.Screen
         name={AppScreenNames.EDIT_PROFILE_SCREEN}
+        initialParams={{
+          shownChgNameDesBirth: false,
+        }}
         options={{
           header: (props) => (
             <MyHeader title={props.route.name} showBackButton more />

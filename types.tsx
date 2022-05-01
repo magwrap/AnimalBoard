@@ -3,6 +3,8 @@ import { QueryDocumentSnapshot } from "firebase/firestore";
 
 export type QueryDocUserPost = QueryDocumentSnapshot<DBUserPost>;
 
+export type QueryDocUser = QueryDocumentSnapshot<DBUser>;
+
 export type InitialCurrentUserState = {
   currentUser: null | DBUser;
 };

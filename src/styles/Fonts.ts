@@ -6,6 +6,7 @@ export enum FontSizes {
 }
 
 export enum IconSizes {
+  GIGANT = 70,
   HUGE = 46,
   LARGE = 34,
   NORMAL = 26,
