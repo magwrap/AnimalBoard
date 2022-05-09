@@ -6,6 +6,7 @@ import {
   User,
 } from "firebase/auth";
 import {
+  collection,
   deleteDoc,
   doc,
   DocumentReference,

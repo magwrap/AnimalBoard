@@ -5,6 +5,8 @@ export type QueryDocUserPost = QueryDocumentSnapshot<DBUserPost>;
 
 export type QueryDocUser = QueryDocumentSnapshot<DBUser>;
 
+export type QueryDocFollowing = QueryDocumentSnapshot<DBFollowing>;
+
 export type InitialCurrentUserState = {
   currentUser: null | DBUser;
 };
@@ -33,4 +35,8 @@ export type DBUser = {
   displayName: string | null;
   email: string;
   emailVerified: boolean;
+};
+
+export type DBFollowing = {
+  since: Timestamp;
 };

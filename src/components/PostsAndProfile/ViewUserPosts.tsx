@@ -94,7 +94,13 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
         scrollEventThrottle={150}
         ItemSeparatorComponent={() => <MySeperator />}
         ListEmptyComponent={() =>
-          fetching ? <></> : <Paragraph>No posts yet...</Paragraph>
+          fetching ? (
+            <></>
+          ) : (
+            <Paragraph style={{ textAlign: "center" }}>
+              No posts yet...
+            </Paragraph>
+          )
         }
         ListFooterComponent={<ListFooter />}
         ListHeaderComponent={HeaderComponent}

@@ -1,3 +1,4 @@
+import { cardStyles } from "@/styles/Card/profileInfoCard";
 import { IconSizes } from "@/styles/Fonts";
 import React from "react";
 import { StyleSheet, View } from "react-native";
@@ -18,7 +19,7 @@ const ViewProfileInfo: React.FC<ViewProfileInfoProps> = (props) => {
   const borderColor = { borderColor: colors.accent };
 
   return (
-    <Card style={styles.container}>
+    <Card style={[cardStyles.container, { marginBottom: 2 }]}>
       <View>
         <View style={styles.top}>
           <View style={styles.avatarAndTitle}>
@@ -51,13 +52,6 @@ const ViewProfileInfo: React.FC<ViewProfileInfoProps> = (props) => {
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    margin: 10,
-    padding: 5,
-    justifyContent: "center",
-    borderWidth: 1,
-  },
   top: {
     width: "100%",
     justifyContent: "center",

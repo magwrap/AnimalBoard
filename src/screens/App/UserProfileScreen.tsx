@@ -1,3 +1,4 @@
+import ProfileFollowButtons from "@/components/PostsAndProfile/ProfileFollowButtons";
 import ViewProfileInfo from "@/components/PostsAndProfile/ViewProfileInfo";
 import ViewUserPosts from "@/components/PostsAndProfile/ViewUserPosts";
 import { getUserFromDB } from "@/hooks/firebase/User/FirestoreUser";
@@ -35,7 +36,14 @@ const UserProfileScreen: React.FC<UserProfileScreenProps> = ({ route }) => {
     setUser(fetchedUser);
   };
   const HeaderComponent = () => {
-    return user ? <ViewProfileInfo {...user} /> : <></>;
+    return user ? (
+      <>
+        <ViewProfileInfo {...user} />
+        <ProfileFollowButtons uid={uid} />
+      </>
+    ) : (
+      <></>
+    );
   };
   return (
     <View style={styles.container}>

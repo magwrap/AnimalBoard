@@ -5,22 +5,17 @@ import {
   searchUser,
   serachUserNext,
 } from "@/hooks/firebase/User/FirestoreSearchUser";
-import { FontSizes } from "@/styles/Fonts";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, TextInput, View, Keyboard } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import {
-  Appbar,
-  Colors,
-  Paragraph,
-  Searchbar,
-  useTheme,
-} from "react-native-paper";
+import { Appbar, Paragraph, Searchbar } from "react-native-paper";
 import { QueryDocUser } from "types";
 
 interface SearchUsersScreenProps {}
-
+//TODO: zaimplementować algolia search
+//https://youtu.be/3Z0V3cvgns8
+//https://www.algolia.com/apps/M83SMK223K/dashboard
 const SearchUsersScreen: React.FC<SearchUsersScreenProps> = ({}) => {
   const [search, setSearch] = useState("");
   const [usersPerPage] = useState(50);
@@ -33,7 +28,6 @@ const SearchUsersScreen: React.FC<SearchUsersScreenProps> = ({}) => {
     lastVisible: null,
   });
   const [lastUser, setLastUser] = useState(false);
-  const { colors, roundness } = useTheme();
   const textInputRef = useRef<TextInput | null>(null);
   const navigation = useNavigation();
   const isFocused = navigation.isFocused();
@@ -42,11 +36,6 @@ const SearchUsersScreen: React.FC<SearchUsersScreenProps> = ({}) => {
     Keyboard.dismiss();
     navigation.goBack();
   };
-
-  const borderRadius = { borderRadius: roundness };
-  const backgroundColor = { backgroundColor: colors.background };
-  const textColor = { color: colors.text };
-  const placeholderColor = Colors.grey500;
 
   useEffect(() => {
     textInputRef.current?.focus();

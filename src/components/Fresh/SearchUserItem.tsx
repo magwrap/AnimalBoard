@@ -1,8 +1,7 @@
-import { generateRandomNum } from "@/hooks/firebase/idGeneretor";
 import { AppScreenNames } from "@/navigation/ScreenNames";
 import { IconSizes } from "@/styles/Fonts";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Avatar,
@@ -13,19 +12,39 @@ import {
 } from "react-native-paper";
 import { QueryDocUser } from "types";
 import { AntDesign } from "@expo/vector-icons";
+import {
+  checkIfIsFollowed,
+  followUser,
+} from "@/hooks/firebase/User/Following/FirestoreUserFriends";
+import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 
 interface SearchUserItemProps {
   userItem: QueryDocUser;
 }
 
 const SearchUserItem: React.FC<SearchUserItemProps> = ({ userItem }) => {
-  console.log(generateRandomNum());
+  const [isFollowed, setIsFollowed] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const { colors } = useTheme();
+
+  useEffect(() => {
+    (async () => {
+      const followed = await checkIfIsFollowed(userItem.id);
+      setIsFollowed(followed);
+      // setLoading(false);
+    })();
+  }, []);
+
   const _viewUserProfile = (uid: string) => {
     navigation.navigate(AppScreenNames.USER_PROFILE_SCREEN, {
       uid,
     });
+  };
+
+  const _followUser = async (uid: string) => {
+    await followUser(uid, setLoading, setIsFollowed);
+    //TODO: show snackbar with info ze dodano do znajomych
   };
   const itemData = userItem.data();
   return (
@@ -44,19 +63,28 @@ const SearchUserItem: React.FC<SearchUserItemProps> = ({ userItem }) => {
             <Avatar.Icon {...props} icon={"account"} size={IconSizes.HUGE} />
           );
         }}
-        right={(props) => (
-          <IconButton
-            {...props}
-            icon={() => (
-              <AntDesign
-                name="adduser"
-                size={IconSizes.NORMAL}
-                color={colors.text}
-              />
-            )}
-            onPress={() => {}}
-          />
-        )}
+        right={(props) => {
+          if (loading) {
+            return <MyActivityIndicator />;
+          }
+          if (isFollowed) {
+            return <></>;
+          }
+          return (
+            <IconButton
+              {...props}
+              disabled={loading}
+              icon={() => (
+                <AntDesign
+                  name="adduser"
+                  size={IconSizes.NORMAL}
+                  color={colors.text}
+                />
+              )}
+              onPress={() => _followUser(userItem.id)}
+            />
+          );
+        }}
       />
     </TouchableRipple>
   );
