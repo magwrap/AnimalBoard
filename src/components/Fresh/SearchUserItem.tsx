@@ -1,7 +1,8 @@
 import { AppScreenNames } from "@/navigation/ScreenNames";
 import { IconSizes } from "@/styles/Fonts";
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import {
   Avatar,
@@ -17,6 +18,7 @@ import {
   followUser,
 } from "@/hooks/firebase/User/Following/FirestoreUserFriends";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
+import { getAuth } from "firebase/auth";
 
 interface SearchUserItemProps {
   userItem: QueryDocUser;
@@ -27,8 +29,7 @@ const SearchUserItem: React.FC<SearchUserItemProps> = ({ userItem }) => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const { colors } = useTheme();
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       const followed = await checkIfIsFollowed(userItem.id);
       setIsFollowed(followed);
@@ -64,11 +65,27 @@ const SearchUserItem: React.FC<SearchUserItemProps> = ({ userItem }) => {
           );
         }}
         right={(props) => {
+          const { currentUser } = getAuth();
+
+          if (userItem.id == currentUser?.uid) {
+            return <></>;
+          }
           if (loading) {
             return <MyActivityIndicator />;
           }
           if (isFollowed) {
-            return <></>;
+            return (
+              <IconButton
+                {...props}
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name="account-check"
+                    size={IconSizes.NORMAL}
+                    color={colors.text}
+                  />
+                )}
+              />
+            );
           }
           return (
             <IconButton

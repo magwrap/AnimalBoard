@@ -81,7 +81,6 @@ export const editPostInDB = async (
     });
     props.setLoading(false);
   } catch (err) {
-    console.log(err);
     props.setLoading(false);
   }
 };
@@ -94,13 +93,11 @@ export const removePostFromDB = async (
   setLoading(true);
   const status = await removeImageFromStorage(imageURL);
   try {
-    console.log("removing post");
     const db = getFirestore();
     const postDoc = doc(db, postPath);
     await deleteDoc(postDoc);
     setLoading(false);
   } catch (err) {
-    console.log(err);
     setLoading(false);
   }
 };

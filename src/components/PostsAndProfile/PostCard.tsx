@@ -28,9 +28,10 @@ import PhotoZoomModal from "./PhotoZoomModal";
 interface PostCardProps {
   item: QueryDocumentSnapshot<DBUserPost>;
   userId: User["uid"];
+  feed: boolean;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ item, userId }) => {
+const PostCard: React.FC<PostCardProps> = ({ item, userId, feed = false }) => {
   const [user, setUser] = useState<DBUser | null>();
   const [visible, setVisible] = React.useState(false);
   const [keepVisible, setKeepVisible] = React.useState(true);
@@ -63,11 +64,11 @@ const PostCard: React.FC<PostCardProps> = ({ item, userId }) => {
   };
 
   const _viewUserProfile = (uid: string) => {
-    if (route.params.uid !== uid) {
-      navigation.navigate(AppScreenNames.USER_PROFILE_SCREEN, {
-        uid,
-      });
-    }
+    // if (route.params.uid !== uid) {
+    navigation.navigate(AppScreenNames.USER_PROFILE_SCREEN, {
+      uid,
+    });
+    // }
   };
 
   const _removePost = () => {
@@ -111,6 +112,9 @@ const PostCard: React.FC<PostCardProps> = ({ item, userId }) => {
   };
   const RightContent = (props: object) => {
     const auth = getAuth();
+    if (feed) {
+      return <></>;
+    }
     if (userId === auth.currentUser?.uid) {
       return (
         <View style={cardStyles.crudButtons}>

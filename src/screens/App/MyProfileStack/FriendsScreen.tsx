@@ -1,11 +1,6 @@
 import Center from "@/components/Center";
-import SearchUserItem from "@/components/Fresh/SearchUserItem";
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import FriendUserItem from "@/components/MyProfile/FriendUserItem";
-import {
-  getUserFromDB,
-  getUserQueryDoc,
-} from "@/hooks/firebase/User/FirestoreUser";
 import { getUserFollowingQuery } from "@/hooks/firebase/User/Following/FirestoreUserFollowing";
 import { getAuth } from "firebase/auth";
 import React, { useCallback, useEffect, useState } from "react";

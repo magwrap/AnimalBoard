@@ -22,7 +22,7 @@ const UserProfileScreen: React.FC<UserProfileScreenProps> = ({ route }) => {
   const uid = route.params.uid;
   const navigation = useNavigation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     _fetchUser();
   }, []);
   useLayoutEffect(() => {

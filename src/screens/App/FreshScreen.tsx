@@ -1,30 +1,29 @@
+import ViewMyFeed from "@/components/Fresh/ViewMyFeed";
 import MyHeader from "@/components/Header/MyHeader";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth } from "firebase/auth";
 import * as React from "react";
 import { useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
+import { StyleSheet, SafeAreaView } from "react-native";
 
 interface FreshScreenProps {}
 
 const FreshScreen: React.FC<FreshScreenProps> = ({}) => {
   const navigation = useNavigation();
   const isFocused = navigation.isFocused();
+
   useEffect(() => {
     if (isFocused) {
       navigation.setOptions({ tabBarBadge: false });
     }
   }, [isFocused]);
+
+  const { currentUser } = getAuth();
+
   return (
     <SafeAreaView style={styles.container}>
       <MyHeader more search />
-      <ScrollView
-      // ref={scrollRef}
-      >
-        {/* <PostCard />
-        <PostCard /> */}
-      </ScrollView>
+      {currentUser ? <ViewMyFeed /> : null}
     </SafeAreaView>
   );
 };
@@ -32,7 +31,6 @@ const FreshScreen: React.FC<FreshScreenProps> = ({}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingTop: STATUS_BAR_HEIGHT,
   },
 });
 

@@ -7,6 +7,17 @@ export type QueryDocUser = QueryDocumentSnapshot<DBUser>;
 
 export type QueryDocFollowing = QueryDocumentSnapshot<DBFollowing>;
 
+export type InitialMyFeedState = {
+  myFeed: QueryDocUserPost[];
+  lastUserIndex: number;
+  lastUserPost: null | QueryDocumentSnapshot<DBUserPost>;
+  displayedPosts: number;
+};
+
+export type InitialMyFollowingState = {
+  myFollowing: QueryDocFollowing[];
+};
+
 export type InitialCurrentUserState = {
   currentUser: null | DBUser;
 };

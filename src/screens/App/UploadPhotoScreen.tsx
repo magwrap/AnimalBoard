@@ -130,7 +130,6 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
         const thirteenYearsFromNow = nowDate.setFullYear(
           nowDate.getFullYear() - 13
         );
-        console.log(userBirthYear, thirteenYearsFromNow);
         return userBirthYear < thirteenYearsFromNow;
       }
     }

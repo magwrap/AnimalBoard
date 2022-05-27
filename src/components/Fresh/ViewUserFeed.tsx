@@ -10,14 +10,14 @@ import { Paragraph } from "react-native-paper";
 import { DBUserPost, QueryDocUserPost } from "types";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 import MySeperator from "../MyCustoms/MySeperator";
-import PostCard from "./PostCard";
+import PostCard from "../PostsAndProfile/PostCard";
 
-interface ViewUserPostsProps {
+interface ViewUserFeedProps {
   uid: User["uid"];
   HeaderComponent?: JSX.Element;
 }
 
-const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
+const ViewUserFeed: React.FC<ViewUserFeedProps> = ({
   uid,
   HeaderComponent,
 }) => {
@@ -28,6 +28,7 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
   const [fetching, setFetching] = useState(true);
   const [postsPerPage] = useState(10);
   const [lastPost, setLastPost] = useState(false);
+
   useEffect(() => {
     getUserPostsSnapschot();
   }, [uid]);
@@ -114,6 +115,4 @@ const ViewUserPosts: React.FC<ViewUserPostsProps> = ({
   return <Paragraph>Something went wrong...</Paragraph>;
 };
 
-export default ViewUserPosts;
-
-//na podstawie: https://youtu.be/huJhkqED0ig
+export default ViewUserFeed;
