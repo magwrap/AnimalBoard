@@ -7,7 +7,6 @@ interface MySnackbarProps {
   onDismiss: () => void;
   text: string;
 }
-//TODO: dodac snackbary tez do edycji profilu i hasla??
 const MySnackbar: React.FC<MySnackbarProps> = ({
   visible,
   onDismiss,

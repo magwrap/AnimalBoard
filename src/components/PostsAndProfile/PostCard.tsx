@@ -22,6 +22,7 @@ import {
 } from "react-native-paper";
 import { DBUser, DBUserPost } from "types";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
+import EmptyPostCard from "./EmptyPostCard";
 import PhotoZoomModal from "./PhotoZoomModal";
 
 // nazwa, photoUrl, opis, data_powstania, data_edycji
@@ -72,7 +73,6 @@ const PostCard: React.FC<PostCardProps> = ({ item, userId, feed = false }) => {
   };
 
   const _removePost = () => {
-    //TODO: zamiast alerta dac snackbar
     Alert.alert(
       "Warning!",
       "Are you sure you want to permanently delete this post?",
@@ -141,20 +141,7 @@ const PostCard: React.FC<PostCardProps> = ({ item, userId, feed = false }) => {
   };
 
   if (loading) {
-    return (
-      <Card style={cardStyles.container}>
-        <Card.Title title="" style={cardStyles.user} />
-        <Card.Content>
-          <Title> </Title>
-        </Card.Content>
-        <View style={[cardStyles.cover, cardStyles.coverReplacement]}>
-          <MyActivityIndicator />
-        </View>
-        <Card.Actions>
-          <Caption> </Caption>
-        </Card.Actions>
-      </Card>
-    );
+    return <EmptyPostCard />;
   }
 
   return (

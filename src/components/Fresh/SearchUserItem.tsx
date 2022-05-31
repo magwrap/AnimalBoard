@@ -45,7 +45,6 @@ const SearchUserItem: React.FC<SearchUserItemProps> = ({ userItem }) => {
 
   const _followUser = async (uid: string) => {
     await followUser(uid, setLoading, setIsFollowed);
-    //TODO: show snackbar with info ze dodano do znajomych
   };
   const itemData = userItem.data();
   return (

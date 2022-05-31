@@ -16,4 +16,3 @@ export {
   dismissEditSnackBar,
   dismissDownloadSnackBar,
 } from "@/state/slices/SnackBar";
-export { incrementDisplayedPosts, sortFeed } from "@/state/slices/MyFeed";

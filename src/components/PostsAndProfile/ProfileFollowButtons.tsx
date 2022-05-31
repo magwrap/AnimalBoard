@@ -37,12 +37,10 @@ const ProfileFollowButtons: React.FC<ProfileFollowButtonsProps> = ({ uid }) => {
 
   const _followUser = async (uid: string) => {
     await followUser(uid, setLoading, setIsFollowed);
-    //TODO: show snackbar with info ze dodano do znajomych
   };
 
   const _unFollowUser = async (uid: string) => {
     await unFollowUser(uid, setLoading, setIsFollowed);
-    //TODO: show snackbard with info ze usunieto
   };
 
   const onPressFollow = () =>

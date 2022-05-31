@@ -10,8 +10,7 @@ export type QueryDocFollowing = QueryDocumentSnapshot<DBFollowing>;
 export type InitialMyFeedState = {
   myFeed: QueryDocUserPost[];
   lastUserIndex: number;
-  lastUserPost: null | QueryDocumentSnapshot<DBUserPost>;
-  displayedPosts: number;
+  endReached: boolean;
 };
 
 export type InitialMyFollowingState = {

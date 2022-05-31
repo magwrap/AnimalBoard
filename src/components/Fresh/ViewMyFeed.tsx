@@ -1,38 +1,60 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { fetchMyFeedThunk, sortFeed } from "@/state/slices/MyFeed";
+import { fetchMyFeedThunk } from "@/state/slices/MyFeed";
 import { getAuth } from "firebase/auth";
 import { QueryDocumentSnapshot } from "firebase/firestore";
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Paragraph } from "react-native-paper";
 import { DBUserPost, QueryDocUserPost } from "types";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 import MySeperator from "../MyCustoms/MySeperator";
+import EmptyPostCard from "../PostsAndProfile/EmptyPostCard";
 import PostCard from "../PostsAndProfile/PostCard";
-import { incrementDisplayedPosts } from "@/hooks/reduxHooks";
 
 interface ViewMyFeedProps {}
 
 const ViewMyFeed: React.FC<ViewMyFeedProps> = ({}) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [feed, setFeed] = useState<QueryDocUserPost[]>([]);
-  const myFeed = useAppSelector((state) => state.MyFeedReducer.myFeed);
+  const { myFeed, endReached } = useAppSelector((state) => state.MyFeedReducer);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setFeed(myFeed);
-    setLoading(false);
+    takeCareOfFeed();
   }, [myFeed]);
+  //overcomplicated and not working properly but im too dumb to solve it
+  const takeCareOfFeed = async () => {
+    const sortedFeed = await sortFeed([...myFeed]);
+    // const originalFeed = await removeDuplicates([...sortedFeed]);
+    // setFeed(originalFeed);
+    setFeed(sortedFeed);
+    setLoading(false);
+  };
+
+  const sortFeed = async (feed: QueryDocUserPost[]) => {
+    feed.sort((x, y) => {
+      return y.data().editionDate.toMillis() - x.data().editionDate.toMillis();
+    });
+    return feed;
+  };
+
+  const removeDuplicates = async (feed: QueryDocUserPost[]) => {
+    console.log("feed: ", feed.length);
+    const orign = feed.filter((postF, indexF, arr) => {
+      let dupliacte = arr.map((postM, indexM) => {
+        if (indexF !== indexM && postF.id === postM.id) {
+          return true;
+        }
+        return false;
+      });
+      return dupliacte;
+    });
+    console.log("filtered: ", orign.length);
+    return orign;
+  };
 
   const getNextFeedPage = () => {
     setLoading(true);
-    console.log("next page");
-    dispatch(incrementDisplayedPosts());
     const { currentUser } = getAuth();
     if (currentUser?.uid) {
       dispatch(fetchMyFeedThunk(currentUser.uid));
@@ -52,7 +74,7 @@ const ViewMyFeed: React.FC<ViewMyFeedProps> = ({}) => {
   const ListFooter = () => {
     return (
       <View style={{ padding: 5, height: 100 }}>
-        {loading && <MyActivityIndicator />}
+        {loading && !endReached ? <MyActivityIndicator /> : null}
       </View>
     );
   };
@@ -67,7 +89,10 @@ const ViewMyFeed: React.FC<ViewMyFeedProps> = ({}) => {
       ItemSeparatorComponent={() => <MySeperator />}
       ListEmptyComponent={() =>
         loading ? (
-          <></>
+          <>
+            <EmptyPostCard />
+            <EmptyPostCard />
+          </>
         ) : (
           <Paragraph style={{ textAlign: "center" }}>No posts yet...</Paragraph>
         )
