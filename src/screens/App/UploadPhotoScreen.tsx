@@ -1,4 +1,5 @@
 import DownloadButton from "@/components/CameraStack/DownloadButton";
+import SetAsAvatarButton from "@/components/CameraStack/SetAsAvatarButton";
 import MyActivityIndicator from "@/components/MyCustoms/MyActivityIndicator";
 import MyTextInput from "@/components/MyCustoms/MyTextInput";
 import Layout from "@/constants/Layout";
@@ -47,6 +48,7 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [downloading, setDownloading] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [photoUploadState, setPhotoUploadState] = useState({
     downloadURL: "",
     state: "",
@@ -60,8 +62,9 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
   const { roundness, colors } = useTheme();
   const disable = photoUploadState.state === "running";
   const dispatch = useAppDispatch();
-  const goBackAlertTitle = "Warning";
-  const goBackAlertDes = "Do you want do remove this post and leave?";
+  const goBackAlertTitle = "Warning!";
+  const goBackAlertDes =
+    "Unless you haven't saved this picture or set as an avatar, upon leaving it will be removed.\nDo you wish to proceed?";
 
   useEffect(() => {
     if (photoUploadState.downloadURL) {
@@ -85,7 +88,7 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
           Alert.alert(goBackAlertTitle, goBackAlertDes, [
             { text: "Don't leave", style: "cancel", onPress: () => {} },
             {
-              text: "Remove",
+              text: "YES",
               style: "destructive",
 
               onPress: () => navigation.dispatch(e.data.action),
@@ -205,16 +208,23 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
               onPress={_goBack}
               style={styles.goBackButton}
             />
-            {downloading ? (
-              <MyActivityIndicator />
-            ) : (
-              <DownloadButton
+            <View style={styles.rightButtons}>
+              {downloading ? (
+                <MyActivityIndicator />
+              ) : (
+                <DownloadButton
+                  uri={image.uri}
+                  setDownloading={setDownloading}
+                  color={Colors.white}
+                  background
+                />
+              )}
+              <SetAsAvatarButton
                 uri={image.uri}
-                setDownloading={setDownloading}
-                color={Colors.white}
-                background
+                setEditing={setEditing}
+                editing={editing}
               />
-            )}
+            </View>
           </View>
         </View>
         <ScrollView
@@ -318,6 +328,9 @@ const styles = StyleSheet.create({
     backgroundColor: MyColors.TRANSPARENT_BLACK,
   },
   white: { color: Colors.white },
+  rightButtons: {
+    justifyContent: "space-between",
+  },
 });
 
 export default UploadPhotoScreen;

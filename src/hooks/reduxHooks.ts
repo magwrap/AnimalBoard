@@ -15,4 +15,6 @@ export {
   dismissRemoveSnackBar,
   dismissEditSnackBar,
   dismissDownloadSnackBar,
+  toggleAvatarChangeSnackBar,
+  dismissAvatarChangeSnackBar,
 } from "@/state/slices/SnackBar";

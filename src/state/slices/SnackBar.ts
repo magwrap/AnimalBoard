@@ -6,6 +6,7 @@ let initialState: InitialSnackBarState = {
   visibleEdit: false,
   visibleRemove: false,
   visibleDownload: false,
+  visibleAvatarChange: false,
 };
 
 const SnackBarSlice = createSlice({
@@ -36,6 +37,12 @@ const SnackBarSlice = createSlice({
     dismissDownloadSnackBar: (state, action: PayloadAction<void>) => {
       state.visibleDownload = false;
     },
+    toggleAvatarChangeSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleAvatarChange = !state.visibleAvatarChange;
+    },
+    dismissAvatarChangeSnackBar: (state, action: PayloadAction<void>) => {
+      state.visibleAvatarChange = false;
+    },
   },
 });
 
@@ -48,5 +55,7 @@ export const {
   dismissEditSnackBar,
   dismissRemoveSnackBar,
   dismissDownloadSnackBar,
+  toggleAvatarChangeSnackBar,
+  dismissAvatarChangeSnackBar,
 } = SnackBarSlice.actions;
 export default SnackBarSlice.reducer;

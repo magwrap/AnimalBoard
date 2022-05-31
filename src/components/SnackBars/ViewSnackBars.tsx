@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import AvatarChangedSnackbar from "./AvatarChangedSnackbar";
 import PhotoDownloadedSnackbar from "./PhotoDownloadedSnackbar";
 import PostEditedSnackbar from "./PostEditedSnackbar";
 import PostRemovedSnackbar from "./PostRemovedSnackbar";
@@ -14,6 +15,7 @@ const ViewSnackBars: React.FC<ViewSnackBarsProps> = ({}) => {
       <PostUploadedSnackbar />
       <PostEditedSnackbar />
       <PostRemovedSnackbar />
+      <AvatarChangedSnackbar />
     </View>
   );
 };

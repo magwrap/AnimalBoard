@@ -25,6 +25,7 @@ export type InitialSnackBarState = {
   visibleEdit: boolean;
   visibleRemove: boolean;
   visibleDownload: boolean;
+  visibleAvatarChange: boolean;
 };
 
 export type InitialDarkThemeState = {
