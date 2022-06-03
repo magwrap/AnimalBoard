@@ -9,6 +9,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import EditPostScreen from "@/screens/App/EditPostScreen";
 import ViewSnackBars from "@/components/SnackBars/ViewSnackBars";
 import SearchUsersScreen from "@/screens/App/SearchUsersScreen";
+import ReAuthScreen from "@/screens/Auth/ReAuthScreen";
 
 interface AppStackNavigatorProps {}
 
@@ -84,6 +85,11 @@ const AppStackNavigator: React.FC<AppStackNavigatorProps> = ({}) => {
                 },
               },
             }}
+          />
+          <Stack.Screen
+            name={AppScreenNames.REAUTH_SCREEN}
+            component={ReAuthScreen}
+            options={{ headerShown: false }}
           />
         </Stack.Group>
       </Stack.Navigator>

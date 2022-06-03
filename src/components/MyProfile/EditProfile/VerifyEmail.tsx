@@ -6,12 +6,12 @@ import { Button, Paragraph, Title, useTheme } from "react-native-paper";
 interface VerifyEmailProps {
   hideModal: () => void;
 }
-//TODO: sprawdz czy sie aktualizuje weryfikacja hasla
 const VerifyEmail: React.FC<VerifyEmailProps> = ({ hideModal }) => {
   const [loading, setLoading] = useState(false);
   const auth = getAuth();
   const currentUser = auth.currentUser;
   const { colors } = useTheme();
+  const infoColor = { color: colors.accent };
   const _sendVerifyEmail = () => {
     if (currentUser) {
       setLoading(true);
@@ -35,6 +35,9 @@ const VerifyEmail: React.FC<VerifyEmailProps> = ({ hideModal }) => {
           Verified: {currentUser?.emailVerified ? "Yes" : "No"}
         </Paragraph>
       </View>
+      {loading ? (
+        <Paragraph style={infoColor}>Sending email...</Paragraph>
+      ) : null}
       <Button
         mode="contained"
         onPress={_sendVerifyEmail}

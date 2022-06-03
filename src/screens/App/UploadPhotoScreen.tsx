@@ -21,6 +21,7 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  // ScrollView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
@@ -64,7 +65,7 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
   const dispatch = useAppDispatch();
   const goBackAlertTitle = "Warning!";
   const goBackAlertDes =
-    "Unless you haven't saved this picture or set as an avatar, upon leaving it will be removed.\nDo you wish to proceed?";
+    "Unless you haven't saved this picture or set as an avatar. Upon leaving, it will be removed.\nDo you want to proceed?";
 
   useEffect(() => {
     if (photoUploadState.downloadURL) {
@@ -85,15 +86,20 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
         if (goBackWithoutAskingRef.current) {
           navigation.dispatch(e.data.action);
         } else {
-          Alert.alert(goBackAlertTitle, goBackAlertDes, [
-            { text: "Don't leave", style: "cancel", onPress: () => {} },
-            {
-              text: "YES",
-              style: "destructive",
+          Alert.alert(
+            goBackAlertTitle,
+            goBackAlertDes,
+            [
+              { text: "Don't leave", style: "cancel", onPress: () => {} },
+              {
+                text: "YES",
+                style: "destructive",
 
-              onPress: () => navigation.dispatch(e.data.action),
-            },
-          ]);
+                onPress: () => navigation.dispatch(e.data.action),
+              },
+            ],
+            { cancelable: true }
+          );
         }
       }),
     [navigation]
@@ -191,7 +197,7 @@ const UploadPhotoScreen: React.FC<UploadPhotoScreenProps> = ({ route }) => {
           },
         ]
       );
-    }, 10000); //TODO: wydluzyc timeout do produkcji - 60 sekund?
+    }, 10000);
 
   const uploadButtonBackground = {
     backgroundColor: disable ? Colors.grey400 : colors.primary,
@@ -311,6 +317,7 @@ const styles = StyleSheet.create({
   inputs: {
     backgroundColor: MyColors.TRANSPARENT_BLACK,
     marginBottom: "2%",
+    //TODO: margin horizontal sie pobawic
   },
   uploadInfo: {
     position: "absolute",

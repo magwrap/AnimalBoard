@@ -70,7 +70,9 @@ const FriendsScreen: React.FC<FriendsScreenProps> = ({}) => {
           <></>
         ) : (
           <Center>
-            <Paragraph>Search Users...</Paragraph>
+            <Paragraph style={{ textAlign: "center", marginTop: "10%" }}>
+              You have no friends...
+            </Paragraph>
           </Center>
         )
       }

@@ -1,7 +1,9 @@
+import { clearFeed } from "@/hooks/reduxHooks";
 import {
   deleteUser,
   getAuth,
   sendEmailVerification,
+  signOut,
   updateProfile,
   User,
 } from "firebase/auth";
@@ -119,6 +121,7 @@ export const removeUserFromDB = async (
   const user = auth.currentUser;
   if (user) {
     setLoading(true);
+    //reauth user to confirm
     deleteUser(user)
       .then(async () => {
         const db = getFirestore();
@@ -126,8 +129,25 @@ export const removeUserFromDB = async (
         setLoading(false);
       })
       .catch((error) => {
-        setErrorMsg("Something went wrong...");
-        setLoading(false);
+        let timeToLogout = 10;
+        setInterval(() => {
+          if (timeToLogout >= 0) {
+            setErrorMsg(
+              `You have to relogin, in order to remove this account...\nYou will be signed out in ${timeToLogout} seconds.`
+            );
+            timeToLogout--;
+            console.log(timeToLogout);
+          } else {
+            signOut(auth)
+              .then(() => {
+                setLoading(false);
+              })
+              .catch((error) => {
+                setLoading(false);
+              });
+          }
+        }, 1000);
+        console.log("end");
       });
   }
 };

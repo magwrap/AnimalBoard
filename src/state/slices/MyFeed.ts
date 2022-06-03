@@ -27,31 +27,37 @@ const UserFeedSlice = createSlice({
       state.myFeed.push(action.payload);
     },
 
+    clearFeed: (state) => {
+      return {
+        ...state,
+        endReached: false,
+        lastUserIndex: 0,
+        myFeed: [],
+      };
+    },
     setLastUserIndex: (state, action: PayloadAction<number>) => {
       return {
         ...state,
         lastUserIndex: action.payload,
       };
     },
-    setLastUserPost: (
-      state,
-      action: PayloadAction<QueryDocumentSnapshot<DBUserPost>>
-    ) => {
-      return {
-        ...state,
-        lastUserPost: action.payload,
-      };
-    },
+
     setEndReached: (state) => {
       state.endReached = true;
     },
   },
 });
+
+export const { clearFeed } = UserFeedSlice.actions;
 const { pushToFeed, setLastUserIndex, setEndReached } = UserFeedSlice.actions;
 export default UserFeedSlice.reducer;
 
-export const fetchMyFeedThunk = (uid: string) => {
+export const fetchMyFeedThunk = (
+  uid: string,
+  setLoading?: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
+    setLoading && setLoading(true);
     const state = getState();
     try {
       const db = getFirestore();
@@ -87,6 +93,7 @@ export const fetchMyFeedThunk = (uid: string) => {
           });
         });
       }
+      setLoading && setLoading(false);
       dispatch(setEndReached());
     } catch (err) {
       console.log(err);

@@ -18,3 +18,5 @@ export {
   toggleAvatarChangeSnackBar,
   dismissAvatarChangeSnackBar,
 } from "@/state/slices/SnackBar";
+
+export { clearFeed } from "@/state/slices/MyFeed";

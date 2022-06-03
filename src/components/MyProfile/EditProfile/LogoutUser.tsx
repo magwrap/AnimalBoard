@@ -1,3 +1,4 @@
+import { clearFeed, useAppDispatch } from "@/hooks/reduxHooks";
 import { getAuth, signOut } from "firebase/auth";
 import React, { useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
@@ -10,6 +11,7 @@ interface LogoutUserProps {
 const LogoutUser: React.FC<LogoutUserProps> = ({ hideModal }) => {
   const [loading, setLoading] = useState(false);
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
   const logout = () => {
     const auth = getAuth();
     if (auth.currentUser) {
@@ -25,6 +27,7 @@ const LogoutUser: React.FC<LogoutUserProps> = ({ hideModal }) => {
               setLoading(true);
               signOut(auth)
                 .then(() => {
+                  dispatch(clearFeed());
                   setLoading(false);
                 })
                 .catch((error) => {

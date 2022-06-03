@@ -11,6 +11,7 @@ export enum AppScreenNames {
   USER_PROFILE_SCREEN = "User Profile",
   EDIT_POST_SCREEN = "Edit Post",
   SEARCH_USERS_SCREEN = "Search Users",
+  REAUTH_SCREEN = "ReAuthenticate Screen",
 }
 
 export enum AuthScreenNames {

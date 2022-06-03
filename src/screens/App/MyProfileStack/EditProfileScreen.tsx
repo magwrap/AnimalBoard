@@ -17,7 +17,6 @@ interface EditProfileScreenProps {
 }
 
 const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ route }) => {
-  //TODO: on mount ma weryfikowac uzytkownika i dopiero wtedy pozwala na zmiany
   const [visibleChangeNameDesBirthModal, setVisibleChangeNameDesBirthModal] =
     useState(route.params.shownChgNameDesBirth);
   const [visibleChangePasswordModal, setVisibleChangePasswordModal] =

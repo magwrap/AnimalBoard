@@ -24,7 +24,7 @@ import {
 interface LoginScreenProps {
   navigation: any;
 }
-const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+const ReAuthScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [loginCredentials, setLoginCredentials] = useState({
     email: "",
     password: "",
@@ -70,19 +70,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={authStyles.container}>
       <View style={authStyles.top}>
-        <View style={authStyles.titleContainer}>
-          <Headline style={[authStyles.title, titleColor]}>
-            Animal Board
-          </Headline>
-        </View>
-        <Subheading style={[authStyles.subheading]}>Sign In</Subheading>
+        <View style={authStyles.titleContainer}></View>
+        <Subheading style={[authStyles.subheading]}>Reauthenticate</Subheading>
         <Button
-          onPress={_goToRegister}
           labelStyle={authStyles.goToButton}
           compact
           uppercase={false}
-          color={colors.accent}>
-          Don't have a account yet? Sign up
+          color={colors.text}>
+          In order to edit your profile you'll need to
         </Button>
         <View>
           <View style={[authStyles.inputs, { borderRadius: roundness }]}>
@@ -148,4 +143,4 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   );
 };
 
-export default LoginScreen;
+export default ReAuthScreen;

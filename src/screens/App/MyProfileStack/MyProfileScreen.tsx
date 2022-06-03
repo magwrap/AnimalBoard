@@ -1,4 +1,4 @@
-import { AppScreenNames } from "@/navigation/ScreenNames";
+import { AppScreenNames, AuthScreenNames } from "@/navigation/ScreenNames";
 import { useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
 import React, { useEffect } from "react";
@@ -27,6 +27,8 @@ const MyProfileScreen: React.FC<MyProfileScreenProps> = ({}) => {
     }
   };
   const _goToEditProfile = () => {
+    //TODO: zautoryzuj najpierw
+    // navigation.navigate(AppScreenNames.REAUTH_SCREEN);
     navigation.navigate(AppScreenNames.EDIT_PROFILE_SCREEN);
   };
   const _goToFriends = () => {
@@ -42,7 +44,7 @@ const MyProfileScreen: React.FC<MyProfileScreenProps> = ({}) => {
           iconName="switch-account"
         />
         <MyButton
-          text="Edit My Profile"
+          text="My Profile Settings"
           onPress={_goToEditProfile}
           iconName="edit"
         />

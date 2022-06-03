@@ -5,7 +5,7 @@ import {
 } from "@/hooks/reduxHooks";
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Caption, Switch, useTheme } from "react-native-paper";
+import { Caption, Paragraph, Switch, useTheme } from "react-native-paper";
 
 interface DarkThemeSwitchProps {}
 
@@ -21,7 +21,7 @@ const DarkThemeSwitch: React.FC<DarkThemeSwitchProps> = ({}) => {
   };
   return (
     <View style={styles.container}>
-      <Caption style={styles.title}>Dark: </Caption>
+      <Paragraph style={styles.title}>Dark Mode: </Paragraph>
       <Switch
         color={theme.colors.primary}
         value={isThemeDark}

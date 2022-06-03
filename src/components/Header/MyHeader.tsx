@@ -1,7 +1,7 @@
 import { AppScreenNames } from "@/navigation/ScreenNames";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Appbar } from "react-native-paper";
+import { Appbar, useTheme } from "react-native-paper";
 import MyMenu from "./MyMenu";
 
 interface MyHeaderProps {
@@ -24,12 +24,15 @@ const MyHeader: React.FC<MyHeaderProps> = ({
   const closeMenu = () => setVisible(false);
   const navigation = useNavigation();
   const _goBack = () => navigation.goBack();
+  // const { colors } = useTheme();
 
   const _handleSearch = () =>
     navigation.navigate(AppScreenNames.SEARCH_USERS_SCREEN);
 
   return (
-    <Appbar.Header>
+    <Appbar.Header
+    // style={{ backgroundColor: colors.primary }}
+    >
       {showBackButton && <Appbar.BackAction onPress={_goBack} />}
       <Appbar.Content title={title} subtitle={subtitle} />
       {search && <Appbar.Action icon="magnify" onPress={_handleSearch} />}

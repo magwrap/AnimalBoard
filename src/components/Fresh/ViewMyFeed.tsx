@@ -3,25 +3,53 @@ import { fetchMyFeedThunk } from "@/state/slices/MyFeed";
 import { getAuth } from "firebase/auth";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 import { Paragraph } from "react-native-paper";
 import { DBUserPost, QueryDocUserPost } from "types";
 import MyActivityIndicator from "../MyCustoms/MyActivityIndicator";
 import MySeperator from "../MyCustoms/MySeperator";
 import EmptyPostCard from "../PostsAndProfile/EmptyPostCard";
 import PostCard from "../PostsAndProfile/PostCard";
+import { clearFeed } from "@/hooks/reduxHooks";
 
 interface ViewMyFeedProps {}
+
+const wait = (timeout: number) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const ViewMyFeed: React.FC<ViewMyFeedProps> = ({}) => {
   const [loading, setLoading] = useState(true);
   const [feed, setFeed] = useState<QueryDocUserPost[]>([]);
   const { myFeed, endReached } = useAppSelector((state) => state.MyFeedReducer);
   const dispatch = useAppDispatch();
+  const [refreshing, setRefreshing] = React.useState(false);
+  const { currentUser } = getAuth();
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setLoading(true);
+    if (currentUser) {
+      dispatch(clearFeed());
+      dispatch(fetchMyFeedThunk(currentUser.uid));
+    }
+    wait(2000).then(() => setRefreshing(false));
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     takeCareOfFeed();
   }, [myFeed]);
+
+  // useEffect(() => {
+  //   console.log("log");
+  //   (async () => {
+  //     if (feed) {
+  //       const sorted = await sortFeed([...feed]);
+  //       setFeed(sorted);
+  //     }
+  //   })();
+  // }, [feed.length]);
   //overcomplicated and not working properly but im too dumb to solve it
   const takeCareOfFeed = async () => {
     const sortedFeed = await sortFeed([...myFeed]);
@@ -35,27 +63,24 @@ const ViewMyFeed: React.FC<ViewMyFeedProps> = ({}) => {
     feed.sort((x, y) => {
       return y.data().editionDate.toMillis() - x.data().editionDate.toMillis();
     });
-    return feed;
+    return removeDuplicates(feed);
   };
 
   const removeDuplicates = async (feed: QueryDocUserPost[]) => {
-    console.log("feed: ", feed.length);
-    const orign = feed.filter((postF, indexF, arr) => {
-      let dupliacte = arr.map((postM, indexM) => {
-        if (indexF !== indexM && postF.id === postM.id) {
-          return true;
+    //TODO: wazna funkcja trzeba to zrobic...
+    const originalFeed = feed.filter((post, index, arr) => {
+      return arr.map((post2, index2) => {
+        if (post.id === post2.id && index !== index2) {
+          return false;
         }
-        return false;
+        return true;
       });
-      return dupliacte;
     });
-    console.log("filtered: ", orign.length);
-    return orign;
+    return originalFeed;
   };
 
   const getNextFeedPage = () => {
     setLoading(true);
-    const { currentUser } = getAuth();
     if (currentUser?.uid) {
       dispatch(fetchMyFeedThunk(currentUser.uid));
     }
@@ -88,17 +113,23 @@ const ViewMyFeed: React.FC<ViewMyFeedProps> = ({}) => {
       scrollEventThrottle={150}
       ItemSeparatorComponent={() => <MySeperator />}
       ListEmptyComponent={() =>
-        loading ? (
+        loading || refreshing ? (
           <>
             <EmptyPostCard />
             <EmptyPostCard />
           </>
         ) : (
-          <Paragraph style={{ textAlign: "center" }}>No posts yet...</Paragraph>
+          <Paragraph style={{ textAlign: "center", marginTop: "10%" }}>
+            No posts found...{"\n"}Add someone to friends to see theirs new
+            posts!
+          </Paragraph>
         )
       }
       ListFooterComponent={<ListFooter />}
       showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     />
   );
 };

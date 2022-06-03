@@ -2,7 +2,7 @@ import { addUserToDB } from "@/hooks/firebase/User/FirestoreUser";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import LoadingScreen from "@/screens/LoadingScreen";
 import { fetchUserThunk } from "@/state";
-import { fetchMyFeedThunk } from "@/state/slices/MyFeed";
+import { clearFeed, fetchMyFeedThunk } from "@/state/slices/MyFeed";
 import { fetchMyFollowingThunk } from "@/state/slices/MyFollowing";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useState } from "react";
@@ -24,6 +24,7 @@ const Routes: React.FC<RoutesProps> = ({}) => {
   useEffect(() => {
     if (currentUser && loggedIn) {
       addUserToDB(currentUser);
+      dispatch(clearFeed());
       dispatch(fetchUserThunk(currentUser.uid));
       dispatch(fetchMyFollowingThunk(currentUser.uid));
     }
