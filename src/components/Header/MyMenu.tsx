@@ -5,6 +5,7 @@ import DarkThemeSwitch from "../MyProfile/DarkThemeSwitch";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { IconSizes } from "@/styles/Fonts";
+import * as Linking from "expo-linking";
 
 interface MyMenuProps {
   visible: boolean;
@@ -26,8 +27,10 @@ const MyMenu: React.FC<MyMenuProps> = ({ visible, closeMenu, openMenu }) => {
         />
       }>
       <Menu.Item
-        onPress={() => {}}
-        title="Info"
+        onPress={() => {
+          Linking.openURL("https://pngtree.com/so/set");
+        }}
+        title="Set png from pngtree.com"
         icon={() => (
           <AntDesign
             name="infocirlce"
